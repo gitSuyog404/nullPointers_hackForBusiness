@@ -12,7 +12,7 @@ const bannerData: CarouselSlide[] = [
     title: "Restaurants: Turn Surplus into Impact",
     description:
       "List your unsold food items and help feed communities while reducing waste",
-    image: "/fr1.jpg",
+    image: "/fr2.jpg",
     bgColor: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
     cta: "List Food Now",
     ctaLink: "/restaurant/register",
