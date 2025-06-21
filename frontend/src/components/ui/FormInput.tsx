@@ -77,8 +77,8 @@ const FormInput: React.FC<FormInputProps> = ({
             }),
             ...(name === "address" && {
               minLength: {
-                value: 10,
-                message: "Address must be at least 10 characters",
+                value: 5,
+                message: "Address must be at least 5 characters",
               },
             }),
             ...(name === "registrationNumber" && {

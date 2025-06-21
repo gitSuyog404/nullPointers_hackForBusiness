@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import FormInput from "../../components/ui/FormInput";
 import FormCheckbox from "../../components/ui/FormCheckbox";
-import { useSignUpMutation } from "../../redux/slices/userApiSlice";
+import { useSignUpMutation, Roles } from "../../redux/slices/userApiSlice";
 import { useAppDispatch } from "../../redux/hooks";
 import { setCredentials } from "../../redux/slices/authSlice";
 
@@ -15,7 +15,7 @@ interface RegisterFormData {
   password: string;
   phone: string;
   isRestaurant: boolean;
-  address?: string;
+  address: string;
   registrationNumber?: string;
 }
 
@@ -41,7 +41,28 @@ const RegisterPage = () => {
     try {
       console.log("Registration data:", data);
 
-      const result = await signUp(data).unwrap();
+      const role = data.isRestaurant ? Roles.RESTAURANT : Roles.CUSTOMER;
+
+      const payload = {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        phone: data.phone,
+        address: data.address,
+        ...(data.isRestaurant && {
+          registrationNumber: data.registrationNumber,
+        }),
+      };
+
+      const payloadWithRole = {
+        ...payload,
+        role,
+      };
+
+      console.log("PAYLOAD DATA", payload);
+      console.log("ROLE", role);
+      const result = await signUp(payloadWithRole).unwrap();
+      // const result = await signUp(data).unwrap();
 
       if (result.user) {
         dispatch(setCredentials(result.user));
@@ -251,6 +272,22 @@ const RegisterPage = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 1.0 }}
                     viewport={{ once: true }}
+                  >
+                    <FormInput
+                      label="Address"
+                      name="address"
+                      placeholder="Enter your address"
+                      register={register}
+                      error={errors.address}
+                      required
+                    />
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 1.2 }}
+                    viewport={{ once: true }}
                     className="pt-6"
                   >
                     <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-xl p-6">
@@ -317,37 +354,21 @@ const RegisterPage = () => {
                             </p>
                           </div>
                         </div>
-                        <div className="space-y-6">
-                          <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.2 }}
-                          >
-                            <FormInput
-                              label="Restaurant Address"
-                              name="address"
-                              placeholder="Enter your restaurant address"
-                              register={register}
-                              error={errors.address}
-                              required={isRestaurant}
-                            />
-                          </motion.div>
 
-                          <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.4 }}
-                          >
-                            <FormInput
-                              label="Business Registration Number"
-                              name="registrationNumber"
-                              placeholder="Enter your business registration number"
-                              register={register}
-                              error={errors.registrationNumber}
-                              required={isRestaurant}
-                            />
-                          </motion.div>
-                        </div>
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5, delay: 0.2 }}
+                        >
+                          <FormInput
+                            label="Business Registration Number"
+                            name="registrationNumber"
+                            placeholder="Enter your business registration number"
+                            register={register}
+                            error={errors.registrationNumber}
+                            required={isRestaurant}
+                          />
+                        </motion.div>
                       </div>
                     </motion.div>
                   )}

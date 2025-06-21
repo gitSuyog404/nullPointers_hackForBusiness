@@ -1,13 +1,17 @@
 "use client";
 
 import type React from "react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { HiHome } from "react-icons/hi";
+import { HiHome, HiUser, HiLogout, HiChevronDown } from "react-icons/hi";
 import { FaServicestack } from "react-icons/fa";
 import { MdContactMail } from "react-icons/md";
 import { BsInfoCircleFill } from "react-icons/bs";
+import { useAppSelector, useAppDispatch } from "../../redux/hooks";
+import { useUserLogoutMutation } from "../../redux/slices/userApiSlice";
+import { logout } from "../../redux/slices/authSlice";
+import { toast } from "react-toastify";
 
 interface NavItem {
   name: string;
@@ -24,9 +28,54 @@ const navItems: NavItem[] = [
 
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const profileRef = useRef<HTMLDivElement>(null);
+
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { userInfo } = useAppSelector((state) => state.auth);
+  const [userLogout] = useUserLogoutMutation();
+
+  // Close profile dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        profileRef.current &&
+        !profileRef.current.contains(event.target as Node)
+      ) {
+        setIsProfileOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const toggleProfile = () => {
+    setIsProfileOpen(!isProfileOpen);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await userLogout().unwrap();
+      dispatch(logout());
+      setIsProfileOpen(false);
+      toast.success("Logged out successfully!");
+      navigate("/");
+    } catch (error) {
+      console.error("Logout error:", error);
+      // Even if API call fails, clear local state
+      dispatch(logout());
+      setIsProfileOpen(false);
+      toast.success("Logged out successfully!");
+      navigate("/");
+    }
   };
 
   const drawerVariants = {
@@ -89,6 +138,27 @@ export const Navbar: React.FC = () => {
     },
   };
 
+  const profileDropdownVariants = {
+    closed: {
+      opacity: 0,
+      scale: 0.95,
+      y: -10,
+      transition: {
+        duration: 0.2,
+        ease: "easeInOut" as const,
+      },
+    },
+    open: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: {
+        duration: 0.2,
+        ease: "easeInOut" as const,
+      },
+    },
+  };
+
   return (
     <nav className="bg-white  border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -111,22 +181,86 @@ export const Navbar: React.FC = () => {
           </div>
 
           <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-4">
-              {navItems.map((item) => (
-                <motion.div
-                  key={item.name}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Link
-                    to={item.href}
-                    className="flex items-center space-x-1 text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+            <div className="ml-10 flex items-center space-x-4">
+              {/* Navigation Links */}
+              <div className="flex items-baseline space-x-4">
+                {navItems.map((item) => (
+                  <motion.div
+                    key={item.name}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
-                    {item.icon}
-                    <span>{item.name}</span>
+                    <Link
+                      to={item.href}
+                      className="flex items-center space-x-1 text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                    >
+                      {item.icon}
+                      <span>{item.name}</span>
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Profile Dropdown */}
+              {userInfo ? (
+                <div ref={profileRef} className="relative ml-6">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={toggleProfile}
+                    className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 border border-gray-200 hover:border-blue-300"
+                  >
+                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                      <HiUser className="w-4 h-4 text-white" />
+                    </div>
+                    <span className="hidden lg:block">{userInfo.name}</span>
+                    <motion.div
+                      animate={{ rotate: isProfileOpen ? 180 : 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <HiChevronDown className="w-4 h-4" />
+                    </motion.div>
+                  </motion.button>
+
+                  <AnimatePresence>
+                    {isProfileOpen && (
+                      <motion.div
+                        initial="closed"
+                        animate="open"
+                        exit="closed"
+                        variants={profileDropdownVariants}
+                        className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-xl shadow-lg z-50"
+                      >
+                        <div className="py-2">
+                          <motion.button
+                            whileHover={{ backgroundColor: "#f3f4f6" }}
+                            onClick={handleLogout}
+                            className="flex items-center space-x-3 w-full px-4 py-3 text-left text-gray-700 hover:text-red-600 transition-colors duration-200"
+                          >
+                            <HiLogout className="w-5 h-5" />
+                            <span>Logout</span>
+                          </motion.button>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <div className="flex items-center space-x-3 ml-6">
+                  <Link
+                    to="/login"
+                    className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                  >
+                    Login
                   </Link>
-                </motion.div>
-              ))}
+                  <Link
+                    to="/register"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                  >
+                    Register
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
 
@@ -234,6 +368,66 @@ export const Navbar: React.FC = () => {
                         </Link>
                       </motion.div>
                     ))}
+
+                    {/* Mobile Profile Section */}
+                    {userInfo ? (
+                      <div className="border-t border-gray-200 pt-4 mt-4">
+                        <div className="flex items-center space-x-3 px-4 py-3 mb-2">
+                          <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                            <HiUser className="w-5 h-5 text-white" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-gray-800">
+                              {userInfo.name}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              {userInfo.email}
+                            </p>
+                          </div>
+                        </div>
+                        <motion.button
+                          variants={itemVariants}
+                          whileHover={{ scale: 1.02, x: 5 }}
+                          whileTap={{ scale: 0.98 }}
+                          onClick={handleLogout}
+                          className="flex items-center space-x-3 text-gray-700 hover:text-red-600 hover:bg-red-50 px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 w-full"
+                        >
+                          <HiLogout className="w-5 h-5" />
+                          <span>Logout</span>
+                        </motion.button>
+                      </div>
+                    ) : (
+                      <div className="border-t border-gray-200 pt-4 mt-4 space-y-2">
+                        <motion.div
+                          variants={itemVariants}
+                          whileHover={{ scale: 1.02, x: 5 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          <Link
+                            to="/login"
+                            onClick={() => setIsOpen(false)}
+                            className="flex items-center space-x-3 text-gray-700 hover:text-blue-600 hover:bg-gray-50 px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 w-full"
+                          >
+                            <HiUser className="w-5 h-5" />
+                            <span>Login</span>
+                          </Link>
+                        </motion.div>
+                        <motion.div
+                          variants={itemVariants}
+                          whileHover={{ scale: 1.02, x: 5 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          <Link
+                            to="/register"
+                            onClick={() => setIsOpen(false)}
+                            className="flex items-center space-x-3 bg-blue-600 text-white hover:bg-blue-700 px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 w-full"
+                          >
+                            <HiUser className="w-5 h-5" />
+                            <span>Register</span>
+                          </Link>
+                        </motion.div>
+                      </div>
+                    )}
                   </motion.div>
                 </div>
               </motion.div>

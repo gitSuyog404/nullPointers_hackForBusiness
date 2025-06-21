@@ -2,7 +2,7 @@
 //   ? "https://breezy-carpets-wash.loca.lt"
 //   : "http://localhost:5000/api";
 
-export const BASE_URL = "https://odd-moose-grab.loca.l";
+export const BASE_URL = "https://light-rooms-melt.loca.lt";
 
 export const USER_URL = "/users";
 

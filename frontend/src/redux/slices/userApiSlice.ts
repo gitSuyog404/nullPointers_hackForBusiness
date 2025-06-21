@@ -2,6 +2,16 @@ import { apiSlice } from "./apiSlice";
 import { USER_URL } from "../../utils/constants";
 import type { User } from "./authSlice";
 
+// Define role enum
+export const Roles = {
+  CUSTOMER: "CUSTOMER",
+  RESTAURANT: "RESTAURANT",
+  RIDER: "RIDER",
+  ADMIN: "ADMIN",
+} as const;
+
+export type Roles = (typeof Roles)[keyof typeof Roles];
+
 export interface LoginRequest {
   email: string;
   password: string;
@@ -12,9 +22,12 @@ export interface SignUpRequest {
   email: string;
   password: string;
   phone: string;
-  isRestaurant: boolean;
   address?: string;
   registrationNumber?: string;
+}
+
+export interface SignUpRequestWithRole extends SignUpRequest {
+  role: Roles;
 }
 
 export interface AuthResponse {
@@ -52,9 +65,9 @@ const usersApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
-    signUp: builder.mutation<AuthResponse, SignUpRequest>({
-      query: (data) => ({
-        url: `${USER_URL}/register`,
+    signUp: builder.mutation<AuthResponse, SignUpRequestWithRole>({
+      query: ({ role, ...data }) => ({
+        url: `${USER_URL}/create?role=${role}`,
         method: "POST",
         body: data,
       }),
