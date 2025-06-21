@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:food_rescue/features/auth/views/pages/login_page.dart';
+import 'package:food_rescue/features/auth/views/pages/rider_signup_page.dart';
+import 'package:food_rescue/features/auth/views/pages/signup_page.dart';
 
 import '../features/app_start/view/app_start_view.dart';
+import '../features/auth/views/pages/signup_choose_page.dart';
 
 final navigation = GlobalKey<NavigatorState>();
 
 class RouteNames {
   static const String startApp = '/';
   static const String login = '/login';
+  static const String signUp = '/signup';
+  static const String signUpChoose = '/signupChoose';
+  static const String rider = '/rider';
 }
 
 Route<dynamic> generateRoute(RouteSettings settings) {
@@ -17,7 +23,27 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     // case RouteNames.login:
     //   return _createRouteAnimation(const AppStartPage(), animationType: 'LR');
     case RouteNames.login:
-      return MaterialPageRoute(builder: (context) => const LoginPage());
+      return _createRouteAnimation(const LoginPage(), animationType: 'LR');
+    case RouteNames.signUp:
+      if (settings.arguments != null) {
+        final args = settings.arguments as Map<String, dynamic>;
+        final bool isRider = args['isRider'];
+        return _createRouteAnimation(
+          SignupPage(isRider: isRider),
+          animationType: 'LR',
+        );
+      }
+      return _createRouteAnimation(const SignupPage(), animationType: 'LR');
+    case RouteNames.signUpChoose:
+      return _createRouteAnimation(
+        const SignupChoosePage(),
+        animationType: 'LR',
+      );
+    case RouteNames.rider:
+      return _createRouteAnimation(
+        const RiderSignupPage(),
+        animationType: 'LR',
+      );
     default:
       return MaterialPageRoute(builder: (context) => const AppStartPage());
   }
