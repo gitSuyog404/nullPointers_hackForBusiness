@@ -10,11 +10,13 @@ import {
 } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage.tsx";
 import { MantineProvider } from "@mantine/core";
+import HowItWorksPage from "./pages/HowItWorks/HowItWorksPage.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route path="" element={<HomePage />} />
+      <Route path="/how-it-works" element={<HowItWorksPage />} />
     </Route>
   )
 );
