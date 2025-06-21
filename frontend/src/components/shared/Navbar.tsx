@@ -94,18 +94,20 @@ export const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
-            <motion.div
+            {/* <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="flex items-center"
-            >
+            > */}
+            <div className="flex items-center">
               {/* <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-lg">L</span>
-              </div> */}
+                </div> */}
               <Link to="" className="ml-2 text-xl font-bold text-gray-800">
                 Food Rescue
               </Link>
-            </motion.div>
+            </div>
+            {/* </motion.div> */}
           </div>
 
           <div className="hidden md:block">

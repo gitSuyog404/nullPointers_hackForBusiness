@@ -13,6 +13,10 @@ import { MantineProvider } from "@mantine/core";
 import HowItWorksPage from "./pages/HowItWorks/HowItWorksPage.tsx";
 import AboutPage from "./pages/AboutPage/AboutPage.tsx";
 import ContactPage from "./pages/ContactPage/ContactPage.tsx";
+import RegisterPage from "./pages/RegisterPage/RegisterPage.tsx";
+import LoginPage from "./pages/LoginPage/LoginPage.tsx";
+import { Provider } from "react-redux";
+import { store } from "./redux/store.ts";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,14 +25,18 @@ const router = createBrowserRouter(
       <Route path="/how-it-works" element={<HowItWorksPage />} />
       <Route path="/aboutus" element={<AboutPage />} />
       <Route path="/contactus" element={<ContactPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route path="/login" element={<LoginPage />} />
     </Route>
   )
 );
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <MantineProvider>
-      <RouterProvider router={router} />
-    </MantineProvider>
+    <Provider store={store}>
+      <MantineProvider>
+        <RouterProvider router={router} />
+      </MantineProvider>
+    </Provider>
   </StrictMode>
 );

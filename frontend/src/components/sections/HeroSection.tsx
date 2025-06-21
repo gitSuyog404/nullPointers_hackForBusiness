@@ -12,7 +12,7 @@ const bannerData: CarouselSlide[] = [
     title: "Restaurants: Turn Surplus into Impact",
     description:
       "List your unsold food items and help feed communities while reducing waste",
-    image: "/fr2.jpg",
+    image: "/fr3.jpg",
     bgColor: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
     cta: "List Food Now",
     ctaLink: "/restaurant/register",
@@ -124,7 +124,7 @@ const HeroSection: React.FC = () => {
                 className="w-full sm:w-auto"
               >
                 <Link
-                  to="/get-started"
+                  to="/login"
                   className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-6 sm:px-8 py-3 text-base sm:text-lg font-semibold rounded-xl shadow-lg transition-all duration-200 inline-block w-full sm:w-auto text-center min-w-[160px] sm:min-w-[180px]"
                 >
                   Get Started Today
