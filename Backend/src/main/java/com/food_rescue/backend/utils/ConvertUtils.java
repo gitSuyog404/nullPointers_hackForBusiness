@@ -22,7 +22,7 @@ public class ConvertUtils {
         convertedDTO.setPassword(users.getPassword());
         convertedDTO.setPhone(users.getPhone());
         convertedDTO.setRole(String.valueOf(users.getRole()));
-        convertedDTO.setActive(users.isActive());
+        convertedDTO.setStatus(users.isStatus());
         return convertedDTO;
     }
 
@@ -49,7 +49,7 @@ public class ConvertUtils {
         restaurantDTO.setAddress(restaurant.getAddress());
         restaurantDTO.setRegistrationNumber(restaurant.getRegistrationNumber());
         restaurantDTO.setRole(restaurant.getRole() != null ? restaurant.getRole().name() : null);
-        restaurantDTO.setActive(restaurant.isActive());
+        restaurantDTO.setStatus(restaurantDTO.isStatus());
         return restaurantDTO;
     }
 
@@ -100,7 +100,7 @@ public class ConvertUtils {
         dto.setVehicleNumber(rider.getVehicleNumber());
         dto.setLicenseNumber(rider.getLicenseNumber());
         dto.setRole(rider.getRole() != null ? rider.getRole().name() : null);
-        dto.setActive(rider.isActive());
+        dto.setStatus(rider.isStatus());
         return dto;
     }
 
@@ -130,7 +130,7 @@ public class ConvertUtils {
         dto.setPhone(customer.getPhone());
         dto.setAddress(customer.getAddress());
         dto.setRole(customer.getRole() != null ? customer.getRole().name() : null);
-        dto.setActive(customer.isActive());
+        dto.setStatus(customer.isStatus());
         return dto;
     }
 

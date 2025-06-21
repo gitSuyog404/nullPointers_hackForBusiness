@@ -12,5 +12,5 @@ public class RestaurantDTO {
     private String address;
     private String registrationNumber;
     private String role;
-    private boolean active;
+    private boolean status = true;
 }

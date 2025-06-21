@@ -1,6 +1,8 @@
 package com.food_rescue.backend.entity;
 
 import com.food_rescue.backend.enums.Roles;
+import com.food_rescue.backend.enums.UserStatus;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -20,5 +22,6 @@ public class Users {
     @Enumerated(EnumType.STRING)
     private Roles role;
 
-    private boolean active;
+    @Column(nullable = false)
+    private boolean status = true;
 }

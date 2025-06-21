@@ -1,0 +1,25 @@
+package com.food_rescue.backend.service.impl;
+
+import com.food_rescue.backend.dto.LoginDTO;
+import com.food_rescue.backend.dto.ResponseDTO;
+import com.food_rescue.backend.dto.UsersDTO;
+import com.food_rescue.backend.entity.Users;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
+
+import java.util.List;
+
+public interface IUser {
+    List<UsersDTO> getAllUsers();
+    UsersDTO getUserById(Long id);
+    boolean createUser(UsersDTO userDTO);
+    //    boolean createFirstUser(UserDTO userDTO, Role role, Gender gender, BranchInfo branchInfo);
+    boolean updateUser(UsersDTO userDTO);
+    boolean deleteUser(Long id);
+    boolean setUserStatus(Long id);
+    boolean registerUser(UsersDTO usersDTO);
+    //    void changePassword(Long id, String oldPassword, String newPassword);
+//    void changePasswordByAdmin(Long id, String newPassword);
+//    void setUserStatus(Long id);
+//    ResponseDTO verifyUser(LoginDTO loginDTO);
+//    void changePassword(String oldPassword, String newPassword);
+}

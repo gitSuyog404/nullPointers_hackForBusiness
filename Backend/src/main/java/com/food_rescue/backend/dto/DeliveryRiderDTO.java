@@ -12,5 +12,5 @@ public class DeliveryRiderDTO {
     private String vehicleNumber;
     private String licenseNumber;
     private String role;
-    private boolean active;
+    private boolean status = true;
 }
