@@ -9,6 +9,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage.tsx";
+import { MantineProvider } from "@mantine/core";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -20,6 +21,8 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <MantineProvider>
+      <RouterProvider router={router} />
+    </MantineProvider>
   </StrictMode>
 );
