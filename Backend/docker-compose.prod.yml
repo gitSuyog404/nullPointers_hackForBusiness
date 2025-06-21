@@ -35,7 +35,7 @@ services:
     image: mysql:8.0
     container_name: mysql-db
     ports:
-      - "127.0.0.1:3306:3306"  # Expose MySQL only locally for security
+      - "127.0.0.1:3307:3306"  # Expose MySQL only locally for security
     environment:
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD:-grishshrestha}
       - MYSQL_DATABASE=food_rescue
