@@ -10,7 +10,6 @@ import '../wiidgets/clickable_message.dart';
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
-
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
@@ -63,8 +62,12 @@ class _LoginPageState extends State<LoginPage> {
                   text: "Don't have an account? ",
                 ),
                 Button(
-                  onPressed: () {},
-                  title:'Log In',
+                  onPressed: () {
+                    navigation.currentState?.pushReplacementNamed(
+                      RouteNames.customerHomepage,
+                    );
+                  },
+                  title: 'Log In',
                 ),
               ],
             ),

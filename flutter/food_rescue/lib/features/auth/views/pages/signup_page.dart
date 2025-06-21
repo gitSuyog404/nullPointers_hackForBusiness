@@ -3,6 +3,7 @@ import 'package:food_rescue/features/auth/views/wiidgets/clickable_message.dart'
 import 'package:food_rescue/features/auth/views/wiidgets/email_textfield.dart';
 import 'package:food_rescue/features/auth/views/wiidgets/full_name_textfield.dart';
 import 'package:food_rescue/features/auth/views/wiidgets/password_textfield.dart';
+import 'package:food_rescue/features/auth/views/wiidgets/phone_number_textfield.dart';
 
 import '../../../../router/router.dart';
 import '../wiidgets/button.dart';
@@ -18,6 +19,7 @@ class SignupPage extends StatefulWidget {
 class _SignupPageState extends State<SignupPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _fullnameController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
@@ -48,6 +50,8 @@ class _SignupPageState extends State<SignupPage> {
                 SizedBox(height: size.height * 0.1),
                 FullNameTextfield(controller: _fullnameController),
                 SizedBox(height: 30),
+                PhoneNumberTextfield(controller: _phoneNumberController),
+                SizedBox(height: 30),
                 EmailTextfield(controller: _emailController),
                 SizedBox(height: 30),
                 PasswordTextField(controller: _passwordController),
@@ -56,8 +60,7 @@ class _SignupPageState extends State<SignupPage> {
                   controller: _confirmPasswordController,
                   isConfirmPassword: true,
                 ),
-                SizedBox(height: 30),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.07),
+                SizedBox(height: 25),
                 ClickableMessage(
                   theme: theme,
                   ontap: () {
@@ -72,11 +75,13 @@ class _SignupPageState extends State<SignupPage> {
                   alignment: Alignment.center,
                   child: Button(
                     onPressed: () {
-                      if (widget.isRider) {
-                        navigation.currentState?.pushNamed(RouteNames.rider);
-                      }
+                      // if (widget.isRider) {
+                      //   navigation.currentState?.pushNamed(RouteNames.rider);
+                      // }
                     },
-                    title: widget.isRider ? 'Next' : 'Sign Up',
+                    title:
+                        //  widget.isRider ? 'Next' :
+                        'Sign Up',
                   ),
                 ),
               ],

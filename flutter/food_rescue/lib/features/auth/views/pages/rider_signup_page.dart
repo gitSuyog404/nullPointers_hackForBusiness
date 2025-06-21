@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:food_rescue/features/auth/views/wiidgets/button.dart';
 import 'package:food_rescue/router/router.dart';
 
+import '../../../../core/services/image_picker_service.dart';
+
 class RiderSignupPage extends StatefulWidget {
   const RiderSignupPage({super.key});
 
@@ -44,23 +46,39 @@ class _RiderSignupPageState extends State<RiderSignupPage> {
                 ),
               ),
               SizedBox(height: size.height * 0.02),
-              Container(
-                width: size.width / 2.5,
-                height: size.height * 0.17,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: theme.colorScheme.onPrimary,
-                    width: 1,
+              GestureDetector(
+                onTap: () async {
+                  final image = await ImagePickerService().pickImage(
+                    fromCamera: false,
+                  );
+
+                  if (image != null) {
+                    // Do something with the File
+                  } else {
+                    // User cancelled or error
+                  }
+                },
+                child: Container(
+                  width: size.width / 2.5,
+                  height: size.height * 0.17,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: theme.colorScheme.onPrimary,
+                      width: 1,
+                    ),
+                    color: theme.colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(8.0),
                   ),
-                  color: theme.colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Icon(Icons.cloud_upload_outlined, size: size.height * 0.1),
-                    Text('Select File'),
-                  ],
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Icon(
+                        Icons.cloud_upload_outlined,
+                        size: size.height * 0.1,
+                      ),
+                      Text('Select File'),
+                    ],
+                  ),
                 ),
               ),
               SizedBox(height: size.height * 0.34),
