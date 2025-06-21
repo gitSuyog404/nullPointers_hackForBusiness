@@ -43,7 +43,6 @@ const Carousel: React.FC<CarouselProps> = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
 
-  // Auto-play functionality
   useEffect(() => {
     if (!autoPlay) return;
 

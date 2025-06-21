@@ -1,5 +1,5 @@
 import { apiSlice } from "./apiSlice";
-import { USER_URL } from "../../utils/constants";
+import { BASE_URL, USER_URL } from "../../utils/constants";
 import type { User } from "./authSlice";
 
 // Define role enum
@@ -17,17 +17,21 @@ export interface LoginRequest {
   password: string;
 }
 
-export interface SignUpRequest {
+export interface CustomerSignUpRequest {
   name: string;
   email: string;
   password: string;
   phone: string;
-  address?: string;
-  registrationNumber?: string;
+  address: string;
 }
 
-export interface SignUpRequestWithRole extends SignUpRequest {
-  role: Roles;
+export interface RestaurantSignUpRequest {
+  name: string;
+  email: string;
+  password: string;
+  phone: string;
+  address: string;
+  registrationNumber: string;
 }
 
 export interface AuthResponse {
@@ -65,9 +69,17 @@ const usersApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
-    signUp: builder.mutation<AuthResponse, SignUpRequestWithRole>({
-      query: ({ role, ...data }) => ({
-        url: `${USER_URL}/create?role=${role}`,
+    customerSignUp: builder.mutation<AuthResponse, CustomerSignUpRequest>({
+      query: (data) => ({
+        url: `${BASE_URL}/register/customer`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["User"],
+    }),
+    restaurantSignUp: builder.mutation<AuthResponse, RestaurantSignUpRequest>({
+      query: (data) => ({
+        url: `${BASE_URL}/register/restaurant`,
         method: "POST",
         body: data,
       }),
@@ -119,7 +131,8 @@ export const {
   useLoginMutation,
   useUserLogoutMutation,
   useUpdateUserProfileMutation,
-  useSignUpMutation,
+  useCustomerSignUpMutation,
+  useRestaurantSignUpMutation,
   useGetUserByIdQuery,
   useUpdateUserMutation,
   useDeleteUserMutation,

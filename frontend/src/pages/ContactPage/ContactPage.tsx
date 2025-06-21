@@ -181,7 +181,7 @@ const ContactPage = () => {
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
+                transition={{ duration: 0.2 }}
                 viewport={{ once: true }}
                 className="h-full"
               >
@@ -201,14 +201,14 @@ const ContactPage = () => {
                     className="space-y-8"
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
                     viewport={{ once: true }}
                   >
                     <motion.div
                       className="grid grid-cols-1 sm:grid-cols-2 gap-6"
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.6 }}
+                      transition={{ duration: 0.5, delay: 0.2 }}
                       viewport={{ once: true }}
                     >
                       <FormInput
@@ -234,7 +234,7 @@ const ContactPage = () => {
                       className="grid grid-cols-1 sm:grid-cols-2 gap-6"
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.8 }}
+                      transition={{ duration: 0.5, delay: 0.2 }}
                       viewport={{ once: true }}
                     >
                       <FormInput
@@ -260,7 +260,7 @@ const ContactPage = () => {
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 1.0 }}
+                      transition={{ duration: 0.5, delay: 0.4 }}
                       viewport={{ once: true }}
                     >
                       <FormTextarea
@@ -279,7 +279,7 @@ const ContactPage = () => {
                       className="flex justify-center pt-4"
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 1.2 }}
+                      transition={{ duration: 0.5, delay: 0.8 }}
                       viewport={{ once: true }}
                     >
                       <motion.div
@@ -330,7 +330,7 @@ const ContactPage = () => {
                         key={index}
                         initial={{ opacity: 0, x: 30 }}
                         whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.6, delay: 0.4 + index * 0.2 }}
+                        transition={{ duration: 0.6, delay: 0.2 + index * 0.2 }}
                         viewport={{ once: true }}
                         whileHover={{ x: 10, transition: { duration: 0.2 } }}
                         className="flex items-start gap-4 group cursor-pointer"
@@ -410,7 +410,7 @@ const ContactPage = () => {
                   key={index}
                   variants={itemVariants}
                   whileHover={{ y: -8, scale: 1.02 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.2 }}
                   className="group"
                 >
                   <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full border border-gray-100 group-hover:border-blue-200">

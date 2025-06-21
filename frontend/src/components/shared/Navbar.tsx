@@ -5,8 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { HiHome, HiUser, HiLogout, HiChevronDown } from "react-icons/hi";
-import { FaServicestack } from "react-icons/fa";
-import { MdContactMail } from "react-icons/md";
+import { MdFastfood, MdContactMail } from "react-icons/md";
 import { BsInfoCircleFill } from "react-icons/bs";
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import { useUserLogoutMutation } from "../../redux/slices/userApiSlice";
@@ -22,7 +21,11 @@ interface NavItem {
 const navItems: NavItem[] = [
   { name: "Home", href: "", icon: <HiHome size={20} /> },
   { name: "About", href: "/aboutus", icon: <BsInfoCircleFill size={20} /> },
-  { name: "Services", href: "/services", icon: <FaServicestack size={20} /> },
+  {
+    name: "Food Listing",
+    href: "/food-listing",
+    icon: <MdFastfood size={20} />,
+  },
   { name: "Contact", href: "/contactus", icon: <MdContactMail size={20} /> },
 ];
 
@@ -182,7 +185,6 @@ export const Navbar: React.FC = () => {
 
           <div className="hidden md:block">
             <div className="ml-10 flex items-center space-x-4">
-              {/* Navigation Links */}
               <div className="flex items-baseline space-x-4">
                 {navItems.map((item) => (
                   <motion.div
@@ -201,7 +203,6 @@ export const Navbar: React.FC = () => {
                 ))}
               </div>
 
-              {/* Profile Dropdown */}
               {userInfo ? (
                 <div ref={profileRef} className="relative ml-6">
                   <motion.button
@@ -369,7 +370,6 @@ export const Navbar: React.FC = () => {
                       </motion.div>
                     ))}
 
-                    {/* Mobile Profile Section */}
                     {userInfo ? (
                       <div className="border-t border-gray-200 pt-4 mt-4">
                         <div className="flex items-center space-x-3 px-4 py-3 mb-2">

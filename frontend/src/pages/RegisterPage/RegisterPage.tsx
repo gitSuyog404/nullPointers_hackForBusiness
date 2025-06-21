@@ -5,7 +5,10 @@ import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import FormInput from "../../components/ui/FormInput";
 import FormCheckbox from "../../components/ui/FormCheckbox";
-import { useSignUpMutation, Roles } from "../../redux/slices/userApiSlice";
+import {
+  useCustomerSignUpMutation,
+  useRestaurantSignUpMutation,
+} from "../../redux/slices/userApiSlice";
 import { useAppDispatch } from "../../redux/hooks";
 import { setCredentials } from "../../redux/slices/authSlice";
 
@@ -23,7 +26,10 @@ const RegisterPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const [signUp, { isLoading: isSignUpLoading }] = useSignUpMutation();
+  const [customerSignUp, { isLoading: isCustomerSignUpLoading }] =
+    useCustomerSignUpMutation();
+  const [restaurantSignUp, { isLoading: isRestaurantSignUpLoading }] =
+    useRestaurantSignUpMutation();
 
   const {
     register,
@@ -36,33 +42,40 @@ const RegisterPage = () => {
   });
 
   const isRestaurant = watch("isRestaurant");
+  const isSignUpLoading = isCustomerSignUpLoading || isRestaurantSignUpLoading;
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
       console.log("Registration data:", data);
 
-      const role = data.isRestaurant ? Roles.RESTAURANT : Roles.CUSTOMER;
+      let result;
 
-      const payload = {
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        phone: data.phone,
-        address: data.address,
-        ...(data.isRestaurant && {
-          registrationNumber: data.registrationNumber,
-        }),
-      };
+      if (data.isRestaurant) {
+        // Restaurant signup
+        const restaurantPayload = {
+          name: data.name,
+          email: data.email,
+          password: data.password,
+          phone: data.phone,
+          address: data.address,
+          registrationNumber: data.registrationNumber!,
+        };
 
-      const payloadWithRole = {
-        ...payload,
-        role,
-      };
+        console.log("Restaurant signup payload:", restaurantPayload);
+        result = await restaurantSignUp(restaurantPayload).unwrap();
+      } else {
+        // Customer signup
+        const customerPayload = {
+          name: data.name,
+          email: data.email,
+          password: data.password,
+          phone: data.phone,
+          address: data.address,
+        };
 
-      console.log("PAYLOAD DATA", payload);
-      console.log("ROLE", role);
-      const result = await signUp(payloadWithRole).unwrap();
-      // const result = await signUp(data).unwrap();
+        console.log("Customer signup payload:", customerPayload);
+        result = await customerSignUp(customerPayload).unwrap();
+      }
 
       if (result.user) {
         dispatch(setCredentials(result.user));

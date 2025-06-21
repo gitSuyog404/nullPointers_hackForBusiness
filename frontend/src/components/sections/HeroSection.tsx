@@ -138,7 +138,8 @@ const HeroSection: React.FC = () => {
               >
                 <Link
                   to="/how-it-works"
-                  className="border-2 border-gray-300 text-gray-700 hover:bg-gray-50 px-6 sm:px-8 py-[0.7rem] text-base sm:text-lg font-semibold rounded-xl transition-all duration-200 inline-block w-full sm:w-auto text-center min-w-[160px] sm:min-w-[180px] box-border"
+                  className="border-2 border-blue-500 text-blue-600 hover:bg-blue-50 px-6 sm:px-8 py-[0.7rem] text-base sm:text-lg font-semibold rounded-xl transition-all duration-200 inline-block w-full sm:w-auto text-center min-w-[160px] sm:min-w-[180px] box-border"
+                  // className="border-2 border-blue-500 text-blue-600 hover:bg-blue-50 px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-300 inline-block"
                 >
                   How It Works
                 </Link>

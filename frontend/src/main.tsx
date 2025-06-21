@@ -15,6 +15,8 @@ import AboutPage from "./pages/AboutPage/AboutPage.tsx";
 import ContactPage from "./pages/ContactPage/ContactPage.tsx";
 import RegisterPage from "./pages/RegisterPage/RegisterPage.tsx";
 import LoginPage from "./pages/LoginPage/LoginPage.tsx";
+import FoodListingPage from "./pages/FoodListingPage/FoodListingPage.tsx";
+import FoodOrderPage from "./pages/FoodOrderPage/FoodOrderPage.tsx";
 import { Provider } from "react-redux";
 import { store } from "./redux/store.ts";
 
@@ -24,6 +26,8 @@ const router = createBrowserRouter(
       <Route path="" element={<HomePage />} />
       <Route path="/how-it-works" element={<HowItWorksPage />} />
       <Route path="/aboutus" element={<AboutPage />} />
+      <Route path="/food-listing" element={<FoodListingPage />} />
+      <Route path="/food-order/:id" element={<FoodOrderPage />} />
       <Route path="/contactus" element={<ContactPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/login" element={<LoginPage />} />

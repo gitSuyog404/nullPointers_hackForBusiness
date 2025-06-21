@@ -130,7 +130,7 @@ const AboutPage = () => {
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.6 }}
               viewport={{ once: true }}
               className="h-full flex flex-col"
             >
@@ -400,7 +400,7 @@ const AboutPage = () => {
               >
                 <Link
                   to="/volunteer/register"
-                  className="border-2 border-gray-300 text-gray-700 hover:bg-gray-50 px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-200 inline-block"
+                  className="border-2 border-blue-500 text-blue-600 hover:bg-blue-50  px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-200 inline-block"
                 >
                   Become a Volunteer
                 </Link>
