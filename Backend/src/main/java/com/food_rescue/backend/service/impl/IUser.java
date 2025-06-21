@@ -15,7 +15,7 @@ public interface IUser {
     boolean deleteUser(Long id);
     boolean setUserStatus(Long id);
 //    boolean registerUser(UsersDTO usersDTO);
-    boolean registerUser(RestaurantDTO restaurantDTO, CustomerDTO customerDTO, boolean isRestaurant);
+//    boolean registerUser(RestaurantDTO restaurantDTO, CustomerDTO customerDTO, boolean isRestaurant);
     //    void changePassword(Long id, String oldPassword, String newPassword);
 //    void changePasswordByAdmin(Long id, String newPassword);
 //    void setUserStatus(Long id);

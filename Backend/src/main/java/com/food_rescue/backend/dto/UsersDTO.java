@@ -15,5 +15,4 @@ public class UsersDTO {
     private String password;
     private String role;
     private boolean status = true;
-    private boolean isRestaurant;
 }

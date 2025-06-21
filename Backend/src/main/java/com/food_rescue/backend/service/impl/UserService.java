@@ -23,7 +23,7 @@ public class UserService implements IUser {
     private final RestaurantRepo restaurantRepo;
     private final CustomerRepo customerRepo;
 
-    public UserService(UserRepo userRepo,RestaurantRepo restaurantRepo, CustomerRepo customerRepo) {
+    public UserService(UserRepo userRepo, RestaurantRepo restaurantRepo, CustomerRepo customerRepo) {
         this.userRepo = userRepo;
         this.customerRepo = customerRepo;
         this.restaurantRepo = restaurantRepo;
@@ -32,7 +32,7 @@ public class UserService implements IUser {
     @Override
     public List<UsersDTO> getAllUsers() {
         List<Users> users = userRepo.findAllByOrderByIdDesc();
-        if (users == null){
+        if (users == null) {
             throw new IllegalArgumentException("No users found");
         }
         return ConvertUtils.convertToUsersListDTO(users);
@@ -99,16 +99,16 @@ public class UserService implements IUser {
 
             userRepo.save(existingUser);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
 
     }
 
-    private void updateUserField(Users users, UsersDTO usersDTO){
+    private void updateUserField(Users users, UsersDTO usersDTO) {
         if (usersDTO.getName() != null) users.setName(usersDTO.getName());
         if (usersDTO.getEmail() != null) users.setEmail(usersDTO.getEmail());
-        if (usersDTO.getPhone()!= null) users.setPhone(usersDTO.getPhone());
+        if (usersDTO.getPhone() != null) users.setPhone(usersDTO.getPhone());
         if (users.getRole() != null) users.setRole(users.getRole());
         if (users.isStatus() != users.isStatus()) users.setStatus(users.isStatus());
     }
@@ -122,102 +122,11 @@ public class UserService implements IUser {
     }
 
     @Override
-    public boolean setUserStatus(Long id){
+    public boolean setUserStatus(Long id) {
         Users users = userRepo.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("User not found"));
         users.setStatus(!users.isStatus());
         userRepo.save(users);
         return true;
     }
-
-//    @Override
-//    public boolean registerUser(UsersDTO userDTO){
-//        try {
-//            if (userDTO.getName() != null && userRepo.existsByName(userDTO.getName())) {
-//                throw new IllegalArgumentException("User already exists");
-//            }
-//
-//            if (userDTO.getEmail() != null && userRepo.existsByEmail(userDTO.getEmail())) {
-//                throw new IllegalArgumentException("Email already exists");
-//            }
-//
-//            if (userDTO.getPhone() != null && userRepo.existsByPhone(userDTO.getPhone())) {
-//                throw new IllegalArgumentException("Phone already exists");
-//            }
-//
-//            if (userDTO.isRestaurant()) {
-//                Restaurant restaurant = new Restaurant();
-//                restaurant.setName(userDTO.getName());
-//                restaurant.setEmail(userDTO.getEmail());
-//                restaurant.setPassword(userDTO.getPassword());
-//                restaurant.setPhone(userDTO.getPhone());
-//                restaurant.setRole(Roles.RESTAURANT);
-//                restaurant.setStatus(true);
-//
-//                restaurantRepo.save(restaurant);
-//            } else {
-//                Customer customer = new Customer();
-//                customer.setName(userDTO.getName());
-//                customer.setEmail(userDTO.getEmail());
-//                customer.setPassword(userDTO.getPassword());
-//                customer.setPhone(userDTO.getPhone());
-//                customer.setRole(Roles.CUSTOMER);
-//                customer.setStatus(true);
-//
-//                customerRepo.save(customer);
-//            }
-//            return true;
-//        } catch (Exception e) {
-////            throw new RuntimeException(e);
-//            return false;
-//        }
-//    }
-
-public boolean registerUser(RestaurantDTO restaurantDTO, CustomerDTO customerDTO, boolean isRestaurant) {
-    try {
-        if (restaurantDTO != null && isRestaurant) {
-            // Validate restaurant data
-            if (userRepo.existsByEmail(restaurantDTO.getEmail())) {
-                throw new IllegalArgumentException("Email already exists");
-            }
-            if (userRepo.existsByPhone(restaurantDTO.getPhone())) {
-                throw new IllegalArgumentException("Phone already exists");
-            }
-
-            Restaurant restaurant = new Restaurant();
-            restaurant.setName(restaurantDTO.getName());
-            restaurant.setEmail(restaurantDTO.getEmail());
-            restaurant.setPassword(restaurantDTO.getPassword());
-            restaurant.setPhone(restaurantDTO.getPhone());
-            restaurant.setAddress(restaurantDTO.getAddress());
-            restaurant.setRegistrationNumber(restaurantDTO.getRegistrationNumber());
-            restaurant.setRole(Roles.RESTAURANT);
-            restaurant.setStatus(true);
-
-            restaurantRepo.save(restaurant);
-        } else if (customerDTO != null && !isRestaurant) {
-            // Validate customer data
-            if (userRepo.existsByEmail(customerDTO.getEmail())) {
-                throw new IllegalArgumentException("Email already exists");
-            }
-            if (userRepo.existsByPhone(customerDTO.getPhone())) {
-                throw new IllegalArgumentException("Phone already exists");
-            }
-
-            Customer customer = new Customer();
-            customer.setName(customerDTO.getName());
-            customer.setEmail(customerDTO.getEmail());
-            customer.setPassword(customerDTO.getPassword());
-            customer.setPhone(customerDTO.getPhone());
-            customer.setAddress(customerDTO.getAddress());
-            customer.setRole(Roles.CUSTOMER);
-            customer.setStatus(true);
-
-            customerRepo.save(customer);
-        }
-        return true;
-    } catch (Exception e) {
-        return false;
-    }
-}
 }
