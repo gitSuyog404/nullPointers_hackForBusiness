@@ -126,12 +126,13 @@ const AboutPage = () => {
 
       <section className="py-16 sm:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
+              className="h-full flex flex-col"
             >
               <div className="flex items-center gap-3 mb-6">
                 <div className="p-3 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-xl">
@@ -211,6 +212,7 @@ const AboutPage = () => {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
+              className="h-full flex flex-col"
             >
               <div className="flex items-center gap-3 mb-6">
                 <div className="p-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl">
@@ -229,12 +231,44 @@ const AboutPage = () => {
                 logistics were challenging.
               </p>
 
-              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
                 That's when our founder realized technology could solve this
                 problem. By creating a platform that connects food surplus with
                 food need, we could scale this simple act of sharing across
                 entire communities.
               </p>
+
+              <div className="space-y-4 mb-8">
+                <div className="flex items-start gap-3">
+                  <HiTrendingUp
+                    className="text-green-500 mt-1 flex-shrink-0"
+                    size={20}
+                  />
+                  <div>
+                    <h4 className="font-semibold text-gray-800 mb-1">
+                      Growing Impact
+                    </h4>
+                    <p className="text-gray-600">
+                      From one restaurant to hundreds of partners across
+                      multiple cities
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <HiGlobeAlt
+                    className="text-blue-500 mt-1 flex-shrink-0"
+                    size={20}
+                  />
+                  <div>
+                    <h4 className="font-semibold text-gray-800 mb-1">
+                      Expanding Reach
+                    </h4>
+                    <p className="text-gray-600">
+                      Building a network that spans communities nationwide
+                    </p>
+                  </div>
+                </div>
+              </div>
 
               <div className="bg-gradient-to-r from-green-50 to-blue-50 p-6 rounded-2xl">
                 <blockquote className="text-lg italic text-gray-700 mb-4">
