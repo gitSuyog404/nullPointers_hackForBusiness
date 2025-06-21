@@ -9,7 +9,7 @@ import type { RootState } from "../store";
 
 const baseQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> =
   fetchBaseQuery({
-    baseUrl: BASE_URL || "https://breezy-carpets-wash.loca.lt",
+    baseUrl: BASE_URL,
     prepareHeaders: (headers, { getState }) => {
       const state = getState() as RootState;
       const token = state.auth.userInfo?.id;

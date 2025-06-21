@@ -31,7 +31,7 @@ const bannerData: CarouselSlide[] = [
     id: 3,
     title: "Communities: Access Fresh Food",
     description: "Find available food resources in your neighborhood",
-    image: "/images/community-food.jpg",
+    image: "/fr5.jpg",
     bgColor: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
     cta: "Find Food",
     ctaLink: "/food/browse",
@@ -95,7 +95,7 @@ const animatedCounterData = [
 ];
 const HeroSection: React.FC = () => {
   return (
-    <section className="relative min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 py-8 sm:py-12 lg:py-16">
+    <section className="relative  bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 py-8 sm:py-12 lg:py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col items-center text-center space-y-8 sm:space-y-12 lg:space-y-16">
           <motion.div
