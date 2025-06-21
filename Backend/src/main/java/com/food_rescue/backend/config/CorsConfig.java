@@ -14,7 +14,7 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // Apply to all endpoints
 //                        .allowedOrigins("*")// Allow your frontend app
-                        .allowedOrigins("http://localhost:8091", "https://meeting.devanasoft.com.np/ng/**","https://meeting.devanasoft.com.np") // Allow your frontend app
+                        .allowedOrigins("http://localhost:5173") // Allow your frontend app
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Allowed HTTP methods
                         .allowedHeaders("*") // Allow all headers
                         .exposedHeaders("Authorization")

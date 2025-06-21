@@ -1,8 +1,14 @@
 package com.food_rescue.backend.service.impl;
 
+import com.food_rescue.backend.dto.CustomerDTO;
+import com.food_rescue.backend.dto.RestaurantDTO;
 import com.food_rescue.backend.dto.UsersDTO;
+import com.food_rescue.backend.entity.Customer;
+import com.food_rescue.backend.entity.Restaurant;
 import com.food_rescue.backend.entity.Users;
 import com.food_rescue.backend.enums.Roles;
+import com.food_rescue.backend.repo.CustomerRepo;
+import com.food_rescue.backend.repo.RestaurantRepo;
 import com.food_rescue.backend.repo.UserRepo;
 import com.food_rescue.backend.utils.ConvertUtils;
 import org.springframework.data.convert.Jsr310Converters;
@@ -14,9 +20,13 @@ import java.util.List;
 @Service
 public class UserService implements IUser {
     private final UserRepo userRepo;
+    private final RestaurantRepo restaurantRepo;
+    private final CustomerRepo customerRepo;
 
-    public UserService(UserRepo userRepo) {
+    public UserService(UserRepo userRepo,RestaurantRepo restaurantRepo, CustomerRepo customerRepo) {
         this.userRepo = userRepo;
+        this.customerRepo = customerRepo;
+        this.restaurantRepo = restaurantRepo;
     }
 
     @Override
@@ -120,35 +130,94 @@ public class UserService implements IUser {
         return true;
     }
 
-    @Override
-    public boolean registerUser(UsersDTO userDTO){
-        try {
-            if (userDTO.getName() != null && userRepo.existsByName(userDTO.getName())) {
-                throw new IllegalArgumentException("User already exists");
-            }
+//    @Override
+//    public boolean registerUser(UsersDTO userDTO){
+//        try {
+//            if (userDTO.getName() != null && userRepo.existsByName(userDTO.getName())) {
+//                throw new IllegalArgumentException("User already exists");
+//            }
+//
+//            if (userDTO.getEmail() != null && userRepo.existsByEmail(userDTO.getEmail())) {
+//                throw new IllegalArgumentException("Email already exists");
+//            }
+//
+//            if (userDTO.getPhone() != null && userRepo.existsByPhone(userDTO.getPhone())) {
+//                throw new IllegalArgumentException("Phone already exists");
+//            }
+//
+//            if (userDTO.isRestaurant()) {
+//                Restaurant restaurant = new Restaurant();
+//                restaurant.setName(userDTO.getName());
+//                restaurant.setEmail(userDTO.getEmail());
+//                restaurant.setPassword(userDTO.getPassword());
+//                restaurant.setPhone(userDTO.getPhone());
+//                restaurant.setRole(Roles.RESTAURANT);
+//                restaurant.setStatus(true);
+//
+//                restaurantRepo.save(restaurant);
+//            } else {
+//                Customer customer = new Customer();
+//                customer.setName(userDTO.getName());
+//                customer.setEmail(userDTO.getEmail());
+//                customer.setPassword(userDTO.getPassword());
+//                customer.setPhone(userDTO.getPhone());
+//                customer.setRole(Roles.CUSTOMER);
+//                customer.setStatus(true);
+//
+//                customerRepo.save(customer);
+//            }
+//            return true;
+//        } catch (Exception e) {
+////            throw new RuntimeException(e);
+//            return false;
+//        }
+//    }
 
-            if (userDTO.getEmail() != null && userRepo.existsByEmail(userDTO.getEmail())) {
+public boolean registerUser(RestaurantDTO restaurantDTO, CustomerDTO customerDTO, boolean isRestaurant) {
+    try {
+        if (restaurantDTO != null && isRestaurant) {
+            // Validate restaurant data
+            if (userRepo.existsByEmail(restaurantDTO.getEmail())) {
                 throw new IllegalArgumentException("Email already exists");
             }
-
-            if (userDTO.getPhone() != null && userRepo.existsByPhone(userDTO.getPhone())) {
+            if (userRepo.existsByPhone(restaurantDTO.getPhone())) {
                 throw new IllegalArgumentException("Phone already exists");
             }
 
-            Users users = new Users();
-            users.setId(userDTO.getId());
-            users.setName(userDTO.getName());
-            users.setEmail(userDTO.getEmail());
-            users.setPassword(userDTO.getPassword());
-            users.setPhone(userDTO.getPhone());
-            users.setRole(Roles.valueOf(userDTO.getRole()));
-//            users.setStatus(userDTO.isStatus());
+            Restaurant restaurant = new Restaurant();
+            restaurant.setName(restaurantDTO.getName());
+            restaurant.setEmail(restaurantDTO.getEmail());
+            restaurant.setPassword(restaurantDTO.getPassword());
+            restaurant.setPhone(restaurantDTO.getPhone());
+            restaurant.setAddress(restaurantDTO.getAddress());
+            restaurant.setRegistrationNumber(restaurantDTO.getRegistrationNumber());
+            restaurant.setRole(Roles.RESTAURANT);
+            restaurant.setStatus(true);
 
-            userRepo.save(users);
-            return true;
-        } catch (Exception e) {
-//            throw new RuntimeException(e);
-            return false;
+            restaurantRepo.save(restaurant);
+        } else if (customerDTO != null && !isRestaurant) {
+            // Validate customer data
+            if (userRepo.existsByEmail(customerDTO.getEmail())) {
+                throw new IllegalArgumentException("Email already exists");
+            }
+            if (userRepo.existsByPhone(customerDTO.getPhone())) {
+                throw new IllegalArgumentException("Phone already exists");
+            }
+
+            Customer customer = new Customer();
+            customer.setName(customerDTO.getName());
+            customer.setEmail(customerDTO.getEmail());
+            customer.setPassword(customerDTO.getPassword());
+            customer.setPhone(customerDTO.getPhone());
+            customer.setAddress(customerDTO.getAddress());
+            customer.setRole(Roles.CUSTOMER);
+            customer.setStatus(true);
+
+            customerRepo.save(customer);
         }
+        return true;
+    } catch (Exception e) {
+        return false;
     }
+}
 }
