@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../router/router.dart'; // replace with your actual key file
 
-class LoadingDialogService {
+class LoadingService {
   static bool _isDialogOpen = false;
 
-  static void show({String message = 'Requesting...'}) {
+  static void show() {
     if (_isDialogOpen) return;
     _isDialogOpen = true;
 
@@ -13,9 +13,11 @@ class LoadingDialogService {
       context: navigation.currentState!.overlay!.context,
       barrierDismissible: false,
       builder: (_) {
+        final theme = Theme.of(navigation.currentState!.overlay!.context);
         return PopScope(
           canPop: false,
           child: Dialog(
+            backgroundColor: theme.primaryColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -24,10 +26,13 @@ class LoadingDialogService {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const CircularProgressIndicator(),
+                  CircularProgressIndicator(color: theme.colorScheme.onPrimary),
                   const SizedBox(width: 20),
                   Flexible(
-                    child: Text(message, style: const TextStyle(fontSize: 16)),
+                    child: Text(
+                      'Requesting',
+                      style: const TextStyle(fontSize: 16),
+                    ),
                   ),
                 ],
               ),
