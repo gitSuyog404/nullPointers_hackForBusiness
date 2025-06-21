@@ -11,12 +11,16 @@ import {
 import HomePage from "./pages/HomePage/HomePage.tsx";
 import { MantineProvider } from "@mantine/core";
 import HowItWorksPage from "./pages/HowItWorks/HowItWorksPage.tsx";
+import AboutPage from "./pages/AboutPage/AboutPage.tsx";
+import ContactPage from "./pages/ContactPage/ContactPage.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route path="" element={<HomePage />} />
       <Route path="/how-it-works" element={<HowItWorksPage />} />
+      <Route path="/aboutus" element={<AboutPage />} />
+      <Route path="/contactus" element={<ContactPage />} />
     </Route>
   )
 );

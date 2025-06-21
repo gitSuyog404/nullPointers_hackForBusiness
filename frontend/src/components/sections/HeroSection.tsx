@@ -146,7 +146,6 @@ const HeroSection: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Carousel Section - Bigger Dimensions */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -165,7 +164,6 @@ const HeroSection: React.FC = () => {
             />
           </motion.div>
 
-          {/* Impact Stats Preview */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 mt-8 sm:mt-12 md:mt-16 w-full max-w-4xl px-4 sm:px-0">
             {animatedCounterData.map((item, index) => (
               <AnimatedCounter

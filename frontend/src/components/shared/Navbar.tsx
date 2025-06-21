@@ -17,9 +17,9 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { name: "Home", href: "", icon: <HiHome size={20} /> },
-  { name: "About", href: "/about", icon: <BsInfoCircleFill size={20} /> },
+  { name: "About", href: "/aboutus", icon: <BsInfoCircleFill size={20} /> },
   { name: "Services", href: "/services", icon: <FaServicestack size={20} /> },
-  { name: "Contact", href: "/contact", icon: <MdContactMail size={20} /> },
+  { name: "Contact", href: "/contactus", icon: <MdContactMail size={20} /> },
 ];
 
 export const Navbar: React.FC = () => {
@@ -29,21 +29,34 @@ export const Navbar: React.FC = () => {
     setIsOpen(!isOpen);
   };
 
-  const menuVariants = {
+  const drawerVariants = {
     closed: {
-      opacity: 0,
-      height: 0,
+      x: "100%",
       transition: {
-        duration: 0.3,
+        duration: 0.4,
         ease: "easeInOut" as const,
       },
     },
     open: {
-      opacity: 1,
-      height: "auto",
+      x: 0,
+      transition: {
+        duration: 0.4,
+        ease: "easeInOut" as const,
+      },
+    },
+  };
+
+  const backdropVariants = {
+    closed: {
+      opacity: 0,
       transition: {
         duration: 0.3,
-        ease: "easeInOut" as const,
+      },
+    },
+    open: {
+      opacity: 1,
+      transition: {
+        duration: 0.3,
       },
     },
   };
@@ -89,9 +102,9 @@ export const Navbar: React.FC = () => {
               {/* <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-lg">L</span>
               </div> */}
-              <span className="ml-2 text-xl font-bold text-gray-800">
+              <Link to="" className="ml-2 text-xl font-bold text-gray-800">
                 Food Rescue
-              </span>
+              </Link>
             </motion.div>
           </div>
 
@@ -120,7 +133,7 @@ export const Navbar: React.FC = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={toggleMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-200"
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100 focus:outline-none focus:ring-0 focus:ring-inset  transition-colors duration-200"
               aria-expanded="false"
             >
               <span className="sr-only">Open main menu</span>
@@ -155,36 +168,74 @@ export const Navbar: React.FC = () => {
 
         <AnimatePresence>
           {isOpen && (
-            <motion.div
-              initial="closed"
-              animate="open"
-              exit="closed"
-              variants={menuVariants}
-              className="md:hidden overflow-hidden"
-            >
+            <>
               <motion.div
-                variants={containerVariants}
-                className="px-2 pt-2 pb-3 space-y-1 bg-gray-50 rounded-lg mt-2 mb-4"
+                initial="closed"
+                animate="open"
+                exit="closed"
+                variants={backdropVariants}
+                className="fixed inset-0 bg-black/50 z-40 md:hidden"
+                onClick={() => setIsOpen(false)}
+              />
+
+              <motion.div
+                initial="closed"
+                animate="open"
+                exit="closed"
+                variants={drawerVariants}
+                className="fixed top-0 right-0 h-full w-80 bg-white shadow-2xl z-50 md:hidden"
               >
-                {navItems.map((item) => (
-                  <motion.div
-                    key={item.name}
-                    variants={itemVariants}
-                    whileHover={{ scale: 1.02, x: 5 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <Link
-                      to={item.href}
+                <div className="flex flex-col h-full">
+                  <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                    <h2 className="text-xl font-bold text-gray-800">Menu</h2>
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
                       onClick={() => setIsOpen(false)}
-                      className="flex items-center space-x-3 text-gray-700 hover:text-blue-600 hover:bg-white px-3 py-2 rounded-md text-base font-medium transition-all duration-200"
+                      className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200"
                     >
-                      {item.icon}
-                      <span>{item.name}</span>
-                    </Link>
+                      <div className="w-6 h-6 flex flex-col justify-center items-center">
+                        <motion.span
+                          className="block h-0.5 w-6 bg-gray-600"
+                          animate={{ rotate: 45, y: 0 }}
+                          transition={{ duration: 0.3, ease: "easeInOut" }}
+                        />
+                        <motion.span
+                          className="block h-0.5 w-6 bg-gray-600"
+                          animate={{ rotate: -45, y: -2 }}
+                          transition={{ duration: 0.3, ease: "easeInOut" }}
+                        />
+                      </div>
+                    </motion.button>
+                  </div>
+
+                  <motion.div
+                    variants={containerVariants}
+                    initial="closed"
+                    animate="open"
+                    className="flex-1 px-6 py-4 space-y-2"
+                  >
+                    {navItems.map((item) => (
+                      <motion.div
+                        key={item.name}
+                        variants={itemVariants}
+                        whileHover={{ scale: 1.02, x: 5 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <Link
+                          to={item.href}
+                          onClick={() => setIsOpen(false)}
+                          className="flex items-center space-x-3 text-gray-700 hover:text-blue-600 hover:bg-gray-50 px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 w-full"
+                        >
+                          {item.icon}
+                          <span>{item.name}</span>
+                        </Link>
+                      </motion.div>
+                    ))}
                   </motion.div>
-                ))}
+                </div>
               </motion.div>
-            </motion.div>
+            </>
           )}
         </AnimatePresence>
       </div>
