@@ -22,7 +22,7 @@ const bannerData: CarouselSlide[] = [
     title: "Volunteers: Be a Food Hero",
     description:
       "Collect surplus food and distribute it to those who need it most",
-    image: "/images/volunteers.jpg",
+    image: "/fr1.jpg",
     bgColor: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
     cta: "Start Volunteering",
     ctaLink: "/volunteer/register",

@@ -17,7 +17,6 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  // RTK Query mutation hook
   const [login, { isLoading: isLoginLoading }] = useLoginMutation();
 
   const {
@@ -33,10 +32,8 @@ const LoginPage = () => {
     try {
       console.log("Login data:", data);
 
-      // Call the login mutation
       const result = await login(data).unwrap();
 
-      // If login is successful, store user data and redirect
       if (result.user) {
         dispatch(setCredentials(result.user));
 
@@ -49,12 +46,10 @@ const LoginPage = () => {
           draggable: true,
         });
 
-        // Reset form and navigate to dashboard or home
         reset();
-        navigate("/"); // or navigate to dashboard
+        navigate("/");
       }
     } catch (error: any) {
-      // Handle login errors
       console.error("Login error:", error);
 
       const errorMessage =
@@ -129,17 +124,49 @@ const LoginPage = () => {
             >
               <motion.div
                 variants={itemVariants}
-                className="bg-white rounded-2xl p-8 lg:p-12"
+                className="bg-white rounded-2xl p-8 lg:p-12 border border-gray-200"
               >
-                <motion.h2
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                  viewport={{ once: true }}
-                  className="text-2xl sm:text-3xl font-bold text-gray-800 mb-8 text-center"
-                >
-                  Sign In
-                </motion.h2>
+                <div className="text-center mb-8">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                    viewport={{ once: true }}
+                    className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mb-4"
+                  >
+                    <svg
+                      className="w-8 h-8 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+                      />
+                    </svg>
+                  </motion.div>
+                  <motion.h2
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
+                    viewport={{ once: true }}
+                    className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2"
+                  >
+                    Sign In
+                  </motion.h2>
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
+                    viewport={{ once: true }}
+                    className="text-gray-600"
+                  >
+                    Welcome back to Food Rescue
+                  </motion.p>
+                </div>
 
                 <motion.form
                   onSubmit={handleSubmit(onSubmit)}
@@ -197,15 +224,14 @@ const LoginPage = () => {
                       Forgot your password?
                     </Link>
                   </motion.div>
-
-                  {/* <motion.div
+                  <div className="flex justify-center pt-6">
+                    {/* <motion.div
                     className="flex justify-center pt-6"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 1.2 }}
                     viewport={{ once: true }}
                   > */}
-                  <div className="flex items-center justify-start">
                     {/* <motion.div
                       whileHover={{ scale: 1.05, y: -2 }}
                       whileTap={{ scale: 0.95 }}
@@ -218,13 +244,14 @@ const LoginPage = () => {
                     <button
                       type="submit"
                       disabled={isLoginLoading}
-                      className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-4 px-12 rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 min-w-[200px] w-full shadow-lg hover:shadow-xl"
+                      // className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-4 px-12 rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 min-w-[200px] w-full"
+                      className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-blue-400 disabled:to-purple-400 text-white font-semibold py-4 px-12 rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 cursor-pointer focus:ring-blue-500 focus:ring-offset-2 min-w-[200px] shadow-lg hover:shadow-xl w-full"
                     >
                       {isLoginLoading ? "Signing In..." : "Sign In"}
                     </button>
                     {/* </motion.div> */}
+                    {/* </motion.div> */}
                   </div>
-                  {/* </motion.div> */}
 
                   <motion.div
                     className="text-center pt-6 border-t border-gray-200"

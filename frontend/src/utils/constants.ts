@@ -1,6 +1,8 @@
-export const BASE_URL = import.meta.env.PROD
-  ? "https://breezy-carpets-wash.loca.lt"
-  : "http://localhost:5000/api";
+// export const BASE_URL = import.meta.env.PROD
+//   ? "https://breezy-carpets-wash.loca.lt"
+//   : "http://localhost:5000/api";
+
+export const BASE_URL = "https://odd-moose-grab.loca.l";
 
 export const USER_URL = "/users";
 

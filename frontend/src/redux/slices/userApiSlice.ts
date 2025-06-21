@@ -2,7 +2,6 @@ import { apiSlice } from "./apiSlice";
 import { USER_URL } from "../../utils/constants";
 import type { User } from "./authSlice";
 
-// Define types for API requests and responses
 export interface LoginRequest {
   email: string;
   password: string;
