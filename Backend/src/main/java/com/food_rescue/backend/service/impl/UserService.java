@@ -9,6 +9,7 @@ import com.food_rescue.backend.repo.RestaurantRepo;
 import com.food_rescue.backend.repo.UserRepo;
 import com.food_rescue.backend.utils.ConvertUtils;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -141,23 +142,34 @@ public class UserService implements IUser {
 
     @Override
     public ResponseDTO verifyUser(UsersDTO userDTO) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDTO.getName(), userDTO.getPassword()));
+        Optional<Users> userOptional = userRepo.findByEmail(userDTO.getEmail());
 
-        if (authentication.isAuthenticated()){
-            Optional<Users> users = userRepo.findByName(userDTO.getName());
-            if (users.isPresent()) {
-                Users user = users.get();
-                var getToken = jwtService.generateToken(userDTO.getName());
+        if (!userOptional.isPresent()) {
+            return ResponseDTO.error("User not found");
+        }
+
+        Users user = userOptional.get();
+        userDTO.setName(user.getName());
+
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(user.getName(), userDTO.getPassword())
+            );
+
+            if (authentication.isAuthenticated()) {
+                var getToken = jwtService.generateToken(user.getName());
                 Map<String, Object> detail = new HashMap<>();
                 detail.put("token", getToken);
                 detail.put("userName", user.getName());
+                detail.put("email", user.getEmail());
                 detail.put("role", user.getRole());
                 detail.put("userId", user.getId());
-                return ResponseDTO.success("Log in Success",Map.of("user",detail));
+                return ResponseDTO.success("Login Success", Map.of("user", detail));
             }
-            return ResponseDTO.error("Login Failed");
-        }else {
-            return  ResponseDTO.error("Login Failed");
+        } catch (BadCredentialsException e) {
+            return ResponseDTO.error("Invalid Credentials");
         }
+
+        return ResponseDTO.error("Login Failed");
     }
 }
