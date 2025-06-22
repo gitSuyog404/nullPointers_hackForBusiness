@@ -16,18 +16,6 @@ final class DioService {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
-          if (_isRateLimited &&
-              _retryUntil != null &&
-              DateTime.now().isBefore(_retryUntil!)) {
-            final secondsLeft =
-                _retryUntil!.difference(DateTime.now()).inSeconds;
-            throw DioException(
-              requestOptions: options,
-              error: 'Rate limit exceeded. Please wait $secondsLeft seconds.',
-              type: DioExceptionType.badResponse,
-            ); // Throw instead of returning to prevent request
-          }
-
           final accessToken = authLocalDataSource.getAccessToken();
           options.headers['Authorization'] = accessToken;
           return handler.next(options);

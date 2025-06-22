@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:food_rescue/core/services/food_rescue_toast.dart';
+import 'package:food_rescue/core/services/loading_servce.dart';
 import 'package:food_rescue/features/auth/views/wiidgets/button.dart';
 import 'package:food_rescue/features/homescreen/views/customer/model/food_detail_model.dart';
 import 'package:food_rescue/features/homescreen/views/customer/widgets/rating.dart';
@@ -183,7 +185,6 @@ Future<void> showPlaceOrderDialog(
                 ),
               ],
             ),
-
             const SizedBox(height: 10),
             ValueListenableBuilder(
               valueListenable: quantityNotifier,
@@ -201,7 +202,7 @@ Future<void> showPlaceOrderDialog(
                   child: Button(
                     title: 'Cancel',
                     onPressed: () {
-                      Navigator.of(context).pop(); // Close the dialog
+                      navigation.currentState?.pop(); // Close the dialog
                     },
                   ),
                 ),
@@ -209,9 +210,12 @@ Future<void> showPlaceOrderDialog(
                 Expanded(
                   child: Button(
                     title: 'Order',
-                    onPressed: () {
-                      // Do something
-                      Navigator.of(context).pop();
+                    onPressed: () async {
+                      LoadingService.show();
+                      await Future.delayed(Duration(milliseconds: 1500));
+                      LoadingService.hide();
+                      FoodRescueToast.showSuccess('Order placed successfully');
+                      navigation.currentState?.pop(); // Close the dialog
                     },
                   ),
                 ),

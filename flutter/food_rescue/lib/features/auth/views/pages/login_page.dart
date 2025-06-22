@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_rescue/core/services/food_rescue_toast.dart';
+import 'package:food_rescue/features/auth/view_model/bloc/auth_bloc.dart';
+import 'package:food_rescue/features/auth/view_model/bloc/auth_event.dart';
+import 'package:food_rescue/features/auth/view_model/bloc/auth_states.dart';
 import 'package:food_rescue/features/auth/views/wiidgets/button.dart';
 import 'package:food_rescue/features/auth/views/wiidgets/email_textfield.dart';
 import 'package:food_rescue/features/auth/views/wiidgets/password_textfield.dart';
@@ -24,52 +29,68 @@ class _LoginPageState extends State<LoginPage> {
     final size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: size.height * 0.1),
-                Text(
-                  'Let\'s Sign You In.',
-                  style: theme.textTheme.headlineLarge,
-                ),
-                SizedBox(height: size.height * 0.02),
-                Text(
-                  'Welcome back,\nyou\'ve been missed!',
-                  style: theme.textTheme.bodySmall?.copyWith(fontSize: 24),
-                ),
-                SizedBox(height: size.height * 0.15),
-                EmailTextfield(controller: _emailController),
-                SizedBox(height: 30),
-                PasswordTextField(controller: _passwordController),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: TextButtonComponent(
-                    onPressed: () {},
-                    title: 'Forget Password?',
+        body: BlocListener<AuthBloc, AuthStates>(
+          listener: (context, state) {
+            if (state is UserLoggedInSuccesfully) {
+              navigation.currentState?.pushReplacementNamed(
+                RouteNames.customerHomepage,
+              );
+            } else {
+              FoodRescueToast.showError('Unable to login user');
+            }
+          },
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: size.height * 0.1),
+                  Text(
+                    'Let\'s Sign You In.',
+                    style: theme.textTheme.headlineLarge,
                   ),
-                ),
-                SizedBox(height: size.height * 0.2),
-                ClickableMessage(
-                  theme: theme,
-                  ontap: () {
-                    navigation.currentState?.pushNamed(RouteNames.signUpChoose);
-                  },
-                  buttonText: 'Sign Up',
-                  text: "Don't have an account? ",
-                ),
-                Button(
-                  onPressed: () {
-                    navigation.currentState?.pushReplacementNamed(
-                      RouteNames.customerHomepage,
-                    );
-                  },
-                  title: 'Log In',
-                ),
-              ],
+                  SizedBox(height: size.height * 0.02),
+                  Text(
+                    'Welcome back,\nyou\'ve been missed!',
+                    style: theme.textTheme.bodySmall?.copyWith(fontSize: 24),
+                  ),
+                  SizedBox(height: size.height * 0.15),
+                  EmailTextfield(controller: _emailController),
+                  SizedBox(height: 30),
+                  PasswordTextField(controller: _passwordController),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: TextButtonComponent(
+                      onPressed: () {},
+                      title: 'Forget Password?',
+                    ),
+                  ),
+                  SizedBox(height: size.height * 0.2),
+                  ClickableMessage(
+                    theme: theme,
+                    ontap: () {
+                      navigation.currentState?.pushNamed(
+                        RouteNames.signUpChoose,
+                      );
+                    },
+                    buttonText: 'Sign Up',
+                    text: "Don't have an account? ",
+                  ),
+                  Button(
+                    onPressed: () {
+                      context.read<AuthBloc>().add(
+                        LoginUser(
+                          email: _emailController.text.toString(),
+                          password: _passwordController.text.toString(),
+                        ),
+                      );
+                    },
+                    title: 'Log In',
+                  ),
+                ],
+              ),
             ),
           ),
         ),
