@@ -122,7 +122,7 @@ public class RegisterService {
         deliveryRider.setEmail(deliveryRiderDTO.getEmail());
         deliveryRider.setPhone(deliveryRiderDTO.getPhone());
         deliveryRider.setStatus(true);
-        deliveryRider.setRole(Roles.CUSTOMER);
+        deliveryRider.setRole(Roles.RIDER);
         deliveryRider.setPassword(encoder.encode(deliveryRiderDTO.getPassword()));
         deliveryRider.setLicenseNumber(deliveryRiderDTO.getLicenseNumber());
         deliveryRider.setVehicleNumber(deliveryRiderDTO.getVehicleNumber());
