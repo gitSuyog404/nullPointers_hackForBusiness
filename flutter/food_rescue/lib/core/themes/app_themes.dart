@@ -13,6 +13,15 @@ class AppTheme {
         onPrimary: Color(0xFF000000),
         secondary: Color(0xFF808080),
         surface: Color(0xFFF5F5F5),
+        error: Color(0xFFE91E63),
+      ),
+      appBarTheme: AppBarTheme(backgroundColor: Color(0xFFFFFFFF)),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Color(0xFF000000),
+          padding: EdgeInsets.all(4),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
       ),
       textTheme: const TextTheme(
         headlineLarge: TextStyle(
@@ -56,6 +65,15 @@ class AppTheme {
         onPrimary: Color(0xFFFFFFFF),
         secondary: Color(0xFF808080),
         surface: Color(0xFF1C1C1C),
+        error: Color(0xFFFF80AB),
+      ),
+      appBarTheme: AppBarTheme(backgroundColor: Color(0xFF000000)),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Color(0xFFFFFFFF),
+          padding: EdgeInsets.all(4),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
       ),
       textTheme: const TextTheme(
         headlineLarge: TextStyle(
@@ -68,7 +86,7 @@ class AppTheme {
           fontWeight: FontWeight.w700,
           color: Color(0xFFFFFFFF),
         ),
-         bodyLarge: TextStyle(
+        bodyLarge: TextStyle(
           fontSize: 24,
           fontWeight: FontWeight.w700,
           color: Color(0xFFFFFFFF),

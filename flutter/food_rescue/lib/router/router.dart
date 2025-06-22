@@ -3,10 +3,13 @@ import 'package:food_rescue/features/auth/views/pages/login_page.dart';
 import 'package:food_rescue/features/auth/views/pages/rider_signup_page.dart';
 import 'package:food_rescue/features/auth/views/pages/signup_page.dart';
 import 'package:food_rescue/features/homescreen/views/customer/pages/view_food_page.dart';
+import 'package:food_rescue/features/profile/customer/view/pages/customer_profile_page.dart';
+import 'package:food_rescue/features/settings/views/about_page.dart';
 
 import '../features/app_start/view/app_start_view.dart';
 import '../features/auth/views/pages/signup_choose_page.dart';
 import '../features/homescreen/views/customer/pages/view_food_details_page.dart';
+import '../features/settings/views/settings_page.dart';
 
 final navigation = GlobalKey<NavigatorState>();
 
@@ -18,6 +21,9 @@ class RouteNames {
   static const String rider = '/rider';
   static const String customerHomepage = '/customerHomepage';
   static const String viewFoodDetails = '/viewFoodDetails';
+  static const String customerProfile = '/customerProfile';
+  static const String about = '/about';
+  static const String settings = '/settings';
 }
 
 Route<dynamic> generateRoute(RouteSettings settings) {
@@ -59,6 +65,15 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         ViewFoodDetailsPage(category: category, image: image, tag: tag),
         // animationType: 'LR',
       );
+    case RouteNames.customerProfile:
+      return _createRouteAnimation(
+        const CustomerProfilePage(),
+        animationType: 'LR',
+      );
+    case RouteNames.about:
+      return _createRouteAnimation(const AboutPage(), animationType: 'LR');
+    case RouteNames.settings:
+      return _createRouteAnimation(const SettingsPage(), animationType: 'LR');
     default:
       return MaterialPageRoute(builder: (context) => const AppStartPage());
   }

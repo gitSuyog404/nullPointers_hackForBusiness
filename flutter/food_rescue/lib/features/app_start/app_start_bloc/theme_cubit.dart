@@ -10,21 +10,24 @@ class ThemeCubit extends Cubit<ThemeMode> {
 
   ThemeCubit() : super(ThemeMode.light);
 
-  void getTheme() {
-   final isDarkMode =  appLocalDataSorce.getData(BoxKeyConst.theme);
+  static Future<ThemeMode> getInitialTheme() async {
+    final appLocalDataSource = AppLocalDataSource();
+    final isDarkMode = appLocalDataSource.getData(BoxKeyConst.theme);
 
-    if (isDarkMode == null || isDarkMode) {
-      emit(ThemeMode.dark);
+    if (isDarkMode == null || isDarkMode == true) {
+      return ThemeMode.dark;
     } else {
-      emit(ThemeMode.light);
+      return ThemeMode.light;
     }
   }
 
   void toggleTheme() {
     if (state == ThemeMode.light) {
+      print("Switching to dark mode");
       emit(ThemeMode.dark);
       appLocalDataSorce.saveThemeMode(true);
     } else {
+      print("Switching to  mode");
       emit(ThemeMode.light);
       appLocalDataSorce.saveThemeMode(false);
     }

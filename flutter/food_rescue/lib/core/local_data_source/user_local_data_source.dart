@@ -9,7 +9,7 @@ class UserLocalDataSource extends HiveService {
     await putData(BoxKeyConst.accessToken, accessToken);
   }
 
-  String getUserData() {
+  String getAccessToken() {
     return getData(BoxKeyConst.accessToken) ?? '';
   }
 }

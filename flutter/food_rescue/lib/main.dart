@@ -19,13 +19,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalDataSource appLocalDataSource = AppLocalDataSource();
-    return BlocProvider.value(
-      value: ThemeCubit(),
+    return BlocProvider(
+      create: (context) => ThemeCubit(),
+      // value: ThemeCubit(),
       child: BlocBuilder<ThemeCubit, ThemeMode>(
         builder: (context, themeMode) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            title: 'food_rescue',
+            title: 'food rescue',
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
             themeMode: themeMode,
