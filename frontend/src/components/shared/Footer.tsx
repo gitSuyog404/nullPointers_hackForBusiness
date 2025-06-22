@@ -48,9 +48,21 @@ export const Footer: React.FC = () => {
   return (
     <footer className="bg-gray-900 text-white mt-auto w-full overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
-        {/* Main Footer Content */}
+        <div className="text-center mb-12">
+          <div className="flex items-start justify-start mb-4">
+            {/* <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mr-3">
+              <span className="text-white font-bold text-xl">FR</span>
+            </div> */}
+            <Link
+              to="/"
+              className="text-2xl font-bold text-white hover:text-blue-400 transition-colors duration-200"
+            >
+              Food Rescue
+            </Link>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-          {/* Safety & Guidelines */}
           <div>
             <h4 className="font-semibold text-white mb-4">
               Safety & Guidelines
@@ -99,7 +111,6 @@ export const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Support */}
           <div>
             <h4 className="font-semibold text-white mb-4">Support</h4>
             <ul className="space-y-2">
@@ -146,7 +157,6 @@ export const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Legal */}
           <div>
             <h4 className="font-semibold text-white mb-4">Legal</h4>
             <ul className="space-y-2">
@@ -185,7 +195,6 @@ export const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Company */}
           <div>
             <h4 className="font-semibold text-white mb-4">Company</h4>
             <ul className="space-y-2">
@@ -233,7 +242,6 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        {/* Contact Info */}
         <div className="border-t border-gray-800 pt-8 mb-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 text-center md:text-left">
             <div className="flex items-center justify-center md:justify-start">
@@ -253,7 +261,6 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        {/* Social Links */}
         <div className="flex justify-center flex-wrap gap-4 sm:gap-6 mb-8 px-2">
           {socialLinks.map((social, index) => (
             <a
@@ -269,7 +276,6 @@ export const Footer: React.FC = () => {
           ))}
         </div>
 
-        {/* Copyright */}
         <div className="border-t border-gray-800 pt-6 text-center">
           <p className="text-gray-400 text-sm">
             © {new Date().getFullYear()} FoodRescue Platform. All rights

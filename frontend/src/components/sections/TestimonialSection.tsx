@@ -22,6 +22,7 @@ const testimonials: Testimonial[] = [
     content:
       "Food Rescue has transformed how we handle surplus food. Instead of throwing away perfectly good meals, we're now feeding families in need. It's incredibly fulfilling to know our food is making a difference.",
     rating: 5,
+    image: "/person1.jpeg",
     location: "Downtown Bistro, NYC",
   },
   {
@@ -32,6 +33,7 @@ const testimonials: Testimonial[] = [
     content:
       "Being part of Food Rescue has been one of the most rewarding experiences. Every pickup feels meaningful, knowing that we're preventing waste while helping our community. The platform makes coordination so easy.",
     rating: 5,
+    image: "/person4.jpeg",
     location: "Community Volunteer, San Francisco",
   },
   {
@@ -42,6 +44,7 @@ const testimonials: Testimonial[] = [
     content:
       "The fresh meals we receive through Food Rescue have been a blessing for our community center. Families who visit us now have access to quality food that would have otherwise gone to waste.",
     rating: 5,
+    image: "/person2.jpeg",
     location: "Hope Community Center, Chicago",
   },
   {
@@ -52,6 +55,8 @@ const testimonials: Testimonial[] = [
     content:
       "As a chef, it breaks my heart to see good food wasted. Food Rescue gives us a purpose for our surplus - turning potential waste into hope for families. Our team feels proud to participate.",
     rating: 5,
+
+    image: "/person5.jpeg",
     location: "Mediterranean Kitchen, Austin",
   },
   {
@@ -62,6 +67,7 @@ const testimonials: Testimonial[] = [
     content:
       "Food Rescue showed me how small actions can create big impact. Every weekend, I help collect and distribute food, and seeing the gratitude in people's faces makes it all worthwhile.",
     rating: 5,
+    image: "/person3.jpeg",
     location: "University Student, Boston",
   },
   {
@@ -72,6 +78,7 @@ const testimonials: Testimonial[] = [
     content:
       "The consistent supply of fresh food through Food Rescue has allowed us to provide better meals for our residents. It's amazing how this platform connects generosity with genuine need.",
     rating: 5,
+    image: "/person6.jpeg",
     location: "City Shelter, Seattle",
   },
 ];
@@ -114,32 +121,6 @@ const TestimonialSection: React.FC = () => {
       x: direction < 0 ? 1000 : -1000,
       opacity: 0,
     }),
-  };
-
-  const getTypeColor = (type: string) => {
-    switch (type) {
-      case "restaurant":
-        return "from-orange-500 to-red-500";
-      case "volunteer":
-        return "from-green-500 to-blue-500";
-      case "community":
-        return "from-purple-500 to-pink-500";
-      default:
-        return "from-gray-500 to-gray-600";
-    }
-  };
-
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case "restaurant":
-        return "🍽️";
-      case "volunteer":
-        return "🤝";
-      case "community":
-        return "🏠";
-      default:
-        return "👤";
-    }
   };
 
   return (
@@ -186,13 +167,11 @@ const TestimonialSection: React.FC = () => {
                   <div className="bg-white rounded-2xl p-8 border border-gray-200 h-full flex flex-col shadow-sm">
                     <div className="flex items-start justify-between mb-6">
                       <div className="flex items-center gap-4">
-                        <div
-                          className={`w-16 h-16 bg-gradient-to-r ${getTypeColor(
-                            testimonials[currentIndex].type
-                          )} rounded-2xl flex items-center justify-center text-white text-2xl`}
-                        >
-                          {getTypeIcon(testimonials[currentIndex].type)}
-                        </div>
+                        <img
+                          src={testimonials[currentIndex].image}
+                          alt={testimonials[currentIndex].name}
+                          className="w-16 h-16 rounded-2xl object-cover shadow-lg"
+                        />
                         <div>
                           <h3 className="font-bold text-gray-800 text-xl">
                             {testimonials[currentIndex].name}

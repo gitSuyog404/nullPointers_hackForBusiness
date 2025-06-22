@@ -4,12 +4,18 @@ import type React from "react";
 import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { HiHome, HiUser, HiLogout, HiChevronDown } from "react-icons/hi";
+import {
+  HiHome,
+  HiUser,
+  HiLogout,
+  HiChevronDown,
+  HiChartBar,
+} from "react-icons/hi";
 import { MdFastfood, MdContactMail } from "react-icons/md";
 import { BsInfoCircleFill } from "react-icons/bs";
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import { useUserLogoutMutation } from "../../redux/slices/userApiSlice";
-import { logout } from "../../redux/slices/authSlice";
+import { logout, Roles } from "../../redux/slices/authSlice";
 import { toast } from "react-toastify";
 
 interface NavItem {
@@ -18,7 +24,7 @@ interface NavItem {
   icon: React.ReactNode;
 }
 
-const navItems: NavItem[] = [
+const baseNavItems: NavItem[] = [
   { name: "Home", href: "", icon: <HiHome size={20} /> },
   { name: "About", href: "/aboutus", icon: <BsInfoCircleFill size={20} /> },
   {
@@ -38,6 +44,20 @@ export const Navbar: React.FC = () => {
   const dispatch = useAppDispatch();
   const { userInfo } = useAppSelector((state) => state.auth);
   const [userLogout] = useUserLogoutMutation();
+
+  // Generate navigation items based on user role
+  const navItems: NavItem[] = [
+    ...baseNavItems,
+    ...(userInfo?.role === Roles.ADMIN
+      ? [
+          {
+            name: "Dashboard",
+            href: "/admin/dashboard",
+            icon: <HiChartBar size={20} />,
+          },
+        ]
+      : []),
+  ];
 
   // Close profile dropdown when clicking outside
   useEffect(() => {

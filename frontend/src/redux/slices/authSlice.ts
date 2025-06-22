@@ -1,10 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
+export const Roles = {
+  CUSTOMER: "CUSTOMER",
+  RESTAURANT: "RESTAURANT",
+  RIDER: "RIDER",
+  ADMIN: "ADMIN",
+} as const;
+
+export type RoleType = (typeof Roles)[keyof typeof Roles];
+
 export interface User {
   id: string;
   name: string;
   email: string;
+  role: RoleType;
   isRestaurant: boolean;
   address?: string;
   registrationNumber?: string;

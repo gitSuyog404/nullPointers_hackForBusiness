@@ -40,7 +40,7 @@ const bannerData: CarouselSlide[] = [
     id: 4,
     title: "Together Against Food Waste",
     description: "Join thousands making a difference - one meal at a time",
-    image: "/images/food-waste.jpg",
+    image: "/fr6.jpg",
     bgColor: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
     cta: "Learn More",
     ctaLink: "/about",

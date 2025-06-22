@@ -184,7 +184,6 @@ const HowItWorksPage = () => {
                   </ul>
                 </div>
 
-                {/* Visual - Hidden on small mobile screens, visible on tablets (iPad Air) and up */}
                 <div className="hidden md:flex flex-1 max-w-md lg:max-w-lg">
                   <motion.div
                     whileHover={{ scale: 1.05 }}

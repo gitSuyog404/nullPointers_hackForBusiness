@@ -47,6 +47,7 @@ const RegisterPage = () => {
   const onSubmit = async (data: RegisterFormData) => {
     try {
       console.log("Registration data:", data);
+      console.log("Starting registration process...");
 
       let result;
 
@@ -63,6 +64,7 @@ const RegisterPage = () => {
 
         console.log("Restaurant signup payload:", restaurantPayload);
         result = await restaurantSignUp(restaurantPayload).unwrap();
+        console.log("Restaurant signup result:", result);
       } else {
         // Customer signup
         const customerPayload = {
@@ -75,11 +77,14 @@ const RegisterPage = () => {
 
         console.log("Customer signup payload:", customerPayload);
         result = await customerSignUp(customerPayload).unwrap();
+        console.log("Customer signup result:", result);
       }
 
       if (result.user) {
+        console.log("Registration successful, user found:", result.user);
         dispatch(setCredentials(result.user));
 
+        console.log("Showing success toast...");
         toast.success(
           `Account created successfully! Welcome ${
             data.isRestaurant
@@ -97,7 +102,17 @@ const RegisterPage = () => {
         );
 
         reset();
-        navigate("/");
+
+        // Delay navigation to ensure toast is visible
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      } else {
+        // Handle case where result doesn't have user
+        console.log("Registration result:", result);
+        toast.error(
+          "Registration completed but user data is missing. Please try logging in."
+        );
       }
     } catch (error: any) {
       console.error("Registration error:", error);
@@ -202,7 +217,7 @@ const RegisterPage = () => {
                   <motion.h2
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.3 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
                     viewport={{ once: true }}
                     className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2"
                   >
@@ -211,7 +226,7 @@ const RegisterPage = () => {
                   <motion.p
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
                     viewport={{ once: true }}
                     className="text-gray-600"
                   >
@@ -283,7 +298,7 @@ const RegisterPage = () => {
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 1.0 }}
+                    transition={{ duration: 0.5, delay: 0.8 }}
                     viewport={{ once: true }}
                   >
                     <FormInput
@@ -299,7 +314,7 @@ const RegisterPage = () => {
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 1.2 }}
+                    transition={{ duration: 0.5, delay: 0.8 }}
                     viewport={{ once: true }}
                     className="pt-6"
                   >

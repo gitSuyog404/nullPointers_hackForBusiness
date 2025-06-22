@@ -1,16 +1,12 @@
 import { apiSlice } from "./apiSlice";
 import { BASE_URL, USER_URL } from "../../utils/constants";
-import type { User } from "./authSlice";
+import type { User, RoleType } from "./authSlice";
 
-// Define role enum
-export const Roles = {
-  CUSTOMER: "CUSTOMER",
-  RESTAURANT: "RESTAURANT",
-  RIDER: "RIDER",
-  ADMIN: "ADMIN",
-} as const;
-
-export type Roles = (typeof Roles)[keyof typeof Roles];
+// Re-export Roles for backward compatibility
+export { Roles } from "./authSlice";
+export type { RoleType } from "./authSlice";
+// For backward compatibility, also export RoleType as Roles type
+export type Roles = RoleType;
 
 export interface LoginRequest {
   email: string;

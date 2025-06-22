@@ -17,6 +17,13 @@ import RegisterPage from "./pages/RegisterPage/RegisterPage.tsx";
 import LoginPage from "./pages/LoginPage/LoginPage.tsx";
 import FoodListingPage from "./pages/FoodListingPage/FoodListingPage.tsx";
 import FoodOrderPage from "./pages/FoodOrderPage/FoodOrderPage.tsx";
+import DashboardPage from "./pages/DashboardPage/DashboardPage.tsx";
+import AdminRoute from "./utils/AdminRoute.tsx";
+import AdminLayout from "./components/admin/AdminLayout.tsx";
+import RestaurantsPage from "./pages/admin/RestaurantsPage.tsx";
+import FoodItemsPage from "./pages/admin/FoodItemsPage.tsx";
+import VolunteersPage from "./pages/admin/VolunteersPage.tsx";
+import UsersPage from "./pages/admin/UsersPage.tsx";
 import { Provider } from "react-redux";
 import { store } from "./redux/store.ts";
 
@@ -31,6 +38,55 @@ const router = createBrowserRouter(
       <Route path="/contactus" element={<ContactPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/login" element={<LoginPage />} />
+
+      <Route path="dashboard" element={<DashboardPage />} />
+      <Route path="food-items" element={<FoodItemsPage />} />
+      <Route path="/admin" element={<AdminRoute />}>
+        <Route element={<AdminLayout />}>
+          <Route path="restaurants" element={<RestaurantsPage />} />
+          <Route path="volunteers" element={<VolunteersPage />} />
+          <Route
+            path="orders"
+            element={
+              <div className="p-8">
+                <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center">
+                  <h3 className="text-xl font-semibold text-gray-600">
+                    Orders Management
+                  </h3>
+                  <p className="text-gray-500">Coming soon...</p>
+                </div>
+              </div>
+            }
+          />
+          <Route
+            path="pickups"
+            element={
+              <div className="p-8">
+                <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center">
+                  <h3 className="text-xl font-semibold text-gray-600">
+                    Pickups Management
+                  </h3>
+                  <p className="text-gray-500">Coming soon...</p>
+                </div>
+              </div>
+            }
+          />
+          <Route path="users" element={<UsersPage />} />
+          <Route
+            path="settings"
+            element={
+              <div className="p-8">
+                <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center">
+                  <h3 className="text-xl font-semibold text-gray-600">
+                    Settings
+                  </h3>
+                  <p className="text-gray-500">Coming soon...</p>
+                </div>
+              </div>
+            }
+          />
+        </Route>
+      </Route>
     </Route>
   )
 );
