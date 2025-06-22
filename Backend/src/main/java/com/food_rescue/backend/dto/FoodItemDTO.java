@@ -12,6 +12,8 @@ public class FoodItemDTO {
     private int quantity;
     private double price;
     private boolean available;
+    private LocalDateTime postingTime;
     private LocalDateTime expiryTime;
     private Long restaurantId;
+    private String imageUrl;
 }

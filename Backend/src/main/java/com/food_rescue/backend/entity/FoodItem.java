@@ -18,8 +18,10 @@ public class FoodItem {
     private String description;
     private int quantity;
     private double price;
-    private boolean available;
+    private boolean available = true;
+    private LocalDateTime postingTime;
     private LocalDateTime expiryTime;
+    private String imageUrl;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
