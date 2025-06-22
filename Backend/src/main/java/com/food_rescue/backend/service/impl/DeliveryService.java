@@ -84,8 +84,6 @@ public class DeliveryService implements IDeliveryRiders {
         dto.setEmail(rider.getEmail());
         dto.setPassword(rider.getPassword());
         dto.setPhone(rider.getPhone());
-        dto.setVehicleNumber(rider.getVehicleNumber());
-        dto.setLicenseNumber(rider.getLicenseNumber());
         dto.setRole(String.valueOf(rider.getRole()));
         dto.setStatus(rider.isStatus());
         return dto;
@@ -98,8 +96,6 @@ public class DeliveryService implements IDeliveryRiders {
         rider.setEmail(dto.getEmail());
         rider.setPassword(encoder.encode(dto.getPassword()));
         rider.setPhone(dto.getPhone());
-        rider.setVehicleNumber(dto.getVehicleNumber());
-        rider.setLicenseNumber(dto.getLicenseNumber());
         rider.setRole(Roles.RIDER);
         rider.setStatus(true);
         return rider;

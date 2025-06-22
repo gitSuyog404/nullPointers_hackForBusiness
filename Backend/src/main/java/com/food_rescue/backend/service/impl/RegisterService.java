@@ -92,7 +92,6 @@ public class RegisterService {
         }
     }
 
-
     private RestaurantDTO convertRestaurantToDTO(Restaurant restaurant) {
         RestaurantDTO dto = new RestaurantDTO();
         dto.setId(restaurant.getId());
@@ -124,8 +123,6 @@ public class RegisterService {
         deliveryRider.setStatus(true);
         deliveryRider.setRole(Roles.RIDER);
         deliveryRider.setPassword(encoder.encode(deliveryRiderDTO.getPassword()));
-        deliveryRider.setLicenseNumber(deliveryRiderDTO.getLicenseNumber());
-        deliveryRider.setVehicleNumber(deliveryRiderDTO.getVehicleNumber());
 
         return deliveryRider;
     }

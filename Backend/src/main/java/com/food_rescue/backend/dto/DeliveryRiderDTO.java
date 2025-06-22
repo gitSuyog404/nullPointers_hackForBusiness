@@ -9,8 +9,6 @@ public class DeliveryRiderDTO {
     private String email;
     private String password;
     private String phone;
-    private String vehicleNumber;
-    private String licenseNumber;
     private String role;
     private boolean status = true;
 }
