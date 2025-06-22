@@ -1,8 +1,10 @@
 package com.food_rescue.backend.controller;
 
 import com.food_rescue.backend.dto.CustomerDTO;
+import com.food_rescue.backend.dto.DeliveryRiderDTO;
 import com.food_rescue.backend.dto.ResponseDTO;
 import com.food_rescue.backend.dto.RestaurantDTO;
+import com.food_rescue.backend.entity.DeliveryRider;
 import com.food_rescue.backend.enums.Roles;
 import com.food_rescue.backend.repo.CustomerRepo;
 import com.food_rescue.backend.repo.RestaurantRepo;
@@ -43,5 +45,14 @@ public class RegisterController {
             return ResponseEntity.ok(ResponseDTO.success("Restaurant created successfully"));
         }
         return ResponseEntity.badRequest().body(ResponseDTO.error("Restaurant creation failed"));
+    }
+
+    @PostMapping("/rider")
+    public ResponseEntity<ResponseDTO> createDeliveryRider(@RequestBody DeliveryRiderDTO deliveryRiderDTO) {
+        boolean created = registerService.createDelivery(deliveryRiderDTO);
+        if (created) {
+            return ResponseEntity.ok(ResponseDTO.success("Delivery rider created successfully"));
+        }
+        return ResponseEntity.badRequest().body(ResponseDTO.error("Delivery rider creation failed"));
     }
 }
