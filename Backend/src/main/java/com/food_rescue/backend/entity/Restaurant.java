@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Restaurant extends Users {
+public class Restaurant extends User {
     private String address;
     private String registrationNumber;
 

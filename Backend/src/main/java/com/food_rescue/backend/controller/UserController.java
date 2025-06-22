@@ -1,10 +1,7 @@
 package com.food_rescue.backend.controller;
 
-import com.food_rescue.backend.dto.CustomerDTO;
 import com.food_rescue.backend.dto.ResponseDTO;
-import com.food_rescue.backend.dto.RestaurantDTO;
 import com.food_rescue.backend.dto.UsersDTO;
-import com.food_rescue.backend.entity.Users;
 import com.food_rescue.backend.service.impl.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -11,22 +11,22 @@ import java.util.stream.Collectors;
 public class ConvertUtils {
 
     //Users
-    public static UsersDTO convertToUsersDTO(Users users) {
-        if (users == null)  {
+    public static UsersDTO convertToUsersDTO(User user) {
+        if (user == null)  {
             return null;
         }
         UsersDTO convertedDTO = new UsersDTO();
-        convertedDTO.setId(users.getId());
-        convertedDTO.setName(users.getName());
-        convertedDTO.setEmail(users.getEmail());
-        convertedDTO.setPassword(users.getPassword());
-        convertedDTO.setPhone(users.getPhone());
-        convertedDTO.setRole(String.valueOf(users.getRole()));
-        convertedDTO.setStatus(users.isStatus());
+        convertedDTO.setId(user.getId());
+        convertedDTO.setName(user.getName());
+        convertedDTO.setEmail(user.getEmail());
+        convertedDTO.setPassword(user.getPassword());
+        convertedDTO.setPhone(user.getPhone());
+        convertedDTO.setRole(String.valueOf(user.getRole()));
+        convertedDTO.setStatus(user.isStatus());
         return convertedDTO;
     }
 
-    public static List<UsersDTO> convertToUsersListDTO(List<Users> users) {
+    public static List<UsersDTO> convertToUsersListDTO(List<User> users) {
         if (users == null || users.isEmpty()) {
             return List.of();
         }
