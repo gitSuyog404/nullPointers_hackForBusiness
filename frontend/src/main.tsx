@@ -26,6 +26,7 @@ import VolunteersPage from "./pages/admin/VolunteersPage.tsx";
 import UsersPage from "./pages/admin/UsersPage.tsx";
 import OrdersPage from "./pages/admin/OrdersPage.tsx";
 import PickupsPage from "./pages/admin/PickupsPage.tsx";
+import ProfilePage from "./pages/admin/ProfilePage.tsx";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage.tsx";
 import { Provider } from "react-redux";
 import { store } from "./redux/store.ts";
@@ -57,6 +58,7 @@ const router = createBrowserRouter(
           <Route path="orders" element={<OrdersPage />} />
           <Route path="pickups" element={<PickupsPage />} />
           <Route path="users" element={<UsersPage />} />
+          <Route path="settings/profile" element={<ProfilePage />} />
           <Route
             path="settings"
             element={

@@ -7,24 +7,26 @@ import {
   HiEye,
   HiPencil,
   HiTrash,
-  HiClock,
+  HiPhotograph,
 } from "react-icons/hi";
-import { MdFastfood, MdRestaurant, MdLocationOn } from "react-icons/md";
+import { MdFastfood } from "react-icons/md";
 import { useForm } from "react-hook-form";
 import Modal from "../../components/ui/Modal";
 import FormInput from "../../components/ui/FormInput";
-import FormDropdown from "../../components/ui/FormDropdown";
+import FormCheckbox from "../../components/ui/FormCheckbox";
+import {
+  useCreateFoodItemMutation,
+  useGetFoodItemsQuery,
+} from "../../redux/slices/restaurantapiSlice";
+import { toast } from "react-toastify";
 
 interface FoodItemFormData {
   name: string;
-  restaurant: string;
-  category: string;
-  quantity: number;
-  originalPrice: number;
-  discountedPrice: number;
-  expiryTime: string;
-  status: string;
   description: string;
+  price: number;
+  quantity: number;
+  available: boolean;
+  image?: FileList;
 }
 
 const FoodItemsPage: React.FC = () => {
@@ -35,29 +37,30 @@ const FoodItemsPage: React.FC = () => {
     reset,
     formState: { errors },
   } = useForm<FoodItemFormData>();
+  const [createFoodItem, { isLoading: isCreating }] =
+    useCreateFoodItemMutation();
+  const { data: foodItemsData, refetch } = useGetFoodItemsQuery();
 
-  const categoryOptions = [
-    { value: "Pizza", label: "Pizza" },
-    { value: "Indian", label: "Indian" },
-    { value: "Salad", label: "Salad" },
-    { value: "Burger", label: "Burger" },
-    { value: "Pasta", label: "Pasta" },
-    { value: "Wrap", label: "Wrap" },
-    { value: "Seafood", label: "Seafood" },
-    { value: "Healthy", label: "Healthy" },
-    { value: "Breakfast", label: "Breakfast" },
-  ];
+  const onSubmit = async (data: FoodItemFormData) => {
+    try {
+      const formData = {
+        name: data.name,
+        description: data.description,
+        price: Number(data.price),
+        quantity: Number(data.quantity),
+        available: data.available,
+        image: data.image?.[0], // Get the first file from FileList
+      };
 
-  const statusOptions = [
-    { value: "Available", label: "Available" },
-    { value: "Reserved", label: "Reserved" },
-    { value: "Expired", label: "Expired" },
-  ];
-
-  const onSubmit = (data: FoodItemFormData) => {
-    console.log("Food item form submitted:", data);
-    setIsModalOpen(false);
-    reset();
+      await createFoodItem(formData).unwrap();
+      toast.success("Food item created successfully!");
+      setIsModalOpen(false);
+      reset();
+      refetch();
+    } catch (error: any) {
+      console.error("Error creating food item:", error);
+      toast.error(error?.data?.message || "Failed to create food item");
+    }
   };
 
   const closeModal = () => {
@@ -65,20 +68,18 @@ const FoodItemsPage: React.FC = () => {
     reset();
   };
 
-  // Dummy data for food items
-  const foodItems = [
+  // Use real data from API or fallback to dummy data
+  const foodItems = foodItemsData?.data || [
     {
       id: 1,
       name: "Margherita Pizza",
-      restaurant: "Bella Italia",
-      category: "Pizza",
-      quantity: 5,
-      originalPrice: 18.99,
-      discountedPrice: 12.99,
-      expiryTime: "2024-03-20 18:00",
-      status: "Available",
-      location: "Downtown",
       description: "Fresh mozzarella, tomato sauce, basil",
+      price: 18.99,
+      quantity: 5,
+      available: true,
+      image: "/placeholder-food.jpg",
+      createdAt: "2024-03-20T18:00:00Z",
+      updatedAt: "2024-03-20T18:00:00Z",
     },
     {
       id: 2,
@@ -219,19 +220,6 @@ const FoodItemsPage: React.FC = () => {
     },
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "Available":
-        return "bg-green-100 text-green-800";
-      case "Reserved":
-        return "bg-blue-100 text-blue-800";
-      case "Expired":
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
-
   return (
     <div className="p-8">
       <motion.div
@@ -290,7 +278,7 @@ const FoodItemsPage: React.FC = () => {
                       Food Item
                     </th>
                     <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Restaurant
+                      Description
                     </th>
                     <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Price
@@ -299,10 +287,13 @@ const FoodItemsPage: React.FC = () => {
                       Quantity
                     </th>
                     <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Expiry
+                      Availability
                     </th>
                     <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Status
+                      Image
+                    </th>
+                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Created
                     </th>
                     <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Actions
@@ -328,27 +319,19 @@ const FoodItemsPage: React.FC = () => {
                               {item.name}
                             </div>
                             <div className="text-sm text-gray-500">
-                              {item.category}
+                              ID: {item.id}
                             </div>
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900 flex items-center gap-1">
-                          <MdRestaurant className="w-4 h-4 text-gray-400" />
-                          {item.restaurant}
-                        </div>
-                        <div className="text-sm text-gray-500 flex items-center gap-1">
-                          <MdLocationOn className="w-4 h-4 text-gray-400" />
-                          {item.location}
+                      <td className="px-6 py-4">
+                        <div className="text-sm text-gray-900 max-w-xs truncate">
+                          {item.description}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-900">
-                          ${item.discountedPrice}
-                        </div>
-                        <div className="text-sm text-gray-500 line-through">
-                          ${item.originalPrice}
+                          ${item.price}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -358,22 +341,40 @@ const FoodItemsPage: React.FC = () => {
                         <div className="text-sm text-gray-500">Available</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900 flex items-center gap-1">
-                          <HiClock className="w-4 h-4 text-gray-400" />
-                          {item.expiryTime.split(" ")[1]}
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          {item.expiryTime.split(" ")[0]}
-                        </div>
+                        <span
+                          className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                            item.available
+                              ? "bg-green-100 text-green-800"
+                              : "bg-red-100 text-red-800"
+                          }`}
+                        >
+                          {item.available ? "Available" : "Unavailable"}
+                        </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span
-                          className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(
-                            item.status
-                          )}`}
-                        >
-                          {item.status}
-                        </span>
+                        {item.image ? (
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className="w-12 h-12 rounded-lg object-cover"
+                          />
+                        ) : (
+                          <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">
+                            <HiPhotograph className="w-6 h-6 text-gray-400" />
+                          </div>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">
+                          {item.createdAt
+                            ? new Date(item.createdAt).toLocaleDateString()
+                            : "N/A"}
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          {item.createdAt
+                            ? new Date(item.createdAt).toLocaleTimeString()
+                            : "N/A"}
+                        </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div className="flex items-center gap-2">
@@ -433,26 +434,17 @@ const FoodItemsPage: React.FC = () => {
                 required
               />
               <FormInput
-                label="Restaurant"
-                name="restaurant"
-                type="text"
-                placeholder="Enter restaurant name"
+                label="Price ($)"
+                name="price"
+                type="number"
+                placeholder="Enter price"
                 register={register}
-                error={errors.restaurant}
+                error={errors.price}
                 required
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <FormDropdown
-                label="Category"
-                name="category"
-                options={categoryOptions}
-                placeholder="Select category"
-                register={register}
-                error={errors.category}
-                required
-              />
               <FormInput
                 label="Quantity"
                 name="quantity"
@@ -462,46 +454,12 @@ const FoodItemsPage: React.FC = () => {
                 error={errors.quantity}
                 required
               />
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormInput
-                label="Original Price ($)"
-                name="originalPrice"
-                type="number"
-                placeholder="Enter original price"
+                label="Image"
+                name="image"
+                type="file"
                 register={register}
-                error={errors.originalPrice}
-                required
-              />
-              <FormInput
-                label="Discounted Price ($)"
-                name="discountedPrice"
-                type="number"
-                placeholder="Enter discounted price"
-                register={register}
-                error={errors.discountedPrice}
-                required
-              />
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <FormInput
-                label="Expiry Time"
-                name="expiryTime"
-                type="datetime-local"
-                register={register}
-                error={errors.expiryTime}
-                required
-              />
-              <FormDropdown
-                label="Status"
-                name="status"
-                options={statusOptions}
-                placeholder="Select status"
-                register={register}
-                error={errors.status}
-                required
+                error={errors.image}
               />
             </div>
 
@@ -514,6 +472,15 @@ const FoodItemsPage: React.FC = () => {
               error={errors.description}
               required
             />
+
+            <div className="flex items-center">
+              <FormCheckbox
+                label="Available for pickup"
+                name="available"
+                register={register}
+                error={errors.available}
+              />
+            </div>
 
             {/* Modal Footer */}
             <div className="flex gap-3 pt-4">
@@ -528,11 +495,12 @@ const FoodItemsPage: React.FC = () => {
               </motion.button>
               <motion.button
                 type="submit"
+                disabled={isCreating}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex-1 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+                className="flex-1 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Add Food Item
+                {isCreating ? "Creating..." : "Add Food Item"}
               </motion.button>
             </div>
           </form>

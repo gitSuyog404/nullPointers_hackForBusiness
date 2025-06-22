@@ -10,7 +10,7 @@ import type { RootState } from "../store";
 const baseQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> =
   fetchBaseQuery({
     baseUrl: BASE_URL,
-    prepareHeaders: (headers, { getState }) => {
+    prepareHeaders: (headers, { getState, endpoint }) => {
       const state = getState() as RootState;
       const token = state.auth.userInfo?.id;
 
@@ -18,7 +18,15 @@ const baseQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> =
         headers.set("authorization", `Bearer ${token}`);
       }
 
-      headers.set("content-type", "application/json");
+      // Check if the request body is FormData
+      const args = endpoint as any;
+      const isFormData = args?.body instanceof FormData;
+
+      // Don't set content-type for FormData requests - let browser set multipart/form-data
+      if (!isFormData) {
+        headers.set("content-type", "application/json");
+      }
+
       return headers;
     },
   });
@@ -39,6 +47,6 @@ const baseQueryWithReauth: BaseQueryFn<
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["User", "Restaurant", "Food", "Order"],
+  tagTypes: ["User", "Restaurant", "Food", "Order", "FoodItem"],
   endpoints: () => ({}),
 });

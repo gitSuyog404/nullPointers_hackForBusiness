@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { Navigate } from "react-router-dom";
 import {
   HiPlus,
   HiSearch,
@@ -10,6 +11,8 @@ import {
 } from "react-icons/hi";
 import { MdRestaurant, MdLocationOn, MdPhone, MdEmail } from "react-icons/md";
 import { useForm } from "react-hook-form";
+import { useAppSelector } from "../../redux/hooks";
+import { Roles } from "../../redux/slices/authSlice";
 import Modal from "../../components/ui/Modal";
 import FormInput from "../../components/ui/FormInput";
 import FormDropdown from "../../components/ui/FormDropdown";
@@ -24,6 +27,7 @@ interface RestaurantFormData {
 }
 
 const RestaurantsPage: React.FC = () => {
+  const { userInfo } = useAppSelector((state) => state.auth);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const {
     register,
@@ -31,6 +35,11 @@ const RestaurantsPage: React.FC = () => {
     reset,
     formState: { errors },
   } = useForm<RestaurantFormData>();
+
+  // Check if user is admin, if not redirect to dashboard
+  if (userInfo?.role !== Roles.ADMIN) {
+    return <Navigate to="/admin/dashboard" replace />;
+  }
 
   const statusOptions = [
     { value: "Active", label: "Active" },

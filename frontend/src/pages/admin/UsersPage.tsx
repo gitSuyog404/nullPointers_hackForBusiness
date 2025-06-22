@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { Navigate } from "react-router-dom";
 import {
   HiPlus,
   HiSearch,
@@ -12,6 +13,8 @@ import {
 } from "react-icons/hi";
 import { MdLocationOn } from "react-icons/md";
 import { useForm } from "react-hook-form";
+import { useAppSelector } from "../../redux/hooks";
+import { Roles } from "../../redux/slices/authSlice";
 import Modal from "../../components/ui/Modal";
 import FormInput from "../../components/ui/FormInput";
 import FormDropdown from "../../components/ui/FormDropdown";
@@ -25,6 +28,7 @@ interface UserFormData {
 }
 
 const UsersPage: React.FC = () => {
+  const { userInfo } = useAppSelector((state) => state.auth);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const {
     register,
@@ -32,6 +36,10 @@ const UsersPage: React.FC = () => {
     reset,
     formState: { errors },
   } = useForm<UserFormData>();
+
+  if (userInfo?.role !== Roles.ADMIN) {
+    return <Navigate to="/admin/dashboard" replace />;
+  }
 
   const roleOptions = [
     { value: "CUSTOMER", label: "Customer" },
@@ -48,7 +56,7 @@ const UsersPage: React.FC = () => {
 
   const onSubmit = (data: UserFormData) => {
     console.log("Form submitted:", data);
-    // Here you would typically send the data to your API
+
     setIsModalOpen(false);
     reset();
   };
@@ -58,7 +66,6 @@ const UsersPage: React.FC = () => {
     reset();
   };
 
-  // Dummy data for users
   const users = [
     {
       id: 1,

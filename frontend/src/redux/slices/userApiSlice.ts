@@ -66,7 +66,7 @@ const usersApiSlice = apiSlice.injectEndpoints({
     }),
     customerSignUp: builder.mutation<AuthResponse, CustomerSignUpRequest>({
       query: (data) => ({
-        url: `${BASE_URL}/register/customer`,
+        url: `${BASE_URL}/api/register/customer`,
         method: "POST",
         body: data,
       }),
@@ -74,7 +74,7 @@ const usersApiSlice = apiSlice.injectEndpoints({
     }),
     restaurantSignUp: builder.mutation<AuthResponse, RestaurantSignUpRequest>({
       query: (data) => ({
-        url: `${BASE_URL}/register/restaurant`,
+        url: `${BASE_URL}/api/register/restaurant`,
         method: "POST",
         body: data,
       }),

@@ -29,10 +29,8 @@ export interface ApiError {
   status: number;
 }
 
-// Auth API endpoints
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    // Login mutation
     login: builder.mutation<AuthResponse, LoginRequest>({
       query: (credentials) => ({
         url: API_ENDPOINTS.AUTH.LOGIN,
@@ -42,7 +40,6 @@ export const authApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ["User"],
     }),
 
-    // Register mutation
     register: builder.mutation<AuthResponse, RegisterRequest>({
       query: (userData) => ({
         url: API_ENDPOINTS.AUTH.REGISTER,
@@ -52,7 +49,6 @@ export const authApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ["User"],
     }),
 
-    // Logout mutation
     logout: builder.mutation<{ message: string }, void>({
       query: () => ({
         url: API_ENDPOINTS.AUTH.LOGOUT,
@@ -61,7 +57,6 @@ export const authApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ["User"],
     }),
 
-    // Get user profile query
     getUserProfile: builder.query<User, void>({
       query: () => ({
         url: API_ENDPOINTS.USERS.PROFILE,
@@ -70,7 +65,6 @@ export const authApiSlice = apiSlice.injectEndpoints({
       providesTags: ["User"],
     }),
 
-    // Update user profile mutation
     updateUserProfile: builder.mutation<User, Partial<User>>({
       query: (userData) => ({
         url: API_ENDPOINTS.USERS.UPDATE_PROFILE,
@@ -80,7 +74,6 @@ export const authApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ["User"],
     }),
 
-    // Forgot password mutation
     forgotPassword: builder.mutation<{ message: string }, { email: string }>({
       query: (data) => ({
         url: API_ENDPOINTS.AUTH.FORGOT_PASSWORD,
@@ -89,7 +82,6 @@ export const authApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
-    // Reset password mutation
     resetPassword: builder.mutation<
       { message: string },
       { token: string; password: string }
@@ -103,7 +95,6 @@ export const authApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-// Export hooks for usage in functional components
 export const {
   useLoginMutation,
   useRegisterMutation,

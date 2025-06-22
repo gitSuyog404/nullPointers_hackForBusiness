@@ -11,6 +11,8 @@ import {
   HiHome,
   HiClipboardList,
   HiTruck,
+  HiChevronDown,
+  HiUser,
 } from "react-icons/hi";
 import { MdRestaurant, MdFastfood, MdVolunteerActivism } from "react-icons/md";
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
@@ -20,20 +22,30 @@ import { toast } from "react-toastify";
 
 interface SidebarItem {
   name: string;
-  href: string;
+  href?: string;
   icon: React.ReactNode;
   badge?: string;
+  children?: SidebarItem[];
 }
 
 const AdminLayout: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [expandedItems, setExpandedItems] = useState<string[]>([]);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useAppDispatch();
   const { userInfo } = useAppSelector((state) => state.auth);
   const [userLogout] = useUserLogoutMutation();
 
-  const sidebarItems: SidebarItem[] = [
+  const toggleExpanded = (itemName: string) => {
+    setExpandedItems((prev) =>
+      prev.includes(itemName)
+        ? prev.filter((name) => name !== itemName)
+        : [...prev, itemName]
+    );
+  };
+
+  const allSidebarItems: SidebarItem[] = [
     {
       name: "Dashboard",
       href: "/admin/dashboard",
@@ -71,10 +83,24 @@ const AdminLayout: React.FC = () => {
     },
     {
       name: "Settings",
-      href: "/admin/settings",
       icon: <HiCog className="w-5 h-5" />,
+      children: [
+        {
+          name: "Profile",
+          href: "/admin/settings/profile",
+          icon: <HiUser className="w-4 h-4" />,
+        },
+      ],
     },
   ];
+
+  const sidebarItems = allSidebarItems.filter((item) => {
+    if (userInfo?.role === "RESTAURANT") {
+      return item.name !== "Users" && item.name !== "Restaurants";
+    }
+
+    return true;
+  });
 
   const handleLogout = async () => {
     try {
@@ -168,7 +194,13 @@ const AdminLayout: React.FC = () => {
                   <motion.button
                     whileHover={{ scale: 1.02, x: 5 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => navigate(item.href)}
+                    onClick={() => {
+                      if (item.children) {
+                        toggleExpanded(item.name);
+                      } else if (item.href) {
+                        navigate(item.href);
+                      }
+                    }}
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
                       location.pathname === item.href
                         ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg"
@@ -188,21 +220,82 @@ const AdminLayout: React.FC = () => {
                           <span className="font-medium truncate">
                             {item.name}
                           </span>
-                          {item.badge && (
-                            <span
-                              className={`px-2 py-1 text-xs rounded-full font-medium ${
-                                location.pathname === item.href
-                                  ? "bg-white/20 text-white"
-                                  : "bg-blue-100 text-blue-600"
-                              }`}
-                            >
-                              {item.badge}
-                            </span>
-                          )}
+                          <div className="flex items-center gap-2">
+                            {item.badge && (
+                              <span
+                                className={`px-2 py-1 text-xs rounded-full font-medium ${
+                                  location.pathname === item.href
+                                    ? "bg-white/20 text-white"
+                                    : "bg-blue-100 text-blue-600"
+                                }`}
+                              >
+                                {item.badge}
+                              </span>
+                            )}
+                            {item.children && (
+                              <motion.div
+                                animate={{
+                                  rotate: expandedItems.includes(item.name)
+                                    ? 180
+                                    : 0,
+                                }}
+                                transition={{ duration: 0.2 }}
+                              >
+                                <HiChevronDown className="w-4 h-4" />
+                              </motion.div>
+                            )}
+                          </div>
                         </motion.div>
                       )}
                     </AnimatePresence>
                   </motion.button>
+
+                  <AnimatePresence>
+                    {item.children && expandedItems.includes(item.name) && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="ml-4 mt-2 space-y-1"
+                      >
+                        {item.children.map((child, childIndex) => (
+                          <motion.button
+                            key={child.name}
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{
+                              duration: 0.2,
+                              delay: childIndex * 0.05,
+                            }}
+                            whileHover={{ scale: 1.02, x: 5 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() => child.href && navigate(child.href)}
+                            className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200 ${
+                              location.pathname === child.href
+                                ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-md"
+                                : "text-gray-600 hover:bg-gray-50"
+                            }`}
+                          >
+                            <div className="flex-shrink-0">{child.icon}</div>
+                            <AnimatePresence>
+                              {isSidebarOpen && (
+                                <motion.span
+                                  initial={{ opacity: 0, width: 0 }}
+                                  animate={{ opacity: 1, width: "auto" }}
+                                  exit={{ opacity: 0, width: 0 }}
+                                  transition={{ duration: 0.2 }}
+                                  className="font-medium truncate text-sm"
+                                >
+                                  {child.name}
+                                </motion.span>
+                              )}
+                            </AnimatePresence>
+                          </motion.button>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </motion.div>
               ))}
             </nav>

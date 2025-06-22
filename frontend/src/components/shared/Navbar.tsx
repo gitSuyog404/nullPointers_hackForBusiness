@@ -11,7 +11,7 @@ import {
   HiChevronDown,
   HiChartBar,
 } from "react-icons/hi";
-import { MdFastfood, MdContactMail } from "react-icons/md";
+import { MdContactMail } from "react-icons/md";
 import { BsInfoCircleFill } from "react-icons/bs";
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import { useUserLogoutMutation } from "../../redux/slices/userApiSlice";
@@ -47,7 +47,7 @@ export const Navbar: React.FC = () => {
 
   const navItems: NavItem[] = [
     ...baseNavItems,
-    ...(userInfo?.role === Roles.ADMIN
+    ...(userInfo?.role === Roles.ADMIN || userInfo?.role === Roles.RESTAURANT
       ? [
           {
             name: "Dashboard",

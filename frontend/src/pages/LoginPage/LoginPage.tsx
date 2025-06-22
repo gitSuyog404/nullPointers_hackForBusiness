@@ -38,6 +38,16 @@ const LoginPage = () => {
       console.log("Result type:", typeof result);
       console.log("Result keys:", Object.keys(result));
 
+      // Check if the response indicates an error
+      if (
+        (result as any).status === "ERROR" ||
+        (result as any).message?.includes(
+          "Query did not return a unique result"
+        )
+      ) {
+        throw new Error((result as any).message || "Login failed");
+      }
+
       let userData = null;
 
       console.log("Analyzing response structure...");
@@ -72,25 +82,14 @@ const LoginPage = () => {
         console.log("✅ Found user data directly in result (has id and email)");
         userData = result as any;
       } else if ((result as any).name && (result as any).email) {
-        console.log(
-          "✅ Found user data directly in result (has name and email)"
-        );
         userData = result as any;
       } else {
-        console.log("❌ No recognizable user data structure found");
-        console.log("Attempting to use entire result as user data...");
-
         if (typeof result === "object" && result !== null) {
           userData = result as any;
         }
       }
 
-      console.log("Final userData:", userData);
-
       if (userData) {
-        console.log("✅ Setting user credentials:", userData);
-        console.log("🎭 User role detected:", userData.role);
-        console.log("🎯 Available roles:", Object.values(Roles));
         dispatch(setCredentials(userData));
 
         setTimeout(() => {
@@ -129,15 +128,6 @@ const LoginPage = () => {
 
         setTimeout(() => {
           try {
-            console.log("🔍 Checking user role:", userData.role);
-            console.log("🔍 Role type:", typeof userData.role);
-            console.log("🔍 Roles.ADMIN:", Roles.ADMIN);
-            console.log("🔍 Role comparison:", userData.role === Roles.ADMIN);
-            console.log(
-              "🔍 Role comparison (string):",
-              userData.role === "ADMIN"
-            );
-
             const userRole = userData.role;
             const isAdmin =
               userRole === Roles.ADMIN ||
@@ -146,37 +136,42 @@ const LoginPage = () => {
                 userRole.toLowerCase() === "admin") ||
               (userRole && userRole.toString().toLowerCase() === "admin");
 
+            const isRestaurant =
+              userRole === Roles.RESTAURANT ||
+              userRole === "RESTAURANT" ||
+              (typeof userRole === "string" &&
+                userRole.toLowerCase() === "restaurant") ||
+              (userRole && userRole.toString().toLowerCase() === "restaurant");
+
             console.log("🔍 Final isAdmin result:", isAdmin);
+            console.log("🔍 Final isRestaurant result:", isRestaurant);
+            console.log("🔍 User role:", userRole);
+            console.log("🔍 Roles.RESTAURANT:", Roles.RESTAURANT);
 
             if (isAdmin) {
               console.log(
                 "🔑 Admin user detected, navigating to admin dashboard"
               );
               navigate("/admin/dashboard");
+            } else if (isRestaurant) {
+              console.log(
+                "🏪 Restaurant user detected, navigating to admin dashboard"
+              );
+              navigate("/admin/dashboard");
             } else {
-              console.log("👤 Regular user, navigating to home page");
-              console.log("👤 User role was:", userData.role);
+              console.log("👤 Regular user detected, navigating to home");
               navigate("/");
             }
           } catch (error) {
-            console.error("❌ Error in role checking:", error);
-            console.log("🏠 Defaulting to home page navigation");
             navigate("/");
           }
         }, 1000);
       } else {
-        console.error("❌ No user data found in response:", result);
-        console.error(
-          "❌ Full response structure:",
-          JSON.stringify(result, null, 2)
-        );
         toast.error(
           "Login successful but user data is missing. Please try again."
         );
       }
     } catch (error: any) {
-      console.error("Login error:", error);
-
       const errorMessage =
         error?.data?.message ||
         error?.message ||

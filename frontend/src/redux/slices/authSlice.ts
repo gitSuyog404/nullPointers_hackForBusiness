@@ -64,10 +64,8 @@ const deleteCookie = (name: string) => {
 
 const getUserFromStorage = (): User | null => {
   try {
-    // Try localStorage first
     let userInfo = localStorage.getItem("userInfo");
 
-    // If not in localStorage, try cookies
     if (!userInfo) {
       userInfo = getCookie("userInfo");
     }
