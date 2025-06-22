@@ -2,7 +2,9 @@ package com.food_rescue.backend.service.impl;
 
 import com.food_rescue.backend.dto.RestaurantDTO;
 import com.food_rescue.backend.entity.Restaurant;
+import com.food_rescue.backend.enums.Roles;
 import com.food_rescue.backend.repo.RestaurantRepo;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +14,8 @@ import java.util.stream.Collectors;
 @Service
 public class RestaurantService implements IRestaurant {
     private final RestaurantRepo restaurantRepository;
+
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     public RestaurantService(RestaurantRepo restaurantRepository) {
         this.restaurantRepository = restaurantRepository;
@@ -75,7 +79,7 @@ public class RestaurantService implements IRestaurant {
 
     private RestaurantDTO convertToDTO(Restaurant restaurant) {
         RestaurantDTO dto = new RestaurantDTO();
-        dto.setId(restaurant.getId());
+//        dto.setId(restaurant.getId());
         dto.setName(restaurant.getName());
         dto.setAddress(restaurant.getAddress());
         dto.setPhone(restaurant.getPhone());
@@ -85,11 +89,15 @@ public class RestaurantService implements IRestaurant {
 
     private Restaurant convertToEntity(RestaurantDTO dto) {
         Restaurant restaurant = new Restaurant();
-        restaurant.setId(dto.getId());
+//        restaurant.setId(dto.getId());
         restaurant.setName(dto.getName());
         restaurant.setAddress(dto.getAddress());
         restaurant.setPhone(dto.getPhone());
         restaurant.setEmail(dto.getEmail());
+        restaurant.setRegistrationNumber(dto.getRegistrationNumber());
+        restaurant.setRole(Roles.RESTAURANT);
+        restaurant.setPassword(encoder.encode(dto.getPassword()));
+        restaurant.setStatus(true);
         return restaurant;
     }
 

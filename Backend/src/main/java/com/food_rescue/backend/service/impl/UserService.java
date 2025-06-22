@@ -1,31 +1,46 @@
 package com.food_rescue.backend.service.impl;
 
+import com.food_rescue.backend.dto.ResponseDTO;
 import com.food_rescue.backend.dto.UsersDTO;
-import com.food_rescue.backend.entity.User;
+import com.food_rescue.backend.entity.Users;
 import com.food_rescue.backend.enums.Roles;
 import com.food_rescue.backend.repo.CustomerRepo;
 import com.food_rescue.backend.repo.RestaurantRepo;
 import com.food_rescue.backend.repo.UserRepo;
 import com.food_rescue.backend.utils.ConvertUtils;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class UserService implements IUser {
     private final UserRepo userRepo;
     private final RestaurantRepo restaurantRepo;
     private final CustomerRepo customerRepo;
+    private final JWTService jwtService;
+    private final AuthenticationManager authenticationManager;
 
-    public UserService(UserRepo userRepo, RestaurantRepo restaurantRepo, CustomerRepo customerRepo) {
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
+    public UserService(UserRepo userRepo, RestaurantRepo restaurantRepo, CustomerRepo customerRepo,
+                       JWTService jwtService, AuthenticationManager authenticationManager) {
         this.userRepo = userRepo;
         this.customerRepo = customerRepo;
         this.restaurantRepo = restaurantRepo;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
     }
 
     @Override
     public List<UsersDTO> getAllUsers() {
-        List<User> users = userRepo.findAllByOrderByIdDesc();
+        List<Users> users = userRepo.findAllByOrderByIdDesc();
         if (users == null) {
             throw new IllegalArgumentException("No users found");
         }
@@ -34,9 +49,9 @@ public class UserService implements IUser {
 
     @Override
     public UsersDTO getUserById(Long id) {
-        User user = userRepo.findById(id).orElseThrow(() ->
+        Users users = userRepo.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("User not found"));
-        return ConvertUtils.convertToUsersDTO(user);
+        return ConvertUtils.convertToUsersDTO(users);
     }
 
     @Override
@@ -54,16 +69,16 @@ public class UserService implements IUser {
                 throw new IllegalArgumentException("Phone already exists");
             }
 
-            User user = new User();
-            user.setId(userDTO.getId());
-            user.setName(userDTO.getName());
-            user.setEmail(userDTO.getEmail());
-            user.setPassword(userDTO.getPassword());
-            user.setPhone(userDTO.getPhone());
-            user.setRole(Roles.valueOf(userDTO.getRole()));
-//            users.setStatus(userDTO.isStatus());
+            Users users = new Users();
+//            users.setId(userDTO.getId());
+            users.setName(userDTO.getName());
+            users.setEmail(userDTO.getEmail());
+            users.setPassword(encoder.encode(userDTO.getPassword()));
+            users.setPhone(userDTO.getPhone());
+            users.setRole(Roles.valueOf(userDTO.getRole()));
+            users.setStatus(true);
 
-            userRepo.save(user);
+            userRepo.save(users);
             return true;
         } catch (Exception e) {
 //            throw new RuntimeException(e);
@@ -74,7 +89,7 @@ public class UserService implements IUser {
     @Override
     public boolean updateUser(UsersDTO userDTO) {
         try {
-            User existingUser = userRepo.findById(userDTO.getId()).orElseThrow(() ->
+            Users existingUsers = userRepo.findById(userDTO.getId()).orElseThrow(() ->
                     new IllegalArgumentException("User not found"));
 
             if (userDTO.getName() != null && userRepo.existsByNameAndIdNot(userDTO.getName(), userDTO.getId())) {
@@ -89,9 +104,9 @@ public class UserService implements IUser {
                 throw new IllegalArgumentException("Phone already exists");
             }
 
-            updateUserField(existingUser, userDTO);
+            updateUserField(existingUsers, userDTO);
 
-            userRepo.save(existingUser);
+            userRepo.save(existingUsers);
             return true;
         } catch (Exception e) {
             return false;
@@ -99,28 +114,50 @@ public class UserService implements IUser {
 
     }
 
-    private void updateUserField(User user, UsersDTO usersDTO) {
-        if (usersDTO.getName() != null) user.setName(usersDTO.getName());
-        if (usersDTO.getEmail() != null) user.setEmail(usersDTO.getEmail());
-        if (usersDTO.getPhone() != null) user.setPhone(usersDTO.getPhone());
-        if (user.getRole() != null) user.setRole(user.getRole());
-        if (user.isStatus() != user.isStatus()) user.setStatus(user.isStatus());
+    private void updateUserField(Users users, UsersDTO usersDTO) {
+        if (usersDTO.getName() != null) users.setName(usersDTO.getName());
+        if (usersDTO.getEmail() != null) users.setEmail(usersDTO.getEmail());
+        if (usersDTO.getPhone() != null) users.setPhone(usersDTO.getPhone());
+        if (users.getRole() != null) users.setRole(users.getRole());
+        if (users.isStatus() != users.isStatus()) users.setStatus(users.isStatus());
     }
 
     @Override
     public boolean deleteUser(Long id) {
-        User user = userRepo.findById(id).orElseThrow(() ->
+        Users users = userRepo.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("User not found"));
-        userRepo.delete(user);
+        userRepo.delete(users);
         return true;
     }
 
     @Override
     public boolean setUserStatus(Long id) {
-        User user = userRepo.findById(id).orElseThrow(() ->
+        Users users = userRepo.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("User not found"));
-        user.setStatus(!user.isStatus());
-        userRepo.save(user);
+        users.setStatus(!users.isStatus());
+        userRepo.save(users);
         return true;
+    }
+
+    @Override
+    public ResponseDTO verifyUser(UsersDTO userDTO) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDTO.getName(), userDTO.getPassword()));
+
+        if (authentication.isAuthenticated()){
+            Optional<Users> users = userRepo.findByName(userDTO.getName());
+            if (users.isPresent()) {
+                Users user = users.get();
+                var getToken = jwtService.generateToken(userDTO.getName());
+                Map<String, Object> detail = new HashMap<>();
+                detail.put("token", getToken);
+                detail.put("userName", user.getName());
+                detail.put("role", user.getRole());
+                detail.put("userId", user.getId());
+                return ResponseDTO.success("Log in Success",Map.of("user",detail));
+            }
+            return ResponseDTO.error("Login Failed");
+        }else {
+            return  ResponseDTO.error("Login Failed");
+        }
     }
 }

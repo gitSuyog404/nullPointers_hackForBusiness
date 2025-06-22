@@ -6,8 +6,9 @@ import lombok.Data;
 
 @Entity
 @Data
+@Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class User {
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

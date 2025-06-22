@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class DeliveryRider extends User {
+public class DeliveryRider extends Users {
     private String vehicleNumber;
     private String licenseNumber;
 

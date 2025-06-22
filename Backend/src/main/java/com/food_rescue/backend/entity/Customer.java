@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Customer extends User {
+public class Customer extends Users {
     private String address;
 
     @OneToMany(mappedBy = "customer")

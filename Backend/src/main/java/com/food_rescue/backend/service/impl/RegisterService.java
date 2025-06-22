@@ -10,6 +10,7 @@ import com.food_rescue.backend.repo.CustomerRepo;
 import com.food_rescue.backend.repo.RestaurantRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,8 @@ public class RegisterService {
     @Autowired
     CustomerService customerService;
 
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
     public boolean createCustomer(CustomerDTO customerDTO) {
         try {
             Customer customer = new Customer();
@@ -32,7 +35,7 @@ public class RegisterService {
            customer.setEmail(customerDTO.getEmail());
            customer.setAddress(customerDTO.getAddress());
            customer.setPhone(customerDTO.getPhone());
-           customer.setPassword(customerDTO.getPassword());
+           customer.setPassword(encoder.encode(customerDTO.getPassword()));
            customer.setStatus(true);
             customer.setRole(Roles.CUSTOMER);
             customerRepo.save(customer);
@@ -93,7 +96,7 @@ public class RegisterService {
         restaurant.setAddress(dto.getAddress());
         restaurant.setPhone(dto.getPhone());
         restaurant.setEmail(dto.getEmail());
-        restaurant.setPassword(dto.getPassword());
+        restaurant.setPassword(encoder.encode(dto.getPassword()));
         restaurant.setRole(Roles.RESTAURANT);
         restaurant.setRegistrationNumber(dto.getRegistrationNumber());
         return restaurant;

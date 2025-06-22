@@ -19,4 +19,5 @@ public interface IUser {
 //    void setUserStatus(Long id);
 //    ResponseDTO verifyUser(LoginDTO loginDTO);
 //    void changePassword(String oldPassword, String newPassword);
+    ResponseDTO verifyUser(UsersDTO userDTO);
 }

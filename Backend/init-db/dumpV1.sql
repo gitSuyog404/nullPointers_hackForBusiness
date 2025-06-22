@@ -6,10 +6,10 @@ DROP TABLE IF EXISTS food_item;
 DROP TABLE IF EXISTS delivery_rider;
 DROP TABLE IF EXISTS restaurant;
 DROP TABLE IF EXISTS customer;
-DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS users;
 
 -- Create User table (parent table for inheritance)
-CREATE TABLE user (
+CREATE TABLE users (
                       id BIGINT AUTO_INCREMENT PRIMARY KEY,
                       name VARCHAR(255),
                       email VARCHAR(255),
@@ -23,7 +23,7 @@ CREATE TABLE user (
 CREATE TABLE customer (
                           id BIGINT PRIMARY KEY,
                           address VARCHAR(500),
-                          FOREIGN KEY (id) REFERENCES user(id) ON DELETE CASCADE
+                          FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- Create Restaurant table (inherits from User - JOINED strategy)
@@ -31,7 +31,7 @@ CREATE TABLE restaurant (
                             id BIGINT PRIMARY KEY,
                             address VARCHAR(500),
                             registration_number VARCHAR(255),
-                            FOREIGN KEY (id) REFERENCES user(id) ON DELETE CASCADE
+                            FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- Create DeliveryRider table (inherits from User - JOINED strategy)
@@ -39,7 +39,7 @@ CREATE TABLE delivery_rider (
                                 id BIGINT PRIMARY KEY,
                                 vehicle_number VARCHAR(255),
                                 license_number VARCHAR(255),
-                                FOREIGN KEY (id) REFERENCES user(id) ON DELETE CASCADE
+                                FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- Create FoodItem table
@@ -79,8 +79,8 @@ CREATE TABLE order_item (
 );
 
 -- Create indexes for better performance
-CREATE INDEX idx_user_email ON user(email);
-CREATE INDEX idx_user_role ON user(role);
+CREATE INDEX idx_user_email ON users(email);
+CREATE INDEX idx_user_role ON users(role);
 CREATE INDEX idx_food_item_restaurant ON food_item(restaurant_id);
 CREATE INDEX idx_food_item_available ON food_item(available);
 CREATE INDEX idx_orders_customer ON orders(customer_id);
@@ -92,10 +92,13 @@ CREATE INDEX idx_order_item_orders ON order_item(orders_id);
 
 -- Sample data insertion (optional)
 -- Insert sample users
-INSERT INTO user (name, email, password, phone, role, status) VALUES
-                                                                  ('John Doe', 'john.customer@email.com', 'password123', '1234567890', 'CUSTOMER', TRUE),
-                                                                  ('Pizza Palace', 'pizza.palace@email.com', 'password123', '0987654321', 'RESTAURANT', TRUE),
-                                                                  ('Mike Rider', 'mike.rider@email.com', 'password123', '1122334455', 'DELIVERY_RIDER', TRUE);
+INSERT INTO users (name, email, password, phone, role, status) VALUES
+                                                                  ('John Doe', 'john.customer@email.com', '$2b$12$.0mJIruo0sXBpoVnlD.MNOkqfQPAVwbsxvXs23S6JII40L1M/C0za
+', '1234567890', 'CUSTOMER', TRUE),
+                                                                  ('Pizza Palace', 'pizza.palace@email.com', '$2b$12$.0mJIruo0sXBpoVnlD.MNOkqfQPAVwbsxvXs23S6JII40L1M/C0za
+', '0987654321', 'RESTAURANT', TRUE),
+                                                                  ('Mike Rider', 'mike.rider@email.com', '$2b$12$.0mJIruo0sXBpoVnlD.MNOkqfQPAVwbsxvXs23S6JII40L1M/C0za
+', '1122334455', 'DELIVERY_RIDER', TRUE);
 
 -- Insert customer data
 INSERT INTO customer (id, address) VALUES

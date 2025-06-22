@@ -2,6 +2,7 @@ package com.food_rescue.backend.controller;
 
 import com.food_rescue.backend.dto.ResponseDTO;
 import com.food_rescue.backend.dto.UsersDTO;
+import com.food_rescue.backend.service.impl.IUser;
 import com.food_rescue.backend.service.impl.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,11 +11,11 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
-    private final UserService userService;
+    private final IUser userService;
 
-    public UserController(UserService userService) {
+    public UserController(IUser userService) {
         this.userService = userService;
     }
 
