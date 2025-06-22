@@ -7,133 +7,153 @@ import {
   HiEye,
   HiPencil,
   HiTrash,
-  HiMail,
-  HiPhone,
+  HiClipboardList,
+  HiClock,
 } from "react-icons/hi";
-import { MdVolunteerActivism, MdLocationOn, MdStar } from "react-icons/md";
+import { MdRestaurant, MdLocationOn, MdPerson } from "react-icons/md";
 
-const VolunteersPage: React.FC = () => {
-  // Dummy data for volunteers
-  const volunteers = [
+const OrdersPage: React.FC = () => {
+  // Dummy data for orders
+  const orders = [
     {
       id: 1,
-      name: "Sarah Johnson",
-      email: "sarah.johnson@email.com",
-      phone: "+1 (555) 123-4567",
+      orderNumber: "ORD-001",
+      customerName: "John Smith",
+      restaurantName: "Bella Italia",
+      foodItem: "Margherita Pizza",
+      quantity: 2,
+      totalAmount: 25.98,
+      orderDate: "2024-03-20",
+      orderTime: "14:30",
+      status: "Pending",
+      pickupTime: "16:00",
       location: "Downtown",
-      joinedDate: "2024-01-15",
-      totalPickups: 45,
-      rating: 4.8,
-      status: "Active",
-      lastActive: "2024-03-19",
     },
     {
       id: 2,
-      name: "Michael Chen",
-      email: "michael.chen@email.com",
-      phone: "+1 (555) 234-5678",
+      orderNumber: "ORD-002",
+      customerName: "Sarah Johnson",
+      restaurantName: "Spice Garden",
+      foodItem: "Chicken Biryani",
+      quantity: 1,
+      totalAmount: 15.75,
+      orderDate: "2024-03-20",
+      orderTime: "15:15",
+      status: "Confirmed",
+      pickupTime: "17:30",
       location: "Midtown",
-      joinedDate: "2024-02-20",
-      totalPickups: 32,
-      rating: 4.9,
-      status: "Active",
-      lastActive: "2024-03-20",
     },
     {
       id: 3,
-      name: "Emily Rodriguez",
-      email: "emily.rodriguez@email.com",
-      phone: "+1 (555) 345-6789",
+      orderNumber: "ORD-003",
+      customerName: "Mike Wilson",
+      restaurantName: "Ocean Breeze Cafe",
+      foodItem: "Caesar Salad",
+      quantity: 3,
+      totalAmount: 29.97,
+      orderDate: "2024-03-20",
+      orderTime: "12:45",
+      status: "Completed",
+      pickupTime: "14:00",
       location: "Coastal",
-      joinedDate: "2024-03-10",
-      totalPickups: 18,
-      rating: 4.7,
-      status: "Inactive",
-      lastActive: "2024-03-15",
     },
     {
       id: 4,
-      name: "David Thompson",
-      email: "david.thompson@email.com",
-      phone: "+1 (555) 456-7890",
+      orderNumber: "ORD-004",
+      customerName: "Emily Rodriguez",
+      restaurantName: "Mountain View Bistro",
+      foodItem: "Beef Burger",
+      quantity: 4,
+      totalAmount: 47.96,
+      orderDate: "2024-03-20",
+      orderTime: "16:20",
+      status: "Preparing",
+      pickupTime: "18:00",
       location: "Uptown",
-      joinedDate: "2024-01-28",
-      totalPickups: 67,
-      rating: 4.9,
-      status: "Active",
-      lastActive: "2024-03-20",
     },
     {
       id: 5,
-      name: "Lisa Wang",
-      email: "lisa.wang@email.com",
-      phone: "+1 (555) 567-8901",
+      orderNumber: "ORD-005",
+      customerName: "David Chen",
+      restaurantName: "Urban Kitchen",
+      foodItem: "Pasta Carbonara",
+      quantity: 2,
+      totalAmount: 27.98,
+      orderDate: "2024-03-20",
+      orderTime: "13:10",
+      status: "Ready",
+      pickupTime: "15:30",
       location: "Metro",
-      joinedDate: "2024-02-14",
-      totalPickups: 29,
-      rating: 4.6,
-      status: "Active",
-      lastActive: "2024-03-19",
     },
     {
       id: 6,
-      name: "James Wilson",
-      email: "james.wilson@email.com",
-      phone: "+1 (555) 678-9012",
+      orderNumber: "ORD-006",
+      customerName: "Lisa Wang",
+      restaurantName: "Green Leaf Deli",
+      foodItem: "Veggie Wrap",
+      quantity: 1,
+      totalAmount: 8.99,
+      orderDate: "2024-03-19",
+      orderTime: "11:30",
+      status: "Cancelled",
+      pickupTime: "13:00",
       location: "Central",
-      joinedDate: "2024-01-05",
-      totalPickups: 12,
-      rating: 4.5,
-      status: "Pending",
-      lastActive: "2024-03-18",
     },
     {
       id: 7,
-      name: "Maria Garcia",
-      email: "maria.garcia@email.com",
-      phone: "+1 (555) 789-0123",
+      orderNumber: "ORD-007",
+      customerName: "James Thompson",
+      restaurantName: "Sunset Grill",
+      foodItem: "Grilled Salmon",
+      quantity: 1,
+      totalAmount: 19.99,
+      orderDate: "2024-03-20",
+      orderTime: "17:45",
+      status: "Confirmed",
+      pickupTime: "19:00",
       location: "West",
-      joinedDate: "2024-03-01",
-      totalPickups: 38,
-      rating: 4.8,
-      status: "Active",
-      lastActive: "2024-03-20",
     },
     {
       id: 8,
-      name: "Robert Kim",
-      email: "robert.kim@email.com",
-      phone: "+1 (555) 890-1234",
+      orderNumber: "ORD-008",
+      customerName: "Maria Garcia",
+      restaurantName: "Royal Palace",
+      foodItem: "Chicken Tikka",
+      quantity: 3,
+      totalAmount: 52.47,
+      orderDate: "2024-03-20",
+      orderTime: "14:55",
+      status: "Preparing",
+      pickupTime: "16:30",
       location: "Historic",
-      joinedDate: "2024-02-08",
-      totalPickups: 54,
-      rating: 4.7,
-      status: "Active",
-      lastActive: "2024-03-19",
     },
     {
       id: 9,
-      name: "Jennifer Lee",
-      email: "jennifer.lee@email.com",
-      phone: "+1 (555) 901-2345",
+      orderNumber: "ORD-009",
+      customerName: "Robert Kim",
+      restaurantName: "Fresh & Fast",
+      foodItem: "Fresh Fruit Bowl",
+      quantity: 2,
+      totalAmount: 13.98,
+      orderDate: "2024-03-19",
+      orderTime: "10:15",
+      status: "Expired",
+      pickupTime: "12:00",
       location: "Express",
-      joinedDate: "2024-03-15",
-      totalPickups: 8,
-      rating: 4.4,
-      status: "Active",
-      lastActive: "2024-03-20",
     },
     {
       id: 10,
-      name: "Alex Brown",
-      email: "alex.brown@email.com",
-      phone: "+1 (555) 012-3456",
+      orderNumber: "ORD-010",
+      customerName: "Jennifer Lee",
+      restaurantName: "Cozy Corner Cafe",
+      foodItem: "Coffee & Pastry",
+      quantity: 5,
+      totalAmount: 29.95,
+      orderDate: "2024-03-20",
+      orderTime: "09:30",
+      status: "Completed",
+      pickupTime: "11:00",
       location: "Neighborhood",
-      joinedDate: "2024-01-22",
-      totalPickups: 41,
-      rating: 4.6,
-      status: "Active",
-      lastActive: "2024-03-18",
     },
   ];
 
@@ -159,12 +179,20 @@ const VolunteersPage: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "Active":
-        return "bg-green-100 text-green-800";
       case "Pending":
         return "bg-yellow-100 text-yellow-800";
-      case "Inactive":
+      case "Confirmed":
+        return "bg-blue-100 text-blue-800";
+      case "Preparing":
+        return "bg-purple-100 text-purple-800";
+      case "Ready":
+        return "bg-green-100 text-green-800";
+      case "Completed":
+        return "bg-emerald-100 text-emerald-800";
+      case "Cancelled":
         return "bg-red-100 text-red-800";
+      case "Expired":
+        return "bg-gray-100 text-gray-800";
       default:
         return "bg-gray-100 text-gray-800";
     }
@@ -177,36 +205,38 @@ const VolunteersPage: React.FC = () => {
         initial="hidden"
         animate="visible"
       >
+        {/* Header */}
         <motion.div variants={itemVariants} className="mb-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
-                <MdVolunteerActivism className="w-6 h-6 text-white" />
+              <div className="w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+                <HiClipboardList className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-gray-800">Volunteers</h1>
-                <p className="text-gray-600">Manage volunteer community</p>
+                <h1 className="text-3xl font-bold text-gray-800">Orders</h1>
+                <p className="text-gray-600">Manage food orders and requests</p>
               </div>
             </div>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+              className="flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
             >
               <HiPlus className="w-5 h-5" />
-              Add Volunteer
+              Add Order
             </motion.button>
           </div>
         </motion.div>
 
+        {/* Search and Filter */}
         <motion.div variants={itemVariants} className="mb-6">
           <div className="flex gap-4">
             <div className="flex-1 relative">
               <HiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Search volunteers..."
-                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                placeholder="Search orders..."
+                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               />
             </div>
             <button className="flex items-center gap-2 px-6 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors duration-200">
@@ -216,6 +246,7 @@ const VolunteersPage: React.FC = () => {
           </div>
         </motion.div>
 
+        {/* Table */}
         <motion.div variants={itemVariants}>
           <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
             <div className="overflow-x-auto">
@@ -223,16 +254,22 @@ const VolunteersPage: React.FC = () => {
                 <thead className="bg-gray-50">
                   <tr>
                     <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Volunteer
+                      Order
                     </th>
                     <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Contact
+                      Customer
                     </th>
                     <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Location
+                      Restaurant
                     </th>
                     <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Performance
+                      Food Item
+                    </th>
+                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Amount
+                    </th>
+                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Pickup Time
                     </th>
                     <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Status
@@ -243,9 +280,9 @@ const VolunteersPage: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {volunteers.map((volunteer, index) => (
+                  {orders.map((order, index) => (
                     <motion.tr
-                      key={volunteer.id}
+                      key={order.id}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -253,54 +290,61 @@ const VolunteersPage: React.FC = () => {
                     >
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
-                          <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg flex items-center justify-center">
-                            <MdVolunteerActivism className="w-5 h-5 text-white" />
+                          <div className="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                            <HiClipboardList className="w-5 h-5 text-white" />
                           </div>
                           <div className="ml-4">
                             <div className="text-sm font-medium text-gray-900">
-                              {volunteer.name}
+                              {order.orderNumber}
                             </div>
                             <div className="text-sm text-gray-500">
-                              Joined: {volunteer.joinedDate}
+                              {order.orderDate} {order.orderTime}
                             </div>
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-900 flex items-center gap-1">
-                          <HiMail className="w-4 h-4 text-gray-400" />
-                          {volunteer.email}
+                          <MdPerson className="w-4 h-4 text-gray-400" />
+                          {order.customerName}
                         </div>
                         <div className="text-sm text-gray-500 flex items-center gap-1">
-                          <HiPhone className="w-4 h-4 text-gray-400" />
-                          {volunteer.phone}
+                          <MdLocationOn className="w-4 h-4 text-gray-400" />
+                          {order.location}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-900 flex items-center gap-1">
-                          <MdLocationOn className="w-4 h-4 text-gray-400" />
-                          {volunteer.location}
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          Last active: {volunteer.lastActive}
+                          <MdRestaurant className="w-4 h-4 text-gray-400" />
+                          {order.restaurantName}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-900">
-                          {volunteer.totalPickups} pickups
+                          {order.foodItem}
                         </div>
-                        <div className="text-sm text-gray-500 flex items-center gap-1">
-                          <MdStar className="w-4 h-4 text-yellow-400" />
-                          {volunteer.rating}/5.0
+                        <div className="text-sm text-gray-500">
+                          Qty: {order.quantity}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-medium text-gray-900">
+                          ${order.totalAmount}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900 flex items-center gap-1">
+                          <HiClock className="w-4 h-4 text-gray-400" />
+                          {order.pickupTime}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
                           className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(
-                            volunteer.status
+                            order.status
                           )}`}
                         >
-                          {volunteer.status}
+                          {order.status}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -340,4 +384,4 @@ const VolunteersPage: React.FC = () => {
   );
 };
 
-export default VolunteersPage;
+export default OrdersPage;

@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import FormInput from "../../components/ui/FormInput";
 import { useLoginMutation } from "../../redux/slices/userApiSlice";
 import { useAppDispatch } from "../../redux/hooks";
-import { setCredentials } from "../../redux/slices/authSlice";
+import { setCredentials, Roles } from "../../redux/slices/authSlice";
 
 interface LoginFormData {
   email: string;
@@ -38,11 +38,15 @@ const LoginPage = () => {
       console.log("Result type:", typeof result);
       console.log("Result keys:", Object.keys(result));
 
-      // Handle different possible response structures
       let userData = null;
 
       console.log("Analyzing response structure...");
       console.log("result.user exists:", !!result.user);
+      console.log("result.details exists:", !!(result as any).details);
+      console.log(
+        "result.details.user exists:",
+        !!(result as any).details?.user
+      );
       console.log("result.data exists:", !!(result as any).data);
       console.log("result has id:", !!(result as any).id);
       console.log("result has email:", !!(result as any).email);
@@ -52,6 +56,9 @@ const LoginPage = () => {
       if (result.user) {
         console.log("✅ Found user in result.user");
         userData = result.user;
+      } else if ((result as any).details && (result as any).details.user) {
+        console.log("✅ Found user in result.details.user");
+        userData = (result as any).details.user;
       } else if ((result as any).data && (result as any).data.user) {
         console.log("✅ Found user in result.data.user");
         userData = (result as any).data.user;
@@ -72,7 +79,7 @@ const LoginPage = () => {
       } else {
         console.log("❌ No recognizable user data structure found");
         console.log("Attempting to use entire result as user data...");
-        // Last resort: try to use the entire result if it looks like user data
+
         if (typeof result === "object" && result !== null) {
           userData = result as any;
         }
@@ -82,9 +89,10 @@ const LoginPage = () => {
 
       if (userData) {
         console.log("✅ Setting user credentials:", userData);
+        console.log("🎭 User role detected:", userData.role);
+        console.log("🎯 Available roles:", Object.values(Roles));
         dispatch(setCredentials(userData));
 
-        // Verify both localStorage and cookies were updated
         setTimeout(() => {
           const storedUser = localStorage.getItem("userInfo");
           console.log(
@@ -92,7 +100,6 @@ const LoginPage = () => {
             storedUser ? "✅ Success" : "❌ Failed"
           );
 
-          // Check cookies
           const cookieUser = document.cookie
             .split("; ")
             .find((row) => row.startsWith("userInfo="));
@@ -105,7 +112,7 @@ const LoginPage = () => {
             console.log("📋 localStorage content:", JSON.parse(storedUser));
           }
           if (cookieUser) {
-            console.log("📋 Cookie content:", cookieUser.substring(9)); // Remove "userInfo=" prefix
+            console.log("📋 Cookie content:", cookieUser.substring(9));
           }
         }, 200);
 
@@ -120,9 +127,42 @@ const LoginPage = () => {
 
         reset();
 
-        // Small delay to ensure toast is visible and storage is updated
         setTimeout(() => {
-          navigate("/");
+          try {
+            console.log("🔍 Checking user role:", userData.role);
+            console.log("🔍 Role type:", typeof userData.role);
+            console.log("🔍 Roles.ADMIN:", Roles.ADMIN);
+            console.log("🔍 Role comparison:", userData.role === Roles.ADMIN);
+            console.log(
+              "🔍 Role comparison (string):",
+              userData.role === "ADMIN"
+            );
+
+            const userRole = userData.role;
+            const isAdmin =
+              userRole === Roles.ADMIN ||
+              userRole === "ADMIN" ||
+              (typeof userRole === "string" &&
+                userRole.toLowerCase() === "admin") ||
+              (userRole && userRole.toString().toLowerCase() === "admin");
+
+            console.log("🔍 Final isAdmin result:", isAdmin);
+
+            if (isAdmin) {
+              console.log(
+                "🔑 Admin user detected, navigating to admin dashboard"
+              );
+              navigate("/admin/dashboard");
+            } else {
+              console.log("👤 Regular user, navigating to home page");
+              console.log("👤 User role was:", userData.role);
+              navigate("/");
+            }
+          } catch (error) {
+            console.error("❌ Error in role checking:", error);
+            console.log("🏠 Defaulting to home page navigation");
+            navigate("/");
+          }
         }, 1000);
       } else {
         console.error("❌ No user data found in response:", result);

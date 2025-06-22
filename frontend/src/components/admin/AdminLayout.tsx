@@ -43,25 +43,21 @@ const AdminLayout: React.FC = () => {
       name: "Restaurants",
       href: "/admin/restaurants",
       icon: <MdRestaurant className="w-5 h-5" />,
-      badge: "156",
     },
     {
       name: "Food Items",
       href: "/admin/food-items",
       icon: <MdFastfood className="w-5 h-5" />,
-      badge: "2.8k",
     },
     {
       name: "Volunteers",
       href: "/admin/volunteers",
       icon: <MdVolunteerActivism className="w-5 h-5" />,
-      badge: "892",
     },
     {
       name: "Orders",
       href: "/admin/orders",
       icon: <HiClipboardList className="w-5 h-5" />,
-      badge: "1.9k",
     },
     {
       name: "Pickups",
@@ -72,7 +68,6 @@ const AdminLayout: React.FC = () => {
       name: "Users",
       href: "/admin/users",
       icon: <HiUsers className="w-5 h-5" />,
-      badge: "3.2k",
     },
     {
       name: "Settings",
@@ -248,15 +243,17 @@ const AdminLayout: React.FC = () => {
                   >
                     <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center">
                       <span className="text-white font-medium text-sm">
-                        {userInfo.name.charAt(0).toUpperCase()}
+                        {(userInfo.userName || userInfo.name || "U")
+                          .charAt(0)
+                          .toUpperCase()}
                       </span>
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="font-medium text-gray-800 truncate">
-                        {userInfo.name}
+                        {userInfo.userName || userInfo.name || "Unknown User"}
                       </p>
                       <p className="text-xs text-gray-500 truncate">
-                        {userInfo.role}
+                        {userInfo.role || "User"}
                       </p>
                     </div>
                   </motion.div>

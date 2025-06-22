@@ -11,13 +11,16 @@ export const Roles = {
 export type RoleType = (typeof Roles)[keyof typeof Roles];
 
 export interface User {
-  id: string;
-  name: string;
+  id?: string;
+  userId?: number;
+  name?: string;
+  userName?: string;
   email: string;
   role: RoleType;
-  isRestaurant: boolean;
+  isRestaurant?: boolean;
   address?: string;
   registrationNumber?: string;
+  token?: string;
 }
 
 export interface AuthState {

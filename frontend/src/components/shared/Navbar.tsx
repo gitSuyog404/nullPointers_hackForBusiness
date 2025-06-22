@@ -27,11 +27,11 @@ interface NavItem {
 const baseNavItems: NavItem[] = [
   { name: "Home", href: "", icon: <HiHome size={20} /> },
   { name: "About", href: "/aboutus", icon: <BsInfoCircleFill size={20} /> },
-  {
-    name: "Food Listing",
-    href: "/food-listing",
-    icon: <MdFastfood size={20} />,
-  },
+  // {
+  //   name: "Food Listing",
+  //   href: "/food-listing",
+  //   icon: <MdFastfood size={20} />,
+  // },
   { name: "Contact", href: "/contactus", icon: <MdContactMail size={20} /> },
 ];
 
@@ -45,7 +45,6 @@ export const Navbar: React.FC = () => {
   const { userInfo } = useAppSelector((state) => state.auth);
   const [userLogout] = useUserLogoutMutation();
 
-  // Generate navigation items based on user role
   const navItems: NavItem[] = [
     ...baseNavItems,
     ...(userInfo?.role === Roles.ADMIN
@@ -59,7 +58,6 @@ export const Navbar: React.FC = () => {
       : []),
   ];
 
-  // Close profile dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -93,7 +91,7 @@ export const Navbar: React.FC = () => {
       navigate("/");
     } catch (error) {
       console.error("Logout error:", error);
-      // Even if API call fails, clear local state
+
       dispatch(logout());
       setIsProfileOpen(false);
       toast.success("Logged out successfully!");
