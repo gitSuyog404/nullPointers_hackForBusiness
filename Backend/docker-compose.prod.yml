@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  # Spring Boot Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: springboot-app
+    ports:
+      - "9040:9040"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/food_rescue
+      - SPRING_DATASOURCE_USERNAME=${DB_USER:-root}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD:-grishshrestha}
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_SHOW_SQL=true
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQLDialect
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always
+    networks:
+      - app-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "5"
+
+  # MySQL Database
+  db:
+    image: mysql:8.0
+    container_name: mysql-db
+    ports:
+      - "127.0.0.1:3307:3306"  # Expose MySQL only locally for security
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD:-grishshrestha}
+      - MYSQL_DATABASE=food_rescue
+      - TZ=Asia/Kathmandu
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${DB_PASSWORD:-grishshrestha}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+    networks:
+      - app-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "5"
+
+volumes:
+  mysql_data:
+    name: food-rescue-prod-data
+
+networks:
+  app-network:
+    driver: bridge
