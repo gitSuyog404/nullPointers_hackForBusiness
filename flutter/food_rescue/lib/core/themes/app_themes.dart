@@ -25,6 +25,11 @@ class AppTheme {
           fontWeight: FontWeight.w700,
           color: Color(0xFF000000),
         ),
+        bodyLarge: TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.w700,
+          color: Color(0xFF000000),
+        ),
         bodyMedium: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w700,
@@ -59,6 +64,11 @@ class AppTheme {
           color: Color(0xFFFFFFFF),
         ),
         headlineMedium: TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.w700,
+          color: Color(0xFFFFFFFF),
+        ),
+         bodyLarge: TextStyle(
           fontSize: 24,
           fontWeight: FontWeight.w700,
           color: Color(0xFFFFFFFF),

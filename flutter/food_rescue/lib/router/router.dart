@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:food_rescue/features/auth/views/pages/login_page.dart';
 import 'package:food_rescue/features/auth/views/pages/rider_signup_page.dart';
 import 'package:food_rescue/features/auth/views/pages/signup_page.dart';
+import 'package:food_rescue/features/homescreen/views/customer/pages/view_food_page.dart';
 
 import '../features/app_start/view/app_start_view.dart';
 import '../features/auth/views/pages/signup_choose_page.dart';
+import '../features/homescreen/views/customer/pages/view_food_details_page.dart';
 
 final navigation = GlobalKey<NavigatorState>();
 
@@ -14,6 +16,8 @@ class RouteNames {
   static const String signUp = '/signup';
   static const String signUpChoose = '/signupChoose';
   static const String rider = '/rider';
+  static const String customerHomepage = '/customerHomepage';
+  static const String viewFoodDetails = '/viewFoodDetails';
 }
 
 Route<dynamic> generateRoute(RouteSettings settings) {
@@ -44,6 +48,17 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         const RiderSignupPage(),
         animationType: 'LR',
       );
+    case RouteNames.customerHomepage:
+      return _createRouteAnimation(const ViewFoodPage(), animationType: 'LR');
+    case RouteNames.viewFoodDetails:
+      final args = settings.arguments as Map<String, String>;
+      final String image = args['image'] ?? '';
+      final String category = args['category'] ?? '';
+      final String tag = args['tag'] ?? 'food_image_default';
+      return _createRouteAnimation(
+        ViewFoodDetailsPage(category: category, image: image, tag: tag),
+        // animationType: 'LR',
+      );
     default:
       return MaterialPageRoute(builder: (context) => const AppStartPage());
   }
@@ -72,9 +87,14 @@ PageRouteBuilder _createRouteAnimation(
           ).animate(animation);
           return SlideTransition(position: slideAnimation, child: child);
         case 'RT':
-        default:
           var slideAnimation = Tween<Offset>(
             begin: const Offset(1.0, 0.0), // Right to left
+            end: Offset.zero,
+          ).animate(animation);
+          return SlideTransition(position: slideAnimation, child: child);
+        default:
+          var slideAnimation = Tween<Offset>(
+            begin: const Offset(0.0, 0.0), // Right to left
             end: Offset.zero,
           ).animate(animation);
           return SlideTransition(position: slideAnimation, child: child);

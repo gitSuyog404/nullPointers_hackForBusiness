@@ -66,7 +66,7 @@ class _SignupPageState extends State<SignupPage> {
                   ontap: () {
                     navigation.currentState?.pushReplacementNamed(
                       RouteNames.login,
-                    );
+                    ); 
                   },
                   text: 'Already have an account?',
                   buttonText: 'Login',
