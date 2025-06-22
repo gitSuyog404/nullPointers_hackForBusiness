@@ -2,7 +2,7 @@
 //   ? "https://breezy-carpets-wash.loca.lt"
 //   : "http://localhost:5000/api";
 
-export const BASE_URL = "https://eleven-owls-relate.loca.lt";
+export const BASE_URL = "https://1d44-101-251-7-65.ngrok-free.app";
 
 export const USER_URL = "/users";
 

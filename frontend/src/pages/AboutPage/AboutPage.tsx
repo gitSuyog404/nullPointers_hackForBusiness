@@ -130,8 +130,12 @@ const AboutPage = () => {
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{
+                once: true,
+                amount: 0.3,
+                margin: "0px 0px -100px 0px",
+              }}
               className="h-full flex flex-col"
             >
               <div className="flex items-center gap-3 mb-6">
@@ -210,8 +214,12 @@ const AboutPage = () => {
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{
+                once: true,
+                amount: 0.3,
+                margin: "0px 0px -100px 0px",
+              }}
               className="h-full flex flex-col"
             >
               <div className="flex items-center gap-3 mb-6">
@@ -290,8 +298,8 @@ const AboutPage = () => {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true, amount: 0.3, margin: "0px 0px -50px 0px" }}
             className="text-center mb-16"
           >
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-6">
@@ -306,7 +314,7 @@ const AboutPage = () => {
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2, margin: "0px 0px -100px 0px" }}
             className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
           >
             {values.map((value, index) => (
@@ -335,8 +343,8 @@ const AboutPage = () => {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true, amount: 0.3, margin: "0px 0px -50px 0px" }}
             className="text-center mb-16"
           >
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6">
@@ -371,8 +379,8 @@ const AboutPage = () => {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true, amount: 0.3, margin: "0px 0px -50px 0px" }}
           >
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-6">
               Join Our Mission

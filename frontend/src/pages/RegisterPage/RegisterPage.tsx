@@ -9,8 +9,6 @@ import {
   useCustomerSignUpMutation,
   useRestaurantSignUpMutation,
 } from "../../redux/slices/userApiSlice";
-import { useAppDispatch } from "../../redux/hooks";
-import { setCredentials } from "../../redux/slices/authSlice";
 
 interface RegisterFormData {
   name: string;
@@ -24,7 +22,6 @@ interface RegisterFormData {
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   const [customerSignUp, { isLoading: isCustomerSignUpLoading }] =
     useCustomerSignUpMutation();
@@ -80,40 +77,31 @@ const RegisterPage = () => {
         console.log("Customer signup result:", result);
       }
 
-      if (result.user) {
-        console.log("Registration successful, user found:", result.user);
-        dispatch(setCredentials(result.user));
+      // Registration successful - redirect to login page
+      console.log("Registration successful:", result);
 
-        console.log("Showing success toast...");
-        toast.success(
-          `Account created successfully! Welcome ${
-            data.isRestaurant
-              ? "to our restaurant partner program"
-              : "to Food Rescue"
-          }!`,
-          {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-          }
-        );
+      toast.success(
+        `Account created successfully! ${
+          data.isRestaurant
+            ? "Welcome to our restaurant partner program"
+            : "Welcome to Food Rescue"
+        }! Please log in to continue.`,
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        }
+      );
 
-        reset();
+      reset();
 
-        // Delay navigation to ensure toast is visible
-        setTimeout(() => {
-          navigate("/");
-        }, 1000);
-      } else {
-        // Handle case where result doesn't have user
-        console.log("Registration result:", result);
-        toast.error(
-          "Registration completed but user data is missing. Please try logging in."
-        );
-      }
+      // Redirect to login page after successful registration
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
     } catch (error: any) {
       console.error("Registration error:", error);
 

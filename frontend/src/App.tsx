@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "./components/shared/Navbar";
 import { Footer } from "./components/shared/Footer";
-import AdminTestPanel from "./components/admin/AdminTestPanel";
+// import AdminTestPanel from "./components/admin/AdminTestPanel";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -15,7 +15,7 @@ const App = () => {
       <Footer />
 
       {/* Admin Test Panel - Only for development/testing */}
-      <AdminTestPanel />
+      {/* <AdminTestPanel /> */}
 
       <ToastContainer
         position="top-right"

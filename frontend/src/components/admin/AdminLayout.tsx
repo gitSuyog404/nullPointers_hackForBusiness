@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   HiChartBar,
   HiUsers,
-  HiShoppingBag,
   HiCog,
   HiLogout,
   HiMenu,
@@ -116,7 +115,6 @@ const AdminLayout: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50">
-      {/* Sidebar */}
       <motion.div
         variants={sidebarVariants}
         animate={isSidebarOpen ? "open" : "closed"}
@@ -124,7 +122,6 @@ const AdminLayout: React.FC = () => {
         className="fixed left-0 top-0 h-full bg-white border-r border-gray-200 shadow-lg z-50 overflow-hidden"
       >
         <div className="flex flex-col h-full">
-          {/* Header */}
           <div className="p-6 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <AnimatePresence>
@@ -164,7 +161,6 @@ const AdminLayout: React.FC = () => {
             </div>
           </div>
 
-          {/* Navigation */}
           <div className="flex-1 py-6 overflow-y-auto">
             <nav className="space-y-2 px-4">
               {sidebarItems.map((item, index) => (
@@ -217,10 +213,8 @@ const AdminLayout: React.FC = () => {
             </nav>
           </div>
 
-          {/* User Profile & Logout */}
           <div className="p-4 border-t border-gray-200">
             <div className="space-y-3">
-              {/* Back to Main Site */}
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -243,7 +237,6 @@ const AdminLayout: React.FC = () => {
                 </AnimatePresence>
               </motion.button>
 
-              {/* User Info */}
               <AnimatePresence>
                 {isSidebarOpen && userInfo && (
                   <motion.div
@@ -270,7 +263,6 @@ const AdminLayout: React.FC = () => {
                 )}
               </AnimatePresence>
 
-              {/* Logout */}
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -297,7 +289,6 @@ const AdminLayout: React.FC = () => {
         </div>
       </motion.div>
 
-      {/* Main Content */}
       <motion.div
         variants={contentVariants}
         animate={isSidebarOpen ? "open" : "closed"}

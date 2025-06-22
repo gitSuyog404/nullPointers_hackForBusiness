@@ -2,10 +2,9 @@ import { apiSlice } from "./apiSlice";
 import { BASE_URL, USER_URL } from "../../utils/constants";
 import type { User, RoleType } from "./authSlice";
 
-// Re-export Roles for backward compatibility
 export { Roles } from "./authSlice";
 export type { RoleType } from "./authSlice";
-// For backward compatibility, also export RoleType as Roles type
+
 export type Roles = RoleType;
 
 export interface LoginRequest {
@@ -44,7 +43,7 @@ const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation<AuthResponse, LoginRequest>({
       query: (data) => ({
-        url: `${USER_URL}/login`,
+        url: `${BASE_URL}/login`,
         method: "POST",
         body: data,
       }),

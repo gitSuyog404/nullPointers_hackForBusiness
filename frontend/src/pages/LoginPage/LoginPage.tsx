@@ -31,11 +31,83 @@ const LoginPage = () => {
   const onSubmit = async (data: LoginFormData) => {
     try {
       console.log("Login data:", data);
+      console.log("Starting login request...");
 
       const result = await login(data).unwrap();
+      console.log("Login result:", result);
+      console.log("Result type:", typeof result);
+      console.log("Result keys:", Object.keys(result));
+
+      // Handle different possible response structures
+      let userData = null;
+
+      console.log("Analyzing response structure...");
+      console.log("result.user exists:", !!result.user);
+      console.log("result.data exists:", !!(result as any).data);
+      console.log("result has id:", !!(result as any).id);
+      console.log("result has email:", !!(result as any).email);
+      console.log("result has name:", !!(result as any).name);
+      console.log("result has role:", !!(result as any).role);
 
       if (result.user) {
-        dispatch(setCredentials(result.user));
+        console.log("✅ Found user in result.user");
+        userData = result.user;
+      } else if ((result as any).data && (result as any).data.user) {
+        console.log("✅ Found user in result.data.user");
+        userData = (result as any).data.user;
+      } else if (
+        (result as any).data &&
+        typeof (result as any).data === "object"
+      ) {
+        console.log("✅ Found user data in result.data");
+        userData = (result as any).data;
+      } else if ((result as any).id && (result as any).email) {
+        console.log("✅ Found user data directly in result (has id and email)");
+        userData = result as any;
+      } else if ((result as any).name && (result as any).email) {
+        console.log(
+          "✅ Found user data directly in result (has name and email)"
+        );
+        userData = result as any;
+      } else {
+        console.log("❌ No recognizable user data structure found");
+        console.log("Attempting to use entire result as user data...");
+        // Last resort: try to use the entire result if it looks like user data
+        if (typeof result === "object" && result !== null) {
+          userData = result as any;
+        }
+      }
+
+      console.log("Final userData:", userData);
+
+      if (userData) {
+        console.log("✅ Setting user credentials:", userData);
+        dispatch(setCredentials(userData));
+
+        // Verify both localStorage and cookies were updated
+        setTimeout(() => {
+          const storedUser = localStorage.getItem("userInfo");
+          console.log(
+            "📦 Stored user in localStorage:",
+            storedUser ? "✅ Success" : "❌ Failed"
+          );
+
+          // Check cookies
+          const cookieUser = document.cookie
+            .split("; ")
+            .find((row) => row.startsWith("userInfo="));
+          console.log(
+            "🍪 Stored user in cookies:",
+            cookieUser ? "✅ Success" : "❌ Failed"
+          );
+
+          if (storedUser) {
+            console.log("📋 localStorage content:", JSON.parse(storedUser));
+          }
+          if (cookieUser) {
+            console.log("📋 Cookie content:", cookieUser.substring(9)); // Remove "userInfo=" prefix
+          }
+        }, 200);
 
         toast.success("Welcome back! You have successfully logged in.", {
           position: "top-right",
@@ -47,7 +119,20 @@ const LoginPage = () => {
         });
 
         reset();
-        navigate("/");
+
+        // Small delay to ensure toast is visible and storage is updated
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      } else {
+        console.error("❌ No user data found in response:", result);
+        console.error(
+          "❌ Full response structure:",
+          JSON.stringify(result, null, 2)
+        );
+        toast.error(
+          "Login successful but user data is missing. Please try again."
+        );
       }
     } catch (error: any) {
       console.error("Login error:", error);

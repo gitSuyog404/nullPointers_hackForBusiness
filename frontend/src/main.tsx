@@ -24,8 +24,10 @@ import RestaurantsPage from "./pages/admin/RestaurantsPage.tsx";
 import FoodItemsPage from "./pages/admin/FoodItemsPage.tsx";
 import VolunteersPage from "./pages/admin/VolunteersPage.tsx";
 import UsersPage from "./pages/admin/UsersPage.tsx";
+import NotFoundPage from "./pages/NotFoundPage/NotFoundPage.tsx";
 import { Provider } from "react-redux";
 import { store } from "./redux/store.ts";
+// import AdminTestPanel from "./components/admin/AdminTestPanel.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -38,12 +40,13 @@ const router = createBrowserRouter(
       <Route path="/contactus" element={<ContactPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/login" element={<LoginPage />} />
+      {/* <Route path="/admintest" element={<AdminTestPanel />} /> */}
 
-      <Route path="dashboard" element={<DashboardPage />} />
-      <Route path="food-items" element={<FoodItemsPage />} />
       <Route path="/admin" element={<AdminRoute />}>
         <Route element={<AdminLayout />}>
+          <Route path="dashboard" element={<DashboardPage />} />
           <Route path="restaurants" element={<RestaurantsPage />} />
+          <Route path="food-items" element={<FoodItemsPage />} />
           <Route path="volunteers" element={<VolunteersPage />} />
           <Route
             path="orders"
@@ -87,6 +90,8 @@ const router = createBrowserRouter(
           />
         </Route>
       </Route>
+
+      <Route path="*" element={<NotFoundPage />} />
     </Route>
   )
 );
