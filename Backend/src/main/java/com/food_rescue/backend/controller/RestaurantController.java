@@ -40,8 +40,9 @@ public class RestaurantController {
         return ResponseEntity.badRequest().body(ResponseDTO.error("Restaurant creation failed"));
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<ResponseDTO> updateRestaurant(@RequestBody RestaurantDTO restaurantDTO) {
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ResponseDTO> updateRestaurant(@RequestBody RestaurantDTO restaurantDTO, @PathVariable Long id) {
+        restaurantDTO.setId(id);
         boolean updated = restaurantService.updateRestaurant(restaurantDTO);
         if (updated) {
             return ResponseEntity.ok(ResponseDTO.success("Restaurant updated successfully"));

@@ -30,7 +30,7 @@ public class FoodItemController {
             @RequestParam("name") String name,
             @RequestParam("description") String description,
             @RequestParam("price") Double price,
-            @RequestParam("available") Boolean available,
+//            @RequestParam("available") Boolean available,
             @RequestParam("quantity") Integer quantity,
 //            @RequestParam("postingTime") LocalDateTime postingTime,
 //            @RequestParam("expiryTime") LocalDateTime expiryTime,
@@ -41,7 +41,7 @@ public class FoodItemController {
             foodItemDTO.setName(name);
             foodItemDTO.setDescription(description);
             foodItemDTO.setPrice(price);
-            foodItemDTO.setAvailable(available);
+//            foodItemDTO.setAvailable(available);
             foodItemDTO.setQuantity(quantity);
 //            foodItemDTO.setPostingTime(postingTime);
 //            foodItemDTO.setExpiryTime(expiryTime);

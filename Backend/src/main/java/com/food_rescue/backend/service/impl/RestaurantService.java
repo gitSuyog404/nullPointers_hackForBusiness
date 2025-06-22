@@ -49,13 +49,17 @@ public class RestaurantService implements IRestaurant {
     }
 
     @Override
-    @Transactional
     public boolean updateRestaurant(RestaurantDTO restaurantDTO) {
         try {
-            if (!restaurantRepository.existsById(restaurantDTO.getId())) {
+            Restaurant existingRestaurant = restaurantRepository.findById(restaurantDTO.getId())
+                    .orElse(null);
+            if (existingRestaurant == null) {
                 return false;
             }
             Restaurant restaurant = convertToEntity(restaurantDTO);
+            if (restaurantDTO.getPassword() == null || restaurantDTO.getPassword().isEmpty()) {
+                restaurant.setPassword(existingRestaurant.getPassword());
+            }
             restaurantRepository.save(restaurant);
             return true;
         } catch (Exception e) {
@@ -79,24 +83,30 @@ public class RestaurantService implements IRestaurant {
 
     private RestaurantDTO convertToDTO(Restaurant restaurant) {
         RestaurantDTO dto = new RestaurantDTO();
-//        dto.setId(restaurant.getId());
+        dto.setId(restaurant.getId());
         dto.setName(restaurant.getName());
         dto.setAddress(restaurant.getAddress());
         dto.setPhone(restaurant.getPhone());
         dto.setEmail(restaurant.getEmail());
+        dto.setAddress(restaurant.getAddress());
+        dto.setRegistrationNumber(restaurant.getRegistrationNumber());
+        dto.setPassword(encoder.encode(restaurant.getPassword()));
         return dto;
     }
 
     private Restaurant convertToEntity(RestaurantDTO dto) {
         Restaurant restaurant = new Restaurant();
-//        restaurant.setId(dto.getId());
+        restaurant.setId(dto.getId());
         restaurant.setName(dto.getName());
         restaurant.setAddress(dto.getAddress());
         restaurant.setPhone(dto.getPhone());
         restaurant.setEmail(dto.getEmail());
         restaurant.setRegistrationNumber(dto.getRegistrationNumber());
         restaurant.setRole(Roles.RESTAURANT);
-        restaurant.setPassword(encoder.encode(dto.getPassword()));
+        // Only encode password if it's not null or empty
+        if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
+            restaurant.setPassword(encoder.encode(dto.getPassword()));
+        }
         restaurant.setStatus(true);
         return restaurant;
     }

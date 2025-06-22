@@ -76,7 +76,7 @@ public class UserService implements IUser {
             users.setEmail(userDTO.getEmail());
             users.setPassword(encoder.encode(userDTO.getPassword()));
             users.setPhone(userDTO.getPhone());
-            users.setRole(Roles.valueOf(userDTO.getRole()));
+            users.setRole(Roles.ADMIN);
             users.setStatus(true);
 
             userRepo.save(users);
