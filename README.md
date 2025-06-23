@@ -68,8 +68,7 @@ food_rescue/
 
 ```bash
 # Clone the repo
-git clone https://github.com/your-org/food_rescue.git
-cd food_rescue
+git clone https://github.com/gitSuyog404/nullPointers_hackForBusiness.git
 git checkout backend
 
 # Configure environment
@@ -81,9 +80,6 @@ SPRING_DATASOURCE_PASSWORD=your_password
 JWT_SECRET=your_secret_key
 
 ▶️ Run Server
-bash
-Copy
-Edit
 mvn clean install
 mvn spring-boot:run
 Server will run at http://localhost:8080.
@@ -134,22 +130,13 @@ App will run at http://localhost:5173.
 ⚙️ Setup
 
 ```bash
-Copy
-Edit
 git checkout flutter
-cd frontend-app
+cd food_rescue
 
 # Get dependencies
 flutter pub get
 
-# Configure API base URL
-Edit `lib/constants.dart` or wherever you store API endpoints:
-
-const BASE_URL = 'http://10.0.2.2:8080/api';  # For Android Emulator
 ▶️ Run App
-bash
-Copy
-Edit
 flutter run
 ```
 
