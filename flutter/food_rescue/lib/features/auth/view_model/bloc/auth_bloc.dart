@@ -17,8 +17,40 @@ class AuthBloc extends Bloc<AuthEvent, AuthStates> {
       LoadingService.hide();
 
       response.match(
-        (errorMsg) => FailedToLoginUser(message: errorMsg),
+        (errorMsg) => emit(FailedToLoginUser(message: errorMsg)),
         (success) => emit(UserLoggedInSuccesfully()),
+      );
+    });
+
+    on<RegisterCustomer>((event, emit) async {
+      LoadingService.show();
+      final response = await authRemoteRepository.registerCustomer(
+        fullName: event.fullName,
+        phoneNumber: event.phoneNumber,
+        email: event.email,
+        password: event.password,
+      );
+      LoadingService.hide();
+
+      response.match(
+        (errorMsg) => emit(FailedToRegisterUser(message: errorMsg)),
+        (success) => emit(CustomerRegisteredSuccessfully()),
+      );
+    });
+
+    on<RegisterRider>((event, emit) async {
+      LoadingService.show();
+      final response = await authRemoteRepository.registerRider(
+        fullName: event.fullName,
+        phoneNumber: event.phoneNumber,
+        email: event.email,
+        password: event.password,
+      );
+      LoadingService.hide();
+
+      response.match(
+        (errorMsg) => emit(FailedToRegisterUser(message: errorMsg)),
+        (success) => emit(RiderRegisteredSuccessfully()),
       );
     });
   }

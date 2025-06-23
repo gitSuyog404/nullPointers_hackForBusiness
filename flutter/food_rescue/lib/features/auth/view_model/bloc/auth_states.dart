@@ -19,3 +19,16 @@ class FailedToLoginUser extends AuthStates {
   @override
   List<Object> get props => [message];
 }
+
+class CustomerRegisteredSuccessfully extends AuthStates {}
+
+class RiderRegisteredSuccessfully extends AuthStates {}
+
+class FailedToRegisterUser extends AuthStates {
+  final String message;
+
+  const FailedToRegisterUser({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}

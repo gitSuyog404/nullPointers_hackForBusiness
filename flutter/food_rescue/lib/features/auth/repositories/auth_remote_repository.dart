@@ -27,4 +27,54 @@ class AuthRemoteRepository {
       return Left('Cannot Login User');
     }
   }
+
+  Future<Either<String, bool>> registerCustomer({
+    required String fullName,
+    required String phoneNumber,
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final response = await _dioService.post('api/register/customer', {
+        "name": fullName,
+        "email": email,
+        "password": password,
+        "phone": phoneNumber,
+      });
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return const Right(true);
+      } else {
+        return Left(response.data['message'] ?? 'Registration failed');
+      }
+    } catch (e) {
+      print('Error: ${e.toString()}');
+      return Left('Cannot Register Customer');
+    }
+  }
+
+  Future<Either<String, bool>> registerRider({
+    required String fullName,
+    required String phoneNumber,
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final response = await _dioService.post('api/register/rider', {
+        "name": fullName,
+        "email": email,
+        "password": password,
+        "phone": phoneNumber,
+      });
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return const Right(true);
+      } else {
+        return Left(response.data['message'] ?? 'Registration failed');
+      }
+    } catch (e) {
+      print('Error: ${e.toString()}');
+      return Left('Cannot Register Rider');
+    }
+  }
 }

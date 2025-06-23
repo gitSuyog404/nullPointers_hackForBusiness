@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_rescue/core/services/food_rescue_toast.dart';
 import 'package:food_rescue/features/auth/view_model/bloc/auth_bloc.dart';
-import 'package:food_rescue/features/auth/view_model/bloc/auth_event.dart';
 import 'package:food_rescue/features/auth/view_model/bloc/auth_states.dart';
 import 'package:food_rescue/features/auth/views/wiidgets/button.dart';
 import 'package:food_rescue/features/auth/views/wiidgets/email_textfield.dart';
 import 'package:food_rescue/features/auth/views/wiidgets/password_textfield.dart';
 import 'package:food_rescue/features/auth/views/wiidgets/text_button_component.dart';
 
+import '../../../../core/services/loading_servce.dart';
 import '../../../../router/router.dart';
 import '../wiidgets/clickable_message.dart';
 
@@ -79,13 +79,19 @@ class _LoginPageState extends State<LoginPage> {
                     text: "Don't have an account? ",
                   ),
                   Button(
-                    onPressed: () {
-                      context.read<AuthBloc>().add(
-                        LoginUser(
-                          email: _emailController.text.toString(),
-                          password: _passwordController.text.toString(),
-                        ),
+                    onPressed: () async {
+                      LoadingService.show();
+                      await Future.delayed(Duration(milliseconds: 1500));
+                      LoadingService.hide();
+                      navigation.currentState?.pushReplacementNamed(
+                        RouteNames.riderHomepage,
                       );
+                      // context.read<AuthBloc>().add(
+                      //   LoginUser(
+                      //     email: _emailController.text.toString(),
+                      //     password: _passwordController.text.toString(),
+                      //   ),
+                      // );
                     },
                     title: 'Log In',
                   ),
