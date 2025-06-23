@@ -4,11 +4,15 @@ import com.food_rescue.backend.dto.FoodItemDTO;
 import com.food_rescue.backend.entity.FoodItem;
 import com.food_rescue.backend.entity.Restaurant;
 import com.food_rescue.backend.entity.Users;
+import com.food_rescue.backend.enums.Roles;
 import com.food_rescue.backend.repo.FoodItemRepo;
 import com.food_rescue.backend.repo.RestaurantRepo;
+import com.food_rescue.backend.repo.UserRepo;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.ClosedDirectoryStreamException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,22 +21,28 @@ import java.util.stream.Collectors;
 public class FoodItemServiceImpl implements FoodItemService {
     private final FoodItemRepo foodItemRepository;
     private final RestaurantRepo restaurantRepository;
+    private final CloudinaryService cloudinaryService;
+    private final UserRepo userRepository;
 
-    public FoodItemServiceImpl(FoodItemRepo foodItemRepository, RestaurantRepo restaurantRepository) {
+    public FoodItemServiceImpl(FoodItemRepo foodItemRepository, RestaurantRepo restaurantRepository, CloudinaryService cloudinaryService, UserRepo userRepository) {
         this.foodItemRepository = foodItemRepository;
         this.restaurantRepository = restaurantRepository;
+        this.cloudinaryService = cloudinaryService;
+        this.userRepository = userRepository;
     }
 
     private Users getCurrentUser() {
-        return (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByName(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    private void validateRestaurantAccess() {
-        Users currentUser = getCurrentUser();
-        if (!"RESTAURANT".equals(currentUser.getRole())) {
-            throw new RuntimeException("Access denied. Only restaurants can perform this operation.");
-        }
-    }
+//    private void validateRestaurantAccess() {
+//        Users currentUser = getCurrentUser();
+//        if (!"RESTAURANT".equals(currentUser.getRole())) {
+//            throw new RuntimeException("Access denied. Only restaurants can perform this operation.");
+//        }
+//    }
 
     private void validateRestaurantOwnership(Long restaurantId) {
         Users currentUser = getCurrentUser();
@@ -41,65 +51,31 @@ public class FoodItemServiceImpl implements FoodItemService {
         }
     }
 
-//    @Override
-//    public boolean createFoodItem(FoodItemDTO foodItemDTO) {
-//        try {
-//            validateRestaurantAccess();
-//            validateRestaurantOwnership(foodItemDTO.getRestaurantId());
-//
-//            Restaurant restaurant = restaurantRepository.findById(foodItemDTO.getRestaurantId())
-//                    .orElseThrow(() -> new RuntimeException("Restaurant not found"));
-//
-//            FoodItem foodItem = new FoodItem();
-//            foodItem.setName(foodItemDTO.getName());
-//            foodItem.setDescription(foodItemDTO.getDescription());
-//            foodItem.setPrice(foodItemDTO.getPrice());
-//            foodItem.setImageUrl(foodItemDTO.getImageUrl());
-//            foodItem.setRestaurant(restaurant);
-//            foodItem.setAvailable(true);
-//            foodItem.setQuantity(foodItemDTO.getQuantity());
-//            foodItem.setExpiryTime(foodItemDTO.getExpiryTime());
-//
-//            foodItemRepository.save(foodItem);
-//            return true;
-//        } catch (Exception e) {
-//            throw new RuntimeException(e.getMessage());
-//        }
-//    }
-
-
     @Override
-    public boolean createFoodItem(FoodItemDTO foodItemDTO) {
+    public boolean createFoodItem(FoodItemDTO foodItemDTO, MultipartFile imageFile) {
         try {
-            validateRestaurantAccess();
-            validateRestaurantOwnership(foodItemDTO.getRestaurantId());
-
-            Restaurant restaurant = restaurantRepository.findById(foodItemDTO.getRestaurantId())
-                    .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+            Users currentUser = getCurrentUser();
+            Restaurant restaurant = restaurantRepository.findByUser_Id(currentUser.getId());
 
             FoodItem foodItem = new FoodItem();
             foodItem.setName(foodItemDTO.getName());
             foodItem.setDescription(foodItemDTO.getDescription());
             foodItem.setPrice(foodItemDTO.getPrice());
-            foodItem.setImageUrl(foodItemDTO.getImageUrl());
+            String imageUrl = cloudinaryService.uploadImage(imageFile);
+            foodItem.setImageUrl(imageUrl);
             foodItem.setRestaurant(restaurant);
             foodItem.setAvailable(true);
             foodItem.setQuantity(foodItemDTO.getQuantity());
-
-            // Set posting time to current time
-            LocalDateTime now = LocalDateTime.now();
-            foodItem.setPostingTime(now);
-
-            // Set expiry time to 6 hours after posting
-            foodItem.setExpiryTime(now.plusHours(6));
+            foodItem.setPostingTime(LocalDateTime.now());
+            foodItem.setExpiryTime(LocalDateTime.now().plusHours(6));
 
             foodItemRepository.save(foodItem);
             return true;
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            e.printStackTrace();
+            return false;
         }
     }
-
 
 //    @Override
 //    public boolean updateFoodItem(FoodItemDTO foodItemDTO) {
@@ -127,16 +103,21 @@ public class FoodItemServiceImpl implements FoodItemService {
 //            throw new RuntimeException(e.getMessage());
 //        }
 //    }
+//
+//    @Override
+//    public boolean createFoodItem(FoodItemDTO foodItemDTO) {
+//        return false;
+//    }
 
     @Override
     public boolean updateFoodItem(FoodItemDTO foodItemDTO) {
         try {
-            validateRestaurantAccess();
+//            validateRestaurantAccess();
 
             FoodItem foodItem = foodItemRepository.findById(foodItemDTO.getId())
                     .orElseThrow(() -> new RuntimeException("Food item not found"));
 
-            validateRestaurantOwnership(foodItem.getRestaurant().getId());
+//            validateRestaurantOwnership(foodItem.getRestaurant().getId());
 
             foodItem.setName(foodItemDTO.getName());
             foodItem.setDescription(foodItemDTO.getDescription());
@@ -162,34 +143,31 @@ public class FoodItemServiceImpl implements FoodItemService {
 
     @Override
     public List<FoodItemDTO> getAllFoodItems() {
-        validateRestaurantAccess();
-        Users currentUser = getCurrentUser();
-
-        return foodItemRepository.findByRestaurantId(currentUser.getId()).stream()
+       return foodItemRepository.findAll().stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
     public FoodItemDTO getFoodItemById(Long id) {
-        validateRestaurantAccess();
+//        validateRestaurantAccess();
 
         FoodItem foodItem = foodItemRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Food item not found"));
 
-        validateRestaurantOwnership(foodItem.getRestaurant().getId());
+//        validateRestaurantOwnership(foodItem.getRestaurant().getId());
         return convertToDTO(foodItem);
     }
 
     @Override
     public boolean deleteFoodItem(Long id) {
         try {
-            validateRestaurantAccess();
+//            validateRestaurantAccess();
 
             FoodItem foodItem = foodItemRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Food item not found"));
 
-            validateRestaurantOwnership(foodItem.getRestaurant().getId());
+//            validateRestaurantOwnership(foodItem.getRestaurant().getId());
 
             foodItemRepository.deleteById(id);
             return true;
@@ -218,7 +196,10 @@ private FoodItemDTO convertToDTO(FoodItem foodItem) {
     dto.setDescription(foodItem.getDescription());
     dto.setPrice(foodItem.getPrice());
     dto.setImageUrl(foodItem.getImageUrl());
-    dto.setRestaurantId(foodItem.getRestaurant().getId());
+    // Add null check for restaurant
+    if (foodItem.getRestaurant() != null) {
+        dto.setRestaurantId(foodItem.getRestaurant().getId());
+    }
     dto.setAvailable(foodItem.isAvailable());
     dto.setQuantity(foodItem.getQuantity());
     dto.setPostingTime(foodItem.getPostingTime());

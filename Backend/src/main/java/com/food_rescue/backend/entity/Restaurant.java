@@ -1,8 +1,6 @@
 package com.food_rescue.backend.entity;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +11,14 @@ import java.util.List;
 @Getter
 @Setter
 public class Restaurant extends Users {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private Users user;
+
     private String address;
     private String registrationNumber;
 

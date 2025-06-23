@@ -4,13 +4,16 @@ import com.food_rescue.backend.dto.FoodItemDTO;
 import com.food_rescue.backend.dto.ResponseDTO;
 import com.food_rescue.backend.service.impl.CloudinaryService;
 import com.food_rescue.backend.service.impl.FoodItemService;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/food-items")
 public class FoodItemController {
@@ -22,15 +25,29 @@ public class FoodItemController {
         this.cloudinaryService = cloudinaryService;
     }
 
-    @PostMapping("/create")
+    @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ResponseDTO> createFoodItem(
-            @RequestPart("foodItem") FoodItemDTO foodItemDTO,
-            @RequestPart("image") MultipartFile image) {
+            @RequestParam("name") String name,
+            @RequestParam("description") String description,
+            @RequestParam("price") Double price,
+//            @RequestParam("available") Boolean available,
+            @RequestParam("quantity") Integer quantity,
+//            @RequestParam("postingTime") LocalDateTime postingTime,
+//            @RequestParam("expiryTime") LocalDateTime expiryTime,
+//            @RequestParam("restaurantId") Long restaurantId,
+            @RequestParam("image") MultipartFile image) {
         try {
-            String imageUrl = cloudinaryService.uploadImage(image);
-            foodItemDTO.setImageUrl(imageUrl);
+            FoodItemDTO foodItemDTO = new FoodItemDTO();
+            foodItemDTO.setName(name);
+            foodItemDTO.setDescription(description);
+            foodItemDTO.setPrice(price);
+//            foodItemDTO.setAvailable(available);
+            foodItemDTO.setQuantity(quantity);
+//            foodItemDTO.setPostingTime(postingTime);
+//            foodItemDTO.setExpiryTime(expiryTime);
+//            foodItemDTO.setRestaurantId(restaurantId);
 
-            boolean created = foodItemService.createFoodItem(foodItemDTO);
+            boolean created = foodItemService.createFoodItem(foodItemDTO,image);
             if (created) {
                 return ResponseEntity.ok(ResponseDTO.success("Food item created successfully"));
             }
@@ -40,11 +57,24 @@ public class FoodItemController {
         }
     }
 
-    @PutMapping("/update")
+    @PutMapping(value = "/update/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ResponseDTO> updateFoodItem(
-            @RequestPart("foodItem") FoodItemDTO foodItemDTO,
-            @RequestPart(value = "image", required = false) MultipartFile image) {
+            @PathVariable Long id,
+            @RequestParam("name") String name,
+            @RequestParam("description") String description,
+            @RequestParam("price") Double price,
+            @RequestParam("available") Boolean available,
+            @RequestParam("quantity") Integer quantity,
+            @RequestParam(value = "image", required = false) MultipartFile image) {
         try {
+            FoodItemDTO foodItemDTO = new FoodItemDTO();
+            foodItemDTO.setId(id);
+            foodItemDTO.setName(name);
+            foodItemDTO.setDescription(description);
+            foodItemDTO.setPrice(price);
+            foodItemDTO.setAvailable(available);
+            foodItemDTO.setQuantity(quantity);
+
             if (image != null && !image.isEmpty()) {
                 String imageUrl = cloudinaryService.uploadImage(image);
                 foodItemDTO.setImageUrl(imageUrl);

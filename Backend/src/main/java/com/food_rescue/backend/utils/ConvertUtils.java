@@ -97,8 +97,6 @@ public class ConvertUtils {
         dto.setEmail(rider.getEmail());
         dto.setPassword(rider.getPassword());
         dto.setPhone(rider.getPhone());
-        dto.setVehicleNumber(rider.getVehicleNumber());
-        dto.setLicenseNumber(rider.getLicenseNumber());
         dto.setRole(rider.getRole() != null ? rider.getRole().name() : null);
         dto.setStatus(rider.isStatus());
         return dto;

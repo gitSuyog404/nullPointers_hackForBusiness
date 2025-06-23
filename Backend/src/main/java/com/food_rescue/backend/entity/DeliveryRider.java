@@ -12,9 +12,6 @@ import java.util.List;
 @Getter
 @Setter
 public class DeliveryRider extends Users {
-    private String vehicleNumber;
-    private String licenseNumber;
-
     @OneToMany(mappedBy = "rider")
     private List<Orders> assignedOrders = new ArrayList<>();
 }

@@ -1,12 +1,15 @@
 package com.food_rescue.backend.service.impl;
 
 import com.food_rescue.backend.dto.CustomerDTO;
+import com.food_rescue.backend.dto.DeliveryRiderDTO;
 import com.food_rescue.backend.dto.ResponseDTO;
 import com.food_rescue.backend.dto.RestaurantDTO;
 import com.food_rescue.backend.entity.Customer;
+import com.food_rescue.backend.entity.DeliveryRider;
 import com.food_rescue.backend.entity.Restaurant;
 import com.food_rescue.backend.enums.Roles;
 import com.food_rescue.backend.repo.CustomerRepo;
+import com.food_rescue.backend.repo.DeliveryRiderRepo;
 import com.food_rescue.backend.repo.RestaurantRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,19 +27,19 @@ public class RegisterService {
     CustomerRepo customerRepo;
 
     @Autowired
-    CustomerService customerService;
+    DeliveryRiderRepo deliveryRiderRepo;
 
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     public boolean createCustomer(CustomerDTO customerDTO) {
         try {
             Customer customer = new Customer();
-           customer.setName(customerDTO.getName());
-           customer.setEmail(customerDTO.getEmail());
-           customer.setAddress(customerDTO.getAddress());
-           customer.setPhone(customerDTO.getPhone());
-           customer.setPassword(encoder.encode(customerDTO.getPassword()));
-           customer.setStatus(true);
+            customer.setName(customerDTO.getName());
+            customer.setEmail(customerDTO.getEmail());
+            customer.setAddress(customerDTO.getAddress());
+            customer.setPhone(customerDTO.getPhone());
+            customer.setPassword(encoder.encode(customerDTO.getPassword()));
+            customer.setStatus(true);
             customer.setRole(Roles.CUSTOMER);
             customerRepo.save(customer);
             return true;
@@ -78,6 +81,16 @@ public class RegisterService {
         }
     }
 
+    public boolean createDelivery(DeliveryRiderDTO deliveryRiderDTO){
+        try{
+            DeliveryRider deliveryRider = convertDeliveryRiderToEntity(deliveryRiderDTO);
+            deliveryRiderRepo.save(deliveryRider);
+            return true;
+        } catch (Exception e) {
+//            throw new RuntimeException(e);
+            return false;
+        }
+    }
 
     private RestaurantDTO convertRestaurantToDTO(Restaurant restaurant) {
         RestaurantDTO dto = new RestaurantDTO();
@@ -100,6 +113,18 @@ public class RegisterService {
         restaurant.setRole(Roles.RESTAURANT);
         restaurant.setRegistrationNumber(dto.getRegistrationNumber());
         return restaurant;
+    }
+
+    private DeliveryRider convertDeliveryRiderToEntity(DeliveryRiderDTO deliveryRiderDTO) {
+        DeliveryRider deliveryRider = new DeliveryRider();
+        deliveryRider.setName(deliveryRiderDTO.getName());
+        deliveryRider.setEmail(deliveryRiderDTO.getEmail());
+        deliveryRider.setPhone(deliveryRiderDTO.getPhone());
+        deliveryRider.setStatus(true);
+        deliveryRider.setRole(Roles.RIDER);
+        deliveryRider.setPassword(encoder.encode(deliveryRiderDTO.getPassword()));
+
+        return deliveryRider;
     }
 
 }
