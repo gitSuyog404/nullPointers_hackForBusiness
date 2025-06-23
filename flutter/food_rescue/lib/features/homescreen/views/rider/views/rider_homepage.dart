@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../customer/widgets/drawer.dart';
+import '../widgets/rider_content.dart';
 
 class RiderHomepage extends StatefulWidget {
   const RiderHomepage({super.key});
@@ -46,7 +47,7 @@ class _RiderHomepageState extends State<RiderHomepage>
                       ..translate(slide)
                       ..scale(scale),
                 alignment: Alignment.centerLeft,
-                child: ViewFoodContent(toggle: toggle),
+                child: RiderContent(toggle: toggle),
               ),
             ],
           );
