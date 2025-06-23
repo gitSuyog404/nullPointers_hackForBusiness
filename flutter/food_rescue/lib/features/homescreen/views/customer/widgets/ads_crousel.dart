@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
 class AdsCarousel extends StatelessWidget {
-  const AdsCarousel({super.key});
+  AdsCarousel({super.key});
+  final List<String> _ads = [
+    'assets/images/ads_banner1.jpeg',
+    'assets/images/ads_banner2.jpeg',
+    'assets/images/ads_banner3.jpeg',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +21,7 @@ class AdsCarousel extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Image.asset(
-                'assets/images/ads_banner.jpg',
-                fit: BoxFit.cover,
-              ),
+              child: Image.asset(_ads[index], fit: BoxFit.cover),
             ),
           );
         },

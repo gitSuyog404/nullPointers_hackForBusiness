@@ -12,25 +12,25 @@ class ViewFoodContent extends StatelessWidget {
     FoodViewModel(
       title: "Momo",
       images: [
-        'assets/images/momo.jpg',
-        'assets/images/momo.jpg',
-        'assets/images/momo.jpg',
+        'assets/images/steam_momo.jpg',
+        'assets/images/fried_momo.jpg',
+        'assets/images/c_momo.jpeg',
       ],
     ),
     FoodViewModel(
       title: "Burger",
       images: [
-        'assets/images/food.jpg',
-        'assets/images/food.jpg',
-        'assets/images/food.jpg',
+        'assets/images/burger1.jpeg',
+        'assets/images/burger2.jpeg',
+        'assets/images/burger3.jpeg',
       ],
     ),
     FoodViewModel(
       title: 'Fries',
       images: [
-        'assets/images/fries.jpg',
-        'assets/images/fries.jpg',
-        'assets/images/fries.jpg',
+        'assets/images/fries1.jpeg',
+        'assets/images/fries2.jpeg',
+        'assets/images/fries3.jpeg',
       ],
     ),
   ];
@@ -56,7 +56,7 @@ class ViewFoodContent extends StatelessWidget {
             ),
           ),
 
-          const SliverToBoxAdapter(child: AdsCarousel()),
+           SliverToBoxAdapter(child: AdsCarousel()),
           SliverPadding(
             padding: const EdgeInsets.only(bottom: 8.0),
             sliver: SliverList(
