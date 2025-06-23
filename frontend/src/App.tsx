@@ -4,10 +4,12 @@ import { Footer } from "./components/shared/Footer";
 // import AdminTestPanel from "./components/admin/AdminTestPanel";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ScrollToTop from "./components/scrollToTop";
 
 const App = () => {
   return (
     <div className="min-h-screen flex flex-col">
+      <ScrollToTop />
       <Navbar />
       <main className="flex-1">
         <Outlet />

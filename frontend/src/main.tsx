@@ -22,7 +22,7 @@ import AdminRoute from "./utils/AdminRoute.tsx";
 import AdminLayout from "./components/admin/AdminLayout.tsx";
 import RestaurantsPage from "./pages/admin/RestaurantsPage.tsx";
 import FoodItemsPage from "./pages/admin/FoodItemsPage.tsx";
-import VolunteersPage from "./pages/admin/VolunteersPage.tsx";
+// import VolunteersPage from "./pages/admin/VolunteersPage.tsx";
 import UsersPage from "./pages/admin/UsersPage.tsx";
 import OrdersPage from "./pages/admin/OrdersPage.tsx";
 import PickupsPage from "./pages/admin/PickupsPage.tsx";
@@ -54,7 +54,7 @@ const router = createBrowserRouter(
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="restaurants" element={<RestaurantsPage />} />
           <Route path="food-items" element={<FoodItemsPage />} />
-          <Route path="volunteers" element={<VolunteersPage />} />
+          {/* <Route path="volunteers" element={<VolunteersPage />} /> */}
           <Route path="orders" element={<OrdersPage />} />
           <Route path="pickups" element={<PickupsPage />} />
           <Route path="users" element={<UsersPage />} />

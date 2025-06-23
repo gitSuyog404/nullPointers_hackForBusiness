@@ -14,7 +14,7 @@ import {
   HiChevronDown,
   HiUser,
 } from "react-icons/hi";
-import { MdRestaurant, MdFastfood, MdVolunteerActivism } from "react-icons/md";
+import { MdRestaurant, MdFastfood } from "react-icons/md";
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import { useUserLogoutMutation } from "../../redux/slices/userApiSlice";
 import { logout } from "../../redux/slices/authSlice";
@@ -61,11 +61,11 @@ const AdminLayout: React.FC = () => {
       href: "/admin/food-items",
       icon: <MdFastfood className="w-5 h-5" />,
     },
-    {
-      name: "Volunteers",
-      href: "/admin/volunteers",
-      icon: <MdVolunteerActivism className="w-5 h-5" />,
-    },
+    // {
+    //   name: "Volunteers",
+    //   href: "/admin/volunteers",
+    //   icon: <MdVolunteerActivism className="w-5 h-5" />,
+    // },
     {
       name: "Orders",
       href: "/admin/orders",
