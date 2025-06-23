@@ -7,6 +7,7 @@
 **Food Rescue** is a cross-platform solution designed to connect restaurants, industries, and food providers with customers seeking affordable meals. Businesses can post leftover food that would otherwise go to waste, and customers can order these meals at a significantly reduced cost.
 
 Customers are offered two fulfillment options:
+
 - 🚶‍♂️ **Self Pickup** – Collect the order themselves from the provider.
 - 🚚 **Delivery** – A registered rider will pick up and deliver the order directly.
 
@@ -28,14 +29,14 @@ This initiative not only reduces food waste but also provides affordable meals t
 
 ## 🧑‍💻 Tech Stack
 
-| Layer         | Technology                |
-|---------------|----------------------------|
-| 🎯 Frontend App  | Flutter                   |
-| 🌐 Web Frontend | React.js                  |
-| 🛠 Backend      | Java Spring Boot (REST API) |
-| ☁️ Database     | MySQL                     |
-| 🔐 Auth         | JWT (Token-based)         |
-| 🔔 Notifications | WebSockets, FCM (planned) |
+| Layer            | Technology                  |
+| ---------------- | --------------------------- |
+| 🎯 Frontend App  | Flutter                     |
+| 🌐 Web Frontend  | React.js                    |
+| 🛠 Backend        | Java Spring Boot (REST API) |
+| ☁️ Database      | MySQL                       |
+| 🔐 Auth          | JWT (Token-based)           |
+| 🔔 Notifications | WebSockets, FCM (planned)   |
 
 ---
 
@@ -49,7 +50,6 @@ food_rescue/
 ├── frontend-web/   # React.js app (main: frontend branch)
 └── frontend-app/   # Flutter app (main: flutter branch)
 ```
-
 
 ---
 
@@ -92,37 +92,39 @@ Server will run at http://localhost:8080.
 ---
 
 ### 🌐 Web Frontend (React.js)
+
 #### ✅ Prerequisites
+
 - Node.js v18+
 
 - npm or yarn
 
 ⚙️ Setup
+
 ```bash
-Copy
-Edit
-git checkout web
-cd frontend-web
+
+# Clone the repo
+git clone https://github.com/gitSuyog404/nullPointers_hackForBusiness.git
+cd frontend
+
 
 # Install dependencies
 npm install
 
-# Configure environment
-Create `.env` file with:
+# Urls have been saved in the constants.ts file
 
-REACT_APP_API_URL=http://localhost:8080/api
+BASE_URL=http://localhost:8080/api
 ▶️ Run App
-bash
-Copy
-Edit
-npm start
-App will run at http://localhost:3000.
+npm run dev
+App will run at http://localhost:5173.
 ```
 
 ---
 
 ### 📱 Mobile App (Flutter)
+
 #### ✅ Prerequisites
+
 - Flutter SDK (latest)
 
 - Android Studio or VS Code
@@ -130,7 +132,8 @@ App will run at http://localhost:3000.
 - Android Emulator or real device
 
 ⚙️ Setup
- ```bash
+
+```bash
 Copy
 Edit
 git checkout flutter
@@ -149,6 +152,7 @@ Copy
 Edit
 flutter run
 ```
+
 ---
 
 ## 👥 Team Members
@@ -156,7 +160,6 @@ flutter run
 | Name               | Role                       |
 | ------------------ | -------------------------- |
 | **Grish Shrestha** | Java Spring Boot Developer |
-| **Suyog Baniya**   | React.js Developer         |
+| **Suyog Baniya**   | Front End Developer        |
 | **Rohan Shrestha** | Flutter Developer          |
 | **Kanchan Sunar**  | Q.A Engineer               |
-
