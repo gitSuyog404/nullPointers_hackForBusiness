@@ -83,7 +83,7 @@ class _CustomerProfilePageState extends State<CustomerProfilePage> {
             ),
             const SizedBox(height: 5),
             Text(
-              "Hari Bahadur",
+              "John Doe",
               style: theme.textTheme.headlineMedium?.copyWith(
                 fontWeight: FontWeight.w800,
               ),
@@ -91,9 +91,9 @@ class _CustomerProfilePageState extends State<CustomerProfilePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Rating(receivedRating: 3.5),
+                Rating(receivedRating: 3),
                 const SizedBox(width: 10),
-                Text('| 12'),
+                Text('| 10'),
               ],
             ),
 
