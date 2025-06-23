@@ -30,7 +30,7 @@ class AppDrawer extends StatelessWidget {
               ),
             ),
             title: Text(
-              'Hari Bahadur',
+              'John Doe',
               style: Theme.of(
                 context,
               ).textTheme.headlineLarge?.copyWith(fontSize: 14),

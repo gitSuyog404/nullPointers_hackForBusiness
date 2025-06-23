@@ -9,6 +9,8 @@ import 'package:food_rescue/features/settings/views/about_page.dart';
 import '../features/app_start/view/app_start_view.dart';
 import '../features/auth/views/pages/signup_choose_page.dart';
 import '../features/homescreen/views/customer/pages/view_food_details_page.dart';
+import '../features/homescreen/views/rider/pages/order_detail_page.dart';
+import '../features/homescreen/views/rider/views/rider_homepage.dart';
 import '../features/settings/views/settings_page.dart';
 
 final navigation = GlobalKey<NavigatorState>();
@@ -20,7 +22,9 @@ class RouteNames {
   static const String signUpChoose = '/signupChoose';
   static const String rider = '/rider';
   static const String customerHomepage = '/customerHomepage';
+  static const String riderHomepage = '/riderHomepage';
   static const String viewFoodDetails = '/viewFoodDetails';
+  static const String orderDetails = '/order-details';
   static const String customerProfile = '/customerProfile';
   static const String about = '/about';
   static const String settings = '/settings';
@@ -56,6 +60,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       );
     case RouteNames.customerHomepage:
       return _createRouteAnimation(const ViewFoodPage(), animationType: 'LR');
+    case RouteNames.riderHomepage:
+      return _createRouteAnimation(const RiderHomepage(), animationType: 'LR');
     case RouteNames.viewFoodDetails:
       final args = settings.arguments as Map<String, String>;
       final String image = args['image'] ?? '';
@@ -64,6 +70,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _createRouteAnimation(
         ViewFoodDetailsPage(category: category, image: image, tag: tag),
         // animationType: 'LR',
+      );
+    case RouteNames.orderDetails:
+      final args = settings.arguments as Map<String, dynamic>;
+      final order = args['order'];
+      return _createRouteAnimation(
+        OrderDetailPage(order: order),
+        animationType: 'LR',
       );
     case RouteNames.customerProfile:
       return _createRouteAnimation(
